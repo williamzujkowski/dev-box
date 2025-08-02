@@ -8,7 +8,9 @@ pre[class*="language-"] {
   color: #d4d4d4;
   font-size: 14px;
   text-shadow: none;
-  font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', Consolas, 'Courier New', monospace;
+  font-family:
+    "JetBrains Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, "Courier New",
+    monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -254,7 +256,7 @@ pre.line-numbers > code {
 }
 
 .code-block .code-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: #569cd6;
 }
 
@@ -279,7 +281,12 @@ pre.line-numbers > code {
 }
 
 /* Inline code in different contexts */
-h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
   font-size: 0.9em;
   background: rgba(0, 0, 0, 0.1);
   padding: 0.1em 0.3em;
@@ -292,8 +299,13 @@ h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     background: #2d2d2d;
     border-color: #444;
   }
-  
-  h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+
+  h1 code,
+  h2 code,
+  h3 code,
+  h4 code,
+  h5 code,
+  h6 code {
     background: rgba(255, 255, 255, 0.1);
   }
 }

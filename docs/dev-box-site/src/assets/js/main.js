@@ -10,7 +10,9 @@
     const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
     const mainNav = document.querySelector(".main-nav");
 
-    if (!mobileMenuToggle || !mainNav) {return;}
+    if (!mobileMenuToggle || !mainNav) {
+      return;
+    }
 
     mobileMenuToggle.addEventListener("click", function () {
       const isExpanded = this.getAttribute("aria-expanded") === "true";
@@ -47,10 +49,14 @@
     anchorLinks.forEach(link => {
       link.addEventListener("click", function (e) {
         const targetId = this.getAttribute("href");
-        if (targetId === "#") {return;}
+        if (targetId === "#") {
+          return;
+        }
 
         const targetElement = document.querySelector(targetId);
-        if (!targetElement) {return;}
+        if (!targetElement) {
+          return;
+        }
 
         e.preventDefault();
 
@@ -121,7 +127,9 @@
     const tocLinks = document.querySelectorAll(".table-of-contents a");
     const headings = document.querySelectorAll("h2[id], h3[id], h4[id]");
 
-    if (tocLinks.length === 0 || headings.length === 0) {return;}
+    if (tocLinks.length === 0 || headings.length === 0) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       entries => {
@@ -133,7 +141,9 @@
             // Remove active class from all links
             tocLinks.forEach(link => link.classList.remove("active"));
             // Add active class to current link
-            if (tocLink) {tocLink.classList.add("active");}
+            if (tocLink) {
+              tocLink.classList.add("active");
+            }
           }
         });
       },
@@ -150,7 +160,9 @@
     const searchInput = document.querySelector("#search-input");
     const searchResults = document.querySelector("#search-results");
 
-    if (!searchInput || !searchResults) {return;}
+    if (!searchInput || !searchResults) {
+      return;
+    }
 
     let searchTimeout;
 
@@ -185,7 +197,9 @@
   // Theme switcher (if dark mode toggle is added)
   function initThemeSwitcher() {
     const themeToggle = document.querySelector("#theme-toggle");
-    if (!themeToggle) {return;}
+    if (!themeToggle) {
+      return;
+    }
 
     const currentTheme = localStorage.getItem("theme") || "auto";
     document.documentElement.setAttribute("data-theme", currentTheme);
@@ -238,7 +252,7 @@
   // External link indicators
   function initExternalLinks() {
     const externalLinks = document.querySelectorAll(
-      `a[href^="http"]:not([href*="${  window.location.hostname  }"])`
+      `a[href^="http"]:not([href*="${window.location.hostname}"])`
     );
 
     externalLinks.forEach(link => {
@@ -313,7 +327,7 @@
     .code-block-wrapper {
       position: relative;
     }
-    
+
     .copy-code-button {
       position: absolute;
       top: 0.5rem;
@@ -329,20 +343,20 @@
       transition: opacity 0.2s ease-in-out;
       z-index: 10;
     }
-    
+
     .code-block-wrapper:hover .copy-code-button {
       opacity: 1;
     }
-    
+
     .copy-code-button:hover {
       background: rgba(0, 0, 0, 0.9);
     }
-    
+
     .copy-code-button.copied {
       background: #10b981;
       border-color: #10b981;
     }
-    
+
     .back-to-top {
       position: fixed;
       bottom: 2rem;
@@ -362,22 +376,22 @@
       transition: all 0.2s ease-in-out;
       z-index: 100;
     }
-    
+
     .back-to-top:hover {
       background: var(--color-primary-dark);
       transform: translateY(-2px);
     }
-    
+
     .external-icon {
       opacity: 0.7;
       font-size: 0.8em;
     }
-    
+
     .table-of-contents a.active {
       color: var(--color-primary);
       font-weight: 500;
     }
-    
+
     @media (max-width: 767px) {
       .back-to-top {
         bottom: 1rem;
