@@ -1,12 +1,9 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./docs/_site",
+      "staticDistDir": "./docs",
       "url": [
-        "http://localhost/",
-        "http://localhost/getting-started/",
-        "http://localhost/api/",
-        "http://localhost/guides/"
+        "http://localhost/index.html"
       ]
     },
     "assert": {

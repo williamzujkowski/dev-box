@@ -1,0 +1,70 @@
+# Jekyll Configuration for GitHub Pages
+title: Dev Box
+description: Development Environment and Tools
+baseurl: ""
+url: "https://username.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
+# Include files
+include:
+  - _pages
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "page"
+
+# SEO settings
+author: Dev Box Team
+twitter:
+  username: devbox
+  card: summary
+
+# GitHub Pages specific settings
+repository: username/dev-box
+github_username: username
+
+# Performance optimizations
+sass:
+  style: compressed
+
+# Lighthouse CI optimizations
+performance:
+  preload_fonts: true
+  lazy_loading: true
+  image_optimization: true
