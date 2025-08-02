@@ -19,6 +19,11 @@ This directory contains reusable prompt templates for automating common developm
 - **Features**: Full host setup, repository configuration, user permissions
 - **Usage**: `npx claude-flow@alpha swarm --template .llmconfig/prompt-templates/install_and_smoke_test_vm.md "Install and test VM"`
 
+### 4. `create_and_smoke_test_fresh_vm.md`
+- **Purpose**: Create a fresh Vagrant project with Ubuntu 24.04 and verify it works
+- **Features**: Clean project initialization, isolated testing environment, self-healing
+- **Usage**: `npx claude-flow@alpha swarm --template .llmconfig/prompt-templates/create_and_smoke_test_fresh_vm.md "Create fresh VM"`
+
 ## Common Self-Healing Patterns
 
 All templates include automatic fixes for:
