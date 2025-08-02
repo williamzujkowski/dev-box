@@ -82,9 +82,10 @@ def validate_path(path: Union[str, Path]) -> bool:
         # Check for absolute paths outside allowed areas
         if path.is_absolute():
             # Allow only paths within safe directories (using environment variables)
-            import tempfile
             import os
-            temp_dir = os.environ.get('TMPDIR', tempfile.gettempdir())
+            import tempfile
+
+            temp_dir = os.environ.get("TMPDIR", tempfile.gettempdir())
             safe_prefixes = [temp_dir, "/var/tmp", os.path.expanduser("~"), "/opt"]
             if not any(str(path).startswith(prefix) for prefix in safe_prefixes):
                 return False

@@ -99,8 +99,10 @@ class StateSerializer:
         DEPRECATED: Use secure serialization instead of pickle.
         This method is kept for backward compatibility but will be removed.
         """
-        logger.warning("Using deprecated pickle serialization. Consider migrating to secure serialization.")
-        
+        logger.warning(
+            "Using deprecated pickle serialization. Consider migrating to secure serialization."
+        )
+
         # Use secure serialization instead of pickle
         secure_serializer = SecureSerializer()
         try:
@@ -114,15 +116,19 @@ class StateSerializer:
                 encoded_data = base64.b64encode(pickled_data).decode("utf-8")
                 return encoded_data
             except Exception as pickle_error:
-                raise ValueError(f"Both secure and pickle serialization failed: {pickle_error}")
+                raise ValueError(
+                    f"Both secure and pickle serialization failed: {pickle_error}"
+                )
 
     async def _deserialize_pickle(self, data: str) -> Any:
         """
         DEPRECATED: Use secure deserialization instead of pickle.
         This method attempts secure deserialization first, with pickle fallback.
         """
-        logger.warning("Using deprecated pickle deserialization. Consider migrating to secure deserialization.")
-        
+        logger.warning(
+            "Using deprecated pickle deserialization. Consider migrating to secure deserialization."
+        )
+
         # Try secure deserialization first
         secure_serializer = SecureSerializer()
         try:
@@ -130,8 +136,12 @@ class StateSerializer:
         except Exception:
             # Security: Removed pickle fallback (fixes CWE-502)
             # Use secure JSON serialization instead of pickle for all data
-            logger.error("Secure deserialization failed - pickle fallback disabled for security")
-            raise ValueError("Deserialization failed: only secure JSON format supported")
+            logger.error(
+                "Secure deserialization failed - pickle fallback disabled for security"
+            )
+            raise ValueError(
+                "Deserialization failed: only secure JSON format supported"
+            )
 
     async def _make_json_serializable(self, obj: Any) -> Any:
         """Convert object to JSON-serializable format"""

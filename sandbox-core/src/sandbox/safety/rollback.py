@@ -766,7 +766,9 @@ class RollbackManager:
             extractor = SecureTarExtractor(max_size=500 * 1024 * 1024)  # 500MB limit
             try:
                 # Use secure extraction with path validation (fixes CVE-2025-4517)
-                extracted_files = extractor.extract_safely(snapshot_file, temp_dir)  # nosec B202
+                extracted_files = extractor.extract_safely(
+                    snapshot_file, temp_dir
+                )  # nosec B202
                 logger.info(
                     f"Safely extracted {len(extracted_files)} files from snapshot"
                 )
