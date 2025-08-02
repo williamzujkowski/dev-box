@@ -19,32 +19,54 @@ jobs:
   lighthouse:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      
+          node-version: "20"
+
       - name: Install dependencies
         run: |
           npm install -g @lhci/cli@0.13.x
-      
+
+      - name: Check for documentation package.json
+        id: check-docs
+        run: |
+          if [ -f "docs/package.json" ]; then
+            echo "docs-exists=true" >> $GITHUB_OUTPUT
+          elif [ -f "docs/dev-box-site/package.json" ]; then
+            echo "docs-exists=true" >> $GITHUB_OUTPUT
+            echo "docs-path=docs/dev-box-site" >> $GITHUB_OUTPUT
+          else
+            echo "docs-exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build documentation site
-        if: hashFiles('docs/package.json') != ''
-        working-directory: ./docs
+        if: steps.check-docs.outputs.docs-exists == 'true'
+        working-directory: ${{ steps.check-docs.outputs.docs-path || './docs' }}
         run: |
           npm ci
           npm run build
-      
+
+      - name: Check for built site
+        id: check-site
+        if: steps.check-docs.outputs.docs-exists == 'true'
+        run: |
+          if [ -f "docs/_site/index.html" ] || [ -f "docs/dev-box-site/_site/index.html" ]; then
+            echo "site-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "site-exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run Lighthouse CI
-        if: hashFiles('docs/_site/index.html') != ''
+        if: steps.check-site.outputs.site-exists == 'true'
         run: |
           lhci autorun
-      
+
       - name: Comment on PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
@@ -53,12 +75,12 @@ jobs:
             const fs = require('fs');
             const results = JSON.parse(fs.readFileSync('.lighthouseci/lhr-*.json'));
             const comment = `## Lighthouse Results
-            
+
             - Accessibility: ${results.categories.accessibility.score * 100}%
             - Performance: ${results.categories.performance.score * 100}%
             - Best Practices: ${results.categories['best-practices'].score * 100}%
             - SEO: ${results.categories.seo.score * 100}%`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
