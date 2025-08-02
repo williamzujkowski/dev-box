@@ -2,48 +2,109 @@
 # vi: set ft=ruby :
 
 # Vagrant configuration for dev-box environment verification
+# Primary provider: libvirt (KVM/QEMU) for optimal Ubuntu 24.04 compatibility
 Vagrant.configure("2") do |config|
-  # Use reliable Ubuntu 24.04 box
-  config.vm.box = "hashicorp-education/ubuntu-24-04"
+  # Ubuntu 24.04 LTS local box optimized for libvirt
+  config.vm.box = "local/ubuntu-24.04-libvirt"
   config.vm.box_version = ">= 1.0.0"
   
   # Configure VM settings
-  config.vm.hostname = "dev-box-smoke-test"
+  config.vm.hostname = "dev-box-libvirt-test"
   
-  # Network configuration
+  # Network configuration - libvirt private network
   config.vm.network "private_network", type: "dhcp"
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, id: "dev-server"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080, id: "web-server"
   
-  # VirtualBox provider configuration
-  config.vm.provider "virtualbox" do |vb|
-    vb.name = "dev-box-smoke-test"
-    vb.memory = "1024"
-    vb.cpus = 2
-    vb.gui = false
+  # Force libvirt provider for KVM/QEMU virtualization
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.driver = "kvm"
+    libvirt.memory = 2048
+    libvirt.cpus = 2
+    libvirt.machine_type = "pc-q35-6.2"  # Modern machine type for better performance
+    libvirt.cpu_mode = "host-passthrough"  # Pass through host CPU features
+    libvirt.nested = true
     
-    # Enable virtualization features
-    vb.customize ["modifyvm", :id, "--vram", "16"]
-    vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+    # Storage optimization
+    libvirt.volume_cache = "writeback"
+    libvirt.disk_bus = "virtio"
+    libvirt.storage :file, :size => '20G', :type => 'qcow2'
+    
+    # CPU topology for better performance
+    libvirt.numa_nodes = [
+      {
+        :cpus => "0-1",
+        :memory => "2048"
+      }
+    ]
+    
+    # Network optimization
+    libvirt.nic_model_type = "virtio"
+    libvirt.graphics_type = "none"
+    libvirt.video_type = "none"
+    
+    # Management interface
+    libvirt.management_network_name = "vagrant-libvirt"
+    libvirt.management_network_address = "192.168.121.0/24"
   end
   
-  # Provisioning script to handle common Ubuntu 24.04 issues
-  config.vm.provision "shell", inline: <<-SHELL
-    # Update package list
+  # Libvirt-optimized provisioning script
+  config.vm.provision "shell", name: "Libvirt Environment Setup", inline: <<-SHELL
+    set -e
+    
+    echo "🚀 Starting libvirt-optimized Ubuntu 24.04 provisioning..."
+    
+    # Set non-interactive mode
     export DEBIAN_FRONTEND=noninteractive
+    
+    # Update package list
     apt-get update -y
     
-    # Install essential packages for VirtualBox Guest Additions
-    apt-get install -y linux-headers-$(uname -r) build-essential dkms
+    # Install essential packages for KVM guest
+    apt-get install -y \
+      linux-headers-$(uname -r) \
+      build-essential \
+      dkms \
+      qemu-guest-agent \
+      spice-vdagent \
+      virtio-modules-$(uname -r) \
+      curl \
+      wget \
+      git \
+      vim \
+      nano \
+      htop \
+      tree \
+      jq
     
-    # Install common development tools
-    apt-get install -y curl wget git vim nano
+    # Configure QEMU guest agent for better host-guest integration
+    systemctl enable qemu-guest-agent
+    systemctl start qemu-guest-agent
     
-    # Create test marker
-    echo "env-verifier: VM provisioned successfully on $(date)" > /home/vagrant/provision-complete.txt
+    # Optimize for KVM environment
+    echo 'GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT elevator=noop"' >> /etc/default/grub
+    update-grub
+    
+    # Set up virtio-scsi optimizations
+    echo 'ACTION=="add|change", KERNEL=="sd*[!0-9]", ATTR{queue/scheduler}="mq-deadline"' > /etc/udev/rules.d/60-scheduler.rules
+    
+    # Create test marker with libvirt-specific info
+    cat > /home/vagrant/provision-complete.txt <<EOF
+env-verifier: Libvirt VM provisioned successfully on $(date)
+hypervisor: $(systemd-detect-virt)
+kernel: $(uname -r)
+memory: $(free -h | grep Mem | awk '{print $2}')
+cpus: $(nproc)
+disk_scheduler: $(cat /sys/block/vda/queue/scheduler 2>/dev/null || echo "virtio-scsi")
+qemu_agent: $(systemctl is-active qemu-guest-agent)
+EOF
     chown vagrant:vagrant /home/vagrant/provision-complete.txt
     
-    echo "✅ Provisioning completed successfully"
+    echo "✅ Libvirt provisioning completed successfully"
+    echo "📊 Hypervisor: $(systemd-detect-virt)"
+    echo "🔧 QEMU Guest Agent: $(systemctl is-active qemu-guest-agent)"
   SHELL
   
-  # Sync project files (optional, for development)
-  # config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+  # Sync project files with NFS for better performance
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false
 end

@@ -1,0 +1,2 @@
+instance-id: ubuntu-2404-dev-$(date +%s)
+local-hostname: ubuntu-2404-dev

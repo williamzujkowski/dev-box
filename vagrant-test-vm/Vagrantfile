@@ -3,9 +3,9 @@
 
 # Vagrant configuration for Ubuntu 24.04 testing VM
 Vagrant.configure("2") do |config|
-  # Base box - Ubuntu 24.04 LTS (Noble Numbat)
-  config.vm.box = "bento/ubuntu-24.04"
-  config.vm.box_version = ">= 202404.23.0"
+  # Base box - Ubuntu 24.04 LTS optimized for libvirt
+  config.vm.box = "local/ubuntu-24.04-libvirt"
+  config.vm.box_version = ">= 1.0.0"
   config.vm.box_check_update = true
 
   # VM Configuration
@@ -22,17 +22,23 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./tests", "/home/vagrant/tests", create: true
   config.vm.synced_folder "./scripts", "/home/vagrant/scripts", create: true
 
-  # Provider-specific configuration
-  config.vm.provider "virtualbox" do |vb|
-    vb.name = "Ubuntu-24.04-Test-VM"
-    vb.gui = false
-    vb.memory = "2048"
-    vb.cpus = 2
-    vb.customize ["modifyvm", :id, "--vram", "128"]
-    vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
-    vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
-    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+  # Provider-specific configuration - libvirt (KVM) primary
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.driver = "kvm"
+    libvirt.memory = 2048
+    libvirt.cpus = 2
+    libvirt.machine_type = "pc-q35-6.2"
+    libvirt.cpu_mode = "host-passthrough"
+    libvirt.nested = true
+    
+    # Storage optimization
+    libvirt.volume_cache = "writeback"
+    libvirt.disk_bus = "virtio"
+    libvirt.storage :file, :size => '20G', :type => 'qcow2'
+    
+    # Network optimization
+    libvirt.nic_model_type = "virtio"
+    libvirt.graphics_type = "none"
   end
 
   # Provisioning Scripts

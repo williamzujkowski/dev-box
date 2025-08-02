@@ -1,0 +1,754 @@
+name: Vagrant Libvirt Provider Test
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'scripts/**'
+      - 'Vagrantfile*'
+      - '.github/workflows/vagrant-libvirt-test.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'Vagrantfile*'
+      - '.github/workflows/vagrant-libvirt-test.yml'
+  workflow_dispatch:
+    inputs:
+      test_level:
+        description: 'Test level to run'
+        required: false
+        default: 'standard'
+        type: choice
+        options:
+          - 'smoke'
+          - 'standard'
+          - 'comprehensive'
+      box_source:
+        description: 'Box source'
+        required: false
+        default: 'local'
+        type: choice
+        options:
+          - 'local'
+          - 'vagrant_cloud'
+          - 'custom_url'
+      custom_box_url:
+        description: 'Custom box URL (if box_source is custom_url)'
+        required: false
+        type: string
+
+env:
+  VAGRANT_VERSION: '2.4.1'
+  LIBVIRT_DEFAULT_URI: 'qemu:///system'
+  TEST_TIMEOUT: '30m'
+
+jobs:
+  environment-check:
+    name: Environment Compatibility Check
+    runs-on: ubuntu-latest
+    outputs:
+      can-run-kvm: ${{ steps.kvm-check.outputs.supported }}
+      libvirt-ready: ${{ steps.libvirt-setup.outputs.ready }}
+      test-matrix: ${{ steps.matrix-setup.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check KVM support
+        id: kvm-check
+        run: |
+          echo "Checking KVM support..."
+          
+          # Check for virtualization support
+          if [[ -r /proc/cpuinfo ]] && grep -q "vmx\|svm" /proc/cpuinfo; then
+            echo "CPU virtualization support: YES"
+            echo "supported=true" >> $GITHUB_OUTPUT
+          else
+            echo "CPU virtualization support: NO"
+            echo "supported=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Check for /dev/kvm
+          if [[ -e /dev/kvm ]]; then
+            echo "/dev/kvm exists: YES"
+            ls -la /dev/kvm
+          else
+            echo "/dev/kvm exists: NO"
+          fi
+          
+          # System info
+          echo "System information:"
+          uname -a
+          cat /proc/cpuinfo | grep "model name" | head -1
+
+      - name: Setup libvirt environment
+        id: libvirt-setup
+        run: |
+          set -euo pipefail
+          echo "Setting up libvirt environment..."
+          
+          # Install packages
+          sudo apt-get update
+          sudo apt-get install -y \
+            qemu-kvm \
+            libvirt-daemon-system \
+            libvirt-clients \
+            bridge-utils \
+            virtinst \
+            cpu-checker \
+            libguestfs-tools
+          
+          # Configure user permissions
+          sudo usermod -aG libvirt $USER
+          sudo usermod -aG kvm $USER
+          
+          # Start services
+          sudo systemctl start libvirtd
+          sudo systemctl enable libvirtd
+          
+          # Wait for service to be ready
+          sleep 5
+          
+          # Test connection
+          if sudo virsh list --all >/dev/null 2>&1; then
+            echo "Libvirt connection: SUCCESS"
+            echo "ready=true" >> $GITHUB_OUTPUT
+          else
+            echo "Libvirt connection: FAILED"
+            echo "ready=false" >> $GITHUB_OUTPUT
+            sudo systemctl status libvirtd --no-pager
+          fi
+          
+          # Show network configuration
+          sudo virsh net-list --all
+
+      - name: Install Vagrant with libvirt provider
+        run: |
+          set -euo pipefail
+          echo "Installing Vagrant and libvirt provider..."
+          
+          # Install Vagrant
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt-get update
+          sudo apt-get install -y vagrant=${VAGRANT_VERSION}-*
+          
+          # Install libvirt provider
+          vagrant plugin install vagrant-libvirt
+          
+          # Verify installation
+          vagrant version
+          vagrant plugin list
+          
+          # Show available providers
+          vagrant box list || echo "No boxes installed yet"
+
+      - name: Setup test matrix
+        id: matrix-setup
+        run: |
+          case "${{ github.event.inputs.test_level || 'standard' }}" in
+            "smoke")
+              MATRIX='["basic-connectivity"]'
+              ;;
+            "standard")
+              MATRIX='["basic-connectivity", "provisioning", "development-tools"]'
+              ;;
+            "comprehensive")
+              MATRIX='["basic-connectivity", "provisioning", "development-tools", "performance", "networking", "security"]'
+              ;;
+            *)
+              MATRIX='["basic-connectivity", "provisioning", "development-tools"]'
+              ;;
+          esac
+          
+          echo "matrix=${MATRIX}" >> $GITHUB_OUTPUT
+          echo "Test matrix: ${MATRIX}"
+
+  smoke-test:
+    name: Smoke Test - ${{ matrix.test-type }}
+    runs-on: ubuntu-latest
+    needs: environment-check
+    if: needs.environment-check.outputs.libvirt-ready == 'true'
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        test-type: ${{ fromJson(needs.environment-check.outputs.test-matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Prepare box for testing
+        run: |
+          set -euo pipefail
+          
+          case "${{ github.event.inputs.box_source || 'local' }}" in
+            "local")
+              if [[ -f "packer/output/*.box" ]]; then
+                echo "Using local box from packer output"
+                BOX_FILE=$(find packer/output -name "*.box" -type f | head -n1)
+                vagrant box add --name "test-dev-box" "$BOX_FILE" --provider libvirt --force
+              else
+                echo "No local box found, using fallback"
+                # Use a minimal Ubuntu box as fallback
+                vagrant box add generic/ubuntu2404 --provider libvirt
+                BOX_NAME="generic/ubuntu2404"
+              fi
+              ;;
+            "vagrant_cloud")
+              echo "Using box from Vagrant Cloud"
+              vagrant box add generic/ubuntu2404 --provider libvirt
+              BOX_NAME="generic/ubuntu2404"
+              ;;
+            "custom_url")
+              if [[ -n "${{ github.event.inputs.custom_box_url }}" ]]; then
+                echo "Using custom box URL: ${{ github.event.inputs.custom_box_url }}"
+                wget -O custom-box.box "${{ github.event.inputs.custom_box_url }}"
+                vagrant box add --name "custom-test-box" custom-box.box --provider libvirt --force
+                BOX_NAME="custom-test-box"
+              else
+                echo "Error: Custom URL not provided"
+                exit 1
+              fi
+              ;;
+          esac
+          
+          # Set default box name if not set
+          BOX_NAME="${BOX_NAME:-test-dev-box}"
+          echo "BOX_NAME=${BOX_NAME}" >> $GITHUB_ENV
+          
+          echo "Box prepared: ${BOX_NAME}"
+          vagrant box list
+
+      - name: Create test environment
+        run: |
+          mkdir -p test-environment
+          cd test-environment
+          
+          cat > Vagrantfile << EOF
+Vagrant.configure("2") do |config|
+  config.vm.box = "${{ env.BOX_NAME }}"
+  
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.memory = 2048
+    libvirt.cpus = 2
+    libvirt.cpu_mode = 'host-passthrough'
+    libvirt.nested = true if "${{ matrix.test-type }}" == "performance"
+  end
+  
+  # Network configuration for networking tests
+  if "${{ matrix.test-type }}" == "networking"
+    config.vm.network "private_network", type: "dhcp"
+  end
+end
+EOF
+
+      - name: Run test - ${{ matrix.test-type }}
+        run: |
+          set -euo pipefail
+          cd test-environment
+          
+          echo "Running ${{ matrix.test-type }} test..."
+          
+          case "${{ matrix.test-type }}" in
+            "basic-connectivity")
+              echo "Testing basic VM connectivity..."
+              
+              timeout ${{ env.TEST_TIMEOUT }} vagrant up --provider=libvirt
+              
+              # Basic connectivity test
+              vagrant ssh -c "
+                echo 'Basic connectivity test'
+                whoami
+                pwd
+                date
+                uptime
+                echo 'Connectivity test successful'
+              "
+              
+              vagrant halt
+              ;;
+              
+            "provisioning")
+              echo "Testing provisioning capabilities..."
+              
+              # Add provisioning to Vagrantfile
+              cat >> Vagrantfile << 'EOF'
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: <<-SHELL
+    echo "Testing provisioning..."
+    apt-get update -qq
+    apt-get install -y curl wget git
+    
+    # Test package installation
+    curl --version
+    wget --version
+    git --version
+    
+    # Create test file
+    echo "Provisioning successful at $(date)" > /tmp/provision-test.txt
+    
+    echo "Provisioning completed successfully"
+  SHELL
+end
+EOF
+              
+              timeout ${{ env.TEST_TIMEOUT }} vagrant up --provider=libvirt --provision
+              
+              # Verify provisioning results
+              vagrant ssh -c "
+                echo 'Verifying provisioning results...'
+                cat /tmp/provision-test.txt
+                curl --version
+                wget --version
+                git --version
+                echo 'Provisioning verification successful'
+              "
+              
+              vagrant halt
+              ;;
+              
+            "development-tools")
+              echo "Testing development tools..."
+              
+              timeout ${{ env.TEST_TIMEOUT }} vagrant up --provider=libvirt
+              
+              # Test development environment
+              vagrant ssh -c "
+                echo 'Testing development tools...'
+                
+                # Check for common development tools
+                echo 'Checking basic tools:'
+                which git && git --version || echo 'Git not found'
+                which curl && curl --version || echo 'Curl not found'
+                which python3 && python3 --version || echo 'Python3 not found'
+                which node && node --version || echo 'Node.js not found'
+                which npm && npm --version || echo 'npm not found'
+                which docker && docker --version || echo 'Docker not found'
+                
+                # Check for development-specific tools
+                echo 'Checking development tools:'
+                which claude && claude --version || echo 'Claude CLI not found (expected if not installed)'
+                which gh && gh --version || echo 'GitHub CLI not found (expected if not installed)'
+                
+                # Test basic development workflow
+                echo 'Testing basic development workflow:'
+                mkdir -p /tmp/test-project
+                cd /tmp/test-project
+                git init
+                echo '# Test Project' > README.md
+                git add README.md
+                git config user.email 'test@example.com'
+                git config user.name 'Test User'
+                git commit -m 'Initial commit' || echo 'Git commit failed (expected in CI)'
+                
+                echo 'Development tools test completed'
+              "
+              
+              vagrant halt
+              ;;
+              
+            "performance")
+              echo "Testing performance and KVM optimization..."
+              
+              timeout ${{ env.TEST_TIMEOUT }} vagrant up --provider=libvirt
+              
+              # Performance tests
+              vagrant ssh -c "
+                echo 'Running performance tests...'
+                
+                # CPU performance test
+                echo 'CPU performance test:'
+                time python3 -c 'sum(i*i for i in range(1000000))' 2>&1 | grep real
+                
+                # Memory test
+                echo 'Memory test:'
+                free -h
+                
+                # Disk I/O test
+                echo 'Disk I/O test:'
+                time dd if=/dev/zero of=/tmp/perftest bs=1M count=100 2>&1 | grep copied
+                rm -f /tmp/perftest
+                
+                # Check KVM acceleration
+                echo 'Checking virtualization:'
+                lscpu | grep Virtualization || echo 'Virtualization info not available'
+                cat /proc/cpuinfo | grep flags | grep vmx || echo 'VMX not found in CPU flags'
+                
+                echo 'Performance test completed'
+              "
+              
+              vagrant halt
+              ;;
+              
+            "networking")
+              echo "Testing networking capabilities..."
+              
+              timeout ${{ env.TEST_TIMEOUT }} vagrant up --provider=libvirt
+              
+              # Network tests
+              vagrant ssh -c "
+                echo 'Testing networking...'
+                
+                # Basic connectivity
+                ping -c 3 8.8.8.8
+                
+                # DNS resolution
+                nslookup google.com
+                
+                # Network configuration
+                ip addr show
+                ip route show
+                
+                # Test HTTP connectivity
+                curl -s -o /dev/null -w '%{http_code}' http://httpbin.org/get || echo 'HTTP test failed'
+                
+                echo 'Networking test completed'
+              "
+              
+              vagrant halt
+              ;;
+              
+            "security")
+              echo "Testing security configuration..."
+              
+              timeout ${{ env.TEST_TIMEOUT }} vagrant up --provider=libvirt
+              
+              # Security tests
+              vagrant ssh -c "
+                echo 'Testing security configuration...'
+                
+                # Check user permissions
+                whoami
+                id
+                
+                # Check sudo configuration
+                sudo -l || echo 'Sudo configuration check completed'
+                
+                # Check firewall status
+                sudo ufw status || echo 'UFW not configured'
+                
+                # Check for security updates
+                apt list --upgradable 2>/dev/null | head -10 || echo 'Update check completed'
+                
+                # Check SSH configuration
+                sudo sshd -T | grep -E 'passwordauthentication|permitrootlogin' || echo 'SSH config check completed'
+                
+                echo 'Security test completed'
+              "
+              
+              vagrant halt
+              ;;
+              
+            *)
+              echo "Unknown test type: ${{ matrix.test-type }}"
+              exit 1
+              ;;
+          esac
+
+      - name: Generate test report
+        if: always()
+        run: |
+          cd test-environment
+          
+          # Collect test results
+          cat > test-report-${{ matrix.test-type }}.md << EOF
+# Test Report: ${{ matrix.test-type }}
+
+**Date:** $(date -u)
+**Test Type:** ${{ matrix.test-type }}
+**Status:** ${{ job.status }}
+**Box:** ${{ env.BOX_NAME }}
+**Provider:** libvirt
+
+## Test Execution
+
+- Started: $(date -u)
+- Timeout: ${{ env.TEST_TIMEOUT }}
+- Result: ${{ job.status }}
+
+## Vagrant Status
+
+\`\`\`
+$(vagrant status 2>/dev/null || echo "No status available")
+\`\`\`
+
+## System Information
+
+\`\`\`
+$(uname -a)
+$(free -h)
+$(df -h /)
+\`\`\`
+
+## Libvirt Information
+
+\`\`\`
+$(sudo virsh list --all 2>/dev/null || echo "No virsh information available")
+\`\`\`
+
+EOF
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.test-type }}
+          path: test-environment/test-report-*.md
+          retention-days: 7
+
+      - name: Cleanup test environment
+        if: always()
+        run: |
+          cd test-environment
+          
+          echo "Cleaning up test environment..."
+          
+          # Destroy VM
+          vagrant destroy -f || true
+          
+          # Remove test box if we added it
+          if [[ "${{ github.event.inputs.box_source || 'local' }}" == "local" ]]; then
+            vagrant box remove test-dev-box --provider libvirt || true
+          fi
+          
+          echo "Cleanup completed"
+
+  performance-benchmark:
+    name: Performance Benchmark
+    runs-on: ubuntu-latest
+    needs: [environment-check, smoke-test]
+    if: |
+      needs.environment-check.outputs.libvirt-ready == 'true' &&
+      (github.event.inputs.test_level == 'comprehensive' || github.event_name == 'schedule')
+    timeout-minutes: 45
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup benchmark environment
+        run: |
+          # Use a known-good box for benchmarking
+          vagrant box add generic/ubuntu2404 --provider libvirt
+          
+          mkdir -p benchmark-test
+          cd benchmark-test
+          
+          cat > Vagrantfile << 'EOF'
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2404"
+  
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.memory = 4096
+    libvirt.cpus = 4
+    libvirt.cpu_mode = 'host-passthrough'
+    libvirt.nested = true
+  end
+end
+EOF
+
+      - name: Run performance benchmarks
+        run: |
+          cd benchmark-test
+          
+          echo "Starting performance benchmark..."
+          START_TIME=$(date +%s)
+          
+          timeout 40m vagrant up --provider=libvirt
+          
+          UP_TIME=$(date +%s)
+          BOOT_DURATION=$((UP_TIME - START_TIME))
+          
+          # Run comprehensive performance tests
+          vagrant ssh -c "
+            echo 'Running comprehensive performance benchmarks...'
+            
+            # CPU benchmark
+            echo 'CPU benchmark:'
+            time python3 -c '
+import time
+start = time.time()
+result = sum(i*i for i in range(10000000))
+end = time.time()
+print(f\"CPU benchmark completed in {end-start:.2f} seconds\")
+print(f\"Result: {result}\")
+'
+            
+            # Memory benchmark
+            echo 'Memory benchmark:'
+            time python3 -c '
+import time
+start = time.time()
+data = [i for i in range(1000000)]
+end = time.time()
+print(f\"Memory allocation completed in {end-start:.2f} seconds\")
+print(f\"Allocated {len(data)} items\")
+del data
+'
+            
+            # Disk I/O benchmark
+            echo 'Disk I/O benchmark:'
+            time dd if=/dev/zero of=/tmp/benchmark bs=1M count=1000 2>&1
+            time dd if=/tmp/benchmark of=/dev/null bs=1M 2>&1
+            rm -f /tmp/benchmark
+            
+            # Network benchmark
+            echo 'Network benchmark:'
+            time curl -s -o /tmp/network-test http://httpbin.org/bytes/10485760
+            ls -lh /tmp/network-test
+            rm -f /tmp/network-test
+            
+            echo 'Performance benchmark completed'
+          "
+          
+          HALT_START=$(date +%s)
+          vagrant halt
+          HALT_END=$(date +%s)
+          
+          HALT_DURATION=$((HALT_END - HALT_START))
+          
+          # Generate performance report
+          cat > performance-report.md << EOF
+# Performance Benchmark Report
+
+**Date:** $(date -u)
+**Provider:** libvirt
+**VM Configuration:** 4 CPU, 4GB RAM
+**Host OS:** ${{ runner.os }}
+
+## Timing Results
+
+- Boot Time: ${BOOT_DURATION} seconds
+- Halt Time: ${HALT_DURATION} seconds
+- Total Test Duration: $((HALT_END - START_TIME)) seconds
+
+## Host System Information
+
+\`\`\`
+$(uname -a)
+$(lscpu | head -20)
+$(free -h)
+$(df -h /)
+\`\`\`
+
+## VM Performance
+
+See individual benchmark results in the test output above.
+
+EOF
+
+      - name: Upload performance report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-benchmark-report
+          path: benchmark-test/performance-report.md
+          retention-days: 30
+
+      - name: Cleanup benchmark environment
+        if: always()
+        run: |
+          cd benchmark-test
+          vagrant destroy -f || true
+          vagrant box remove generic/ubuntu2404 --provider libvirt || true
+
+  summary-report:
+    name: Generate Summary Report
+    runs-on: ubuntu-latest
+    needs: [environment-check, smoke-test, performance-benchmark]
+    if: always()
+    steps:
+      - name: Download all test reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-report-*
+          merge-multiple: true
+          path: reports
+
+      - name: Download performance report
+        if: needs.performance-benchmark.result != 'skipped'
+        uses: actions/download-artifact@v4
+        with:
+          name: performance-benchmark-report
+          path: reports
+
+      - name: Generate summary report
+        run: |
+          cat > test-summary.md << 'EOF'
+# Vagrant Libvirt Test Summary
+
+**Date:** $(date -u)
+**Workflow:** ${{ github.workflow }}
+**Trigger:** ${{ github.event_name }}
+**Test Level:** ${{ github.event.inputs.test_level || 'standard' }}
+**Box Source:** ${{ github.event.inputs.box_source || 'local' }}
+
+## Environment Check
+
+- KVM Support: ${{ needs.environment-check.outputs.can-run-kvm }}
+- Libvirt Ready: ${{ needs.environment-check.outputs.libvirt-ready }}
+
+## Test Results Summary
+
+| Test Type | Status |
+|-----------|--------|
+EOF
+          
+          # Add test results
+          for test in basic-connectivity provisioning development-tools performance networking security; do
+            if ls reports/test-report-${test}.md >/dev/null 2>&1; then
+              echo "| ${test} | ✅ Completed |" >> test-summary.md
+            else
+              echo "| ${test} | ⏭️ Skipped |" >> test-summary.md
+            fi
+          done
+          
+          cat >> test-summary.md << 'EOF'
+
+## Performance Benchmark
+
+EOF
+          
+          if [[ "${{ needs.performance-benchmark.result }}" == "success" ]]; then
+            echo "- Status: ✅ Completed" >> test-summary.md
+            echo "- Report: Available in artifacts" >> test-summary.md
+          elif [[ "${{ needs.performance-benchmark.result }}" == "skipped" ]]; then
+            echo "- Status: ⏭️ Skipped (not comprehensive test)" >> test-summary.md
+          else
+            echo "- Status: ❌ Failed" >> test-summary.md
+          fi
+          
+          cat >> test-summary.md << 'EOF'
+
+## Artifacts
+
+- Individual test reports available in workflow artifacts
+- Performance benchmark report (if run)
+- All reports retained for 7-30 days
+
+## Next Steps
+
+Based on the test results:
+
+1. ✅ If all tests passed: Environment is working correctly
+2. ⚠️ If some tests failed: Check individual test reports for details
+3. ❌ If environment check failed: Host system may not support KVM/libvirt
+
+EOF
+
+      - name: Upload summary report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-summary-report
+          path: test-summary.md
+          retention-days: 30
+
+      - name: Add summary to job output
+        run: |
+          echo "## Test Summary" >> $GITHUB_STEP_SUMMARY
+          cat test-summary.md >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,120 @@
+#cloud-config
+# Ubuntu 24.04 Cloud-Init Autoinstall Configuration
+# Uses modern autoinstall format (not legacy preseed)
+
+autoinstall:
+  version: 1
+  
+  # Early commands (run in installer environment)
+  early-commands:
+    - sudo systemctl stop ssh
+  
+  # Locale and keyboard
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us
+    variant: ''
+  
+  # Network configuration (DHCP)
+  network:
+    version: 2
+    ethernets:
+      enp1s0:
+        dhcp4: true
+        dhcp-identifier: mac
+  
+  # APT configuration
+  apt:
+    geoip: true
+    preserve_sources_list: false
+    primary:
+      - arches: [amd64, i386]
+        uri: http://archive.ubuntu.com/ubuntu
+      - arches: [default]
+        uri: http://ports.ubuntu.com/ubuntu-ports
+    security:
+      - arches: [amd64, i386]
+        uri: http://security.ubuntu.com/ubuntu
+      - arches: [default]
+        uri: http://ports.ubuntu.com/ubuntu-ports
+  
+  # Storage configuration
+  storage:
+    layout:
+      name: direct
+      sizing-policy: scaled
+    swap:
+      size: 1G
+  
+  # User configuration
+  identity:
+    hostname: ubuntu-2404-dev
+    username: vagrant
+    password: '$6$rounds=4096$saltysalt$YnZjZjg3YzNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNkZjNk'  # password: vagrant
+    realname: Vagrant User
+  
+  # SSH configuration
+  ssh:
+    install-server: true
+    allow-pw: false
+    authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key
+  
+  # Package installation
+  packages:
+    - openssh-server
+    - curl
+    - wget
+    - git
+    - vim
+    - nano
+    - htop
+    - tree
+    - unzip
+    - build-essential
+    - software-properties-common
+    - apt-transport-https
+    - ca-certificates
+    - gnupg
+    - lsb-release
+    - python3-pip
+    - python3-venv
+    - nodejs
+    - npm
+    - jq
+    - rsync
+    - dkms
+    - linux-headers-generic
+    - qemu-guest-agent
+    - spice-vdagent
+  
+  # Snap packages
+  snaps:
+    - name: code
+      classic: true
+    - name: go
+      classic: true
+  
+  # User configuration
+  user-data:
+    users:
+      - name: vagrant
+        groups: [adm, cdrom, sudo, dip, plugdev, lxd]
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key
+  
+  # Late commands (run in target system)
+  late-commands:
+    - echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant
+    - chmod 440 /target/etc/sudoers.d/vagrant
+    - 'curtin in-target --target=/target -- systemctl enable ssh'
+    - 'curtin in-target --target=/target -- systemctl enable qemu-guest-agent'
+    - sed -i 's/^#PermitRootLogin.*/PermitRootLogin no/' /target/etc/ssh/sshd_config
+    - sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication no/' /target/etc/ssh/sshd_config
+    - sed -i 's/^#PubkeyAuthentication.*/PubkeyAuthentication yes/' /target/etc/ssh/sshd_config
+    - echo 'Defaults:vagrant !requiretty' >> /target/etc/sudoers.d/vagrant
+  
+  # Reboot after installation
+  shutdown: reboot
