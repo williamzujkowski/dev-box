@@ -1,5 +1,11 @@
 # dev-box
 
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/williamzujkowski/dev-box/badge)](https://securityscorecards.dev/viewer/?uri=github.com/williamzujkowski/dev-box)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI Status](https://github.com/williamzujkowski/dev-box/workflows/Security%20Scanning/badge.svg)](https://github.com/williamzujkowski/dev-box/actions)
+[![Dependabot Status](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg)](https://github.com/williamzujkowski/dev-box/network/updates)
+[![Multi-Arch](https://img.shields.io/badge/arch-amd64%20%7C%20arm64-blue)](https://github.com/williamzujkowski/dev-box/packages)
+
 Isolated Ubuntu 24.04 development environments with Vagrant, VirtualBox, and
 Libvirt/KVM support.
 

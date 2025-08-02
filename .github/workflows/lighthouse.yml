@@ -1,0 +1,67 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - ".github/workflows/lighthouse.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: |
+          npm install -g @lhci/cli@0.13.x
+      
+      - name: Build documentation site
+        if: hashFiles('docs/package.json') != ''
+        working-directory: ./docs
+        run: |
+          npm ci
+          npm run build
+      
+      - name: Run Lighthouse CI
+        if: hashFiles('docs/_site/index.html') != ''
+        run: |
+          lhci autorun
+      
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('.lighthouseci/lhr-*.json'));
+            const comment = `## Lighthouse Results
+            
+            - Accessibility: ${results.categories.accessibility.score * 100}%
+            - Performance: ${results.categories.performance.score * 100}%
+            - Best Practices: ${results.categories['best-practices'].score * 100}%
+            - SEO: ${results.categories.seo.score * 100}%`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
