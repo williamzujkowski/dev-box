@@ -33,8 +33,15 @@ The documentation site includes:
 git clone https://github.com/dev-box/dev-box.git
 cd dev-box
 
-# Start your first VM
-vagrant up
+# Clean any stale state from previous providers
+rm -rf .vagrant/
+
+# Setup libvirt and build/add the custom box (first time only)
+./scripts/setup-libvirt-box.sh
+
+# Start your VM with libvirt (now the default provider)
+vagrant up --provider=libvirt
+# Or simply: vagrant up
 
 # SSH into the environment
 vagrant ssh
@@ -42,6 +49,18 @@ vagrant ssh
 # Create a snapshot
 vagrant snapshot push
 ```
+
+### Provider Migration Note
+
+**Important**: If you previously used VirtualBox, you must:
+
+1. Remove the `.vagrant/` directory: `rm -rf .vagrant/`
+2. Ensure vagrant-libvirt plugin is installed:
+   `vagrant plugin install vagrant-libvirt`
+3. Build or add the custom libvirt box: `./scripts/setup-libvirt-box.sh`
+
+The project now uses libvirt/KVM as the default provider for better Ubuntu 24.04
+compatibility.
 
 ## Key Features
 
