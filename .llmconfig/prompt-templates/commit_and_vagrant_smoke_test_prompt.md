@@ -19,6 +19,7 @@ vagrant up --provider=virtualbox
 
 - If it exits with code 0, proceed to Step 3.
 - If it fails:
+
   - Carefully inspect the last 200 lines of the `vagrant up` output.
   - Detect if a known issue is present: VirtualBox Guest Additions installation
     fails due to missing `linux-headers-$(uname -r)`, `dkms`, or
@@ -53,6 +54,7 @@ vagrant ssh -c "uname -r && echo 'env-verifier: VM is up'"
   ```
 
 - If SSH fails (e.g., timeout, authentication issues), identify:
+
   - Incorrect or nonexistent base box; Ubuntu 24.04 Vagrant box is often
     unavailable unless using `hashicorp-education/ubuntu-24-04` or a
     custom-built box (Canonical still doesn't host official boxes).

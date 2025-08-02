@@ -94,6 +94,7 @@ vagrant up --provider=virtualbox
 
 - **If exit code 0**: move to SSH test.
 - **On failure**:
+
   - Inspect the last 200 lines of the output.
   - **If mentions missing Guest Additions kernel headers or DKMS**:
 

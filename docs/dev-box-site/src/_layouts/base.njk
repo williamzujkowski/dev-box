@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if title %}{{ title }} | {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ description or site.description }}">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta property="og:title" content="{% if title %}{{ title }} | {% endif %}{{ site.title }}">
     <meta property="og:description" content="{{ description or site.description }}">
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ site.url }}{{ page.url }}">
     <meta property="twitter:title" content="{% if title %}{{ title }} | {% endif %}{{ site.title }}">
     <meta property="twitter:description" content="{{ description or site.description }}">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | url }}">
     <link rel="stylesheet" href="{{ '/assets/css/prism.css' | url }}">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | url }}">
     <link rel="icon" type="image/png" href="{{ '/assets/images/favicon.png' | url }}">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,7 @@
 </head>
 <body class="{{ bodyClass }}">
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    
+
     <header class="site-header" role="banner">
         <div class="container">
             <div class="header-content">
@@ -43,12 +43,12 @@
                         <span class="logo-text">{{ site.title }}</span>
                     </a>
                 </div>
-                
+
                 <nav class="main-nav" role="navigation" aria-label="Main navigation">
                     <ul class="nav-list">
                         {% for item in site.navigation.primary %}
                         <li class="nav-item">
-                            <a href="{{ item.url | url }}" 
+                            <a href="{{ item.url | url }}"
                                class="nav-link{% if page.url == item.url %} nav-link--active{% endif %}"
                                {% if item.external %}target="_blank" rel="noopener noreferrer"{% endif %}>
                                 <span class="nav-icon">{{ item.icon }}</span>
@@ -58,17 +58,17 @@
                         {% endfor %}
                     </ul>
                 </nav>
-                
+
                 <div class="header-actions">
                     {% for item in site.navigation.secondary %}
-                    <a href="{{ item.url }}" 
+                    <a href="{{ item.url }}"
                        class="action-link"
                        {% if item.external %}target="_blank" rel="noopener noreferrer"{% endif %}
                        title="{{ item.title }}">
                         <span>{{ item.icon }}</span>
                     </a>
                     {% endfor %}
-                    
+
                     <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
                         <span class="hamburger-line"></span>
                         <span class="hamburger-line"></span>
@@ -78,11 +78,11 @@
             </div>
         </div>
     </header>
-    
+
     <main id="main-content" role="main">
         {{ content | safe }}
     </main>
-    
+
     <footer class="site-footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
@@ -90,7 +90,7 @@
                     <h3 class="footer-title">{{ site.title }}</h3>
                     <p class="footer-description">{{ site.description }}</p>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4 class="footer-heading">Quick Links</h4>
                     <ul class="footer-links">
@@ -99,7 +99,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4 class="footer-heading">Community</h4>
                     <ul class="footer-links">
@@ -108,7 +108,7 @@
                         <li><a href="https://twitter.com/{{ site.social.twitter | replace('@', '') }}" target="_blank" rel="noopener noreferrer">Twitter</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4 class="footer-heading">Resources</h4>
                     <ul class="footer-links">
@@ -118,14 +118,14 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p class="copyright">&copy; {% currentYear %} {{ site.author.name }}. All rights reserved.</p>
                 <p class="version">v{{ site.version }} | Last updated: {{ site.lastUpdated }}</p>
             </div>
         </div>
     </footer>
-    
+
     <!-- Scripts -->
     <script src="{{ '/assets/js/prism.js' | url }}"></script>
     <script src="{{ '/assets/js/main.js' | url }}"></script>

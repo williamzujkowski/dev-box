@@ -10,16 +10,16 @@ Self-healing and commit interoperability as-needed.
 ### 1. Bootstrapping
 
 - `git status --porcelain` → should be clean; if changes are detected, **stage
-  and commit** with message:  
+  and commit** with message:
   `chore: saving pre‑test state (dirty tree)`
-- Switch to a working clean state:  
+- Switch to a working clean state:
   `git checkout -- .` (abortable if no clean tree)
 
 ### 2. Clean Slate
 
-- If a Vagrant machine exists in project root:  
+- If a Vagrant machine exists in project root:
   `vagrant destroy -f`
-- Remove local box `'bento/ubuntu-24.04'` to test fresh box install:  
+- Remove local box `'bento/ubuntu-24.04'` to test fresh box install:
   `vagrant box remove --force bento/ubuntu-24.04 || true`
 
 ### 3. Test Provision

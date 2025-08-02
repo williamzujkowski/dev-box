@@ -1,10 +1,12 @@
 # 🎨 Code Style Guide
 
-This document outlines the coding standards and style guidelines for the dev-box project.
+This document outlines the coding standards and style guidelines for the dev-box
+project.
 
 ## 📋 Overview
 
-We maintain consistent code style across all languages using automated tools and pre-commit hooks:
+We maintain consistent code style across all languages using automated tools and
+pre-commit hooks:
 
 - **Python**: Black + Ruff (PEP 8 compliant)
 - **JavaScript/TypeScript**: Prettier + ESLint
@@ -209,6 +211,7 @@ npm run style:check
 ### Python
 
 ❌ **Avoid:**
+
 ```python
 # Poor formatting
 def bad_function(x,y,z):
@@ -221,6 +224,7 @@ import sys,os,json
 ```
 
 ✅ **Prefer:**
+
 ```python
 # Good formatting
 def good_function(x: int, y: int, z: int) -> int:
@@ -237,21 +241,23 @@ import sys
 ### JavaScript
 
 ❌ **Avoid:**
+
 ```javascript
 // Poor formatting
-function badFunction(x,y){
-if(x>y)return y
-else return x
+function badFunction(x, y) {
+  if (x > y) return y;
+  else return x;
 }
 
 // Poor practices
-var data = getData()
+var data = getData();
 if (data == null) {
   // handle error
 }
 ```
 
 ✅ **Prefer:**
+
 ```javascript
 // Good formatting
 function goodFunction(x, y) {
@@ -312,7 +318,7 @@ module.exports = {
     "no-console": "warn",
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "prefer-const": "error",
-    "eqeqeq": ["error", "always"],
+    eqeqeq: ["error", "always"],
   },
 };
 ```
@@ -358,4 +364,6 @@ As of the style cleanup implementation:
 
 ---
 
-*This style guide is enforced automatically through pre-commit hooks and CI/CD pipelines. For questions or suggestions, please open an issue or submit a pull request.*
+_This style guide is enforced automatically through pre-commit hooks and CI/CD
+pipelines. For questions or suggestions, please open an issue or submit a pull
+request._

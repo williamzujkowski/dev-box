@@ -12,7 +12,7 @@ layout: base.njk
                 {{ collections.all | eleventyNavigation | eleventyNavigationToHtml | safe }}
             </nav>
             {% endif %}
-            
+
             {% if toc %}
             <div class="table-of-contents-wrapper">
                 <h3 class="toc-title">On this page</h3>
@@ -23,7 +23,7 @@ layout: base.njk
             {% endif %}
         </aside>
         {% endif %}
-        
+
         <div class="main-content">
             <article class="page-content">
                 {% if title %}
@@ -41,15 +41,15 @@ layout: base.njk
                     {% endif %}
                 </header>
                 {% endif %}
-                
+
                 <div class="page-body">
                     {% if toc %}
                     [[toc]]
                     {% endif %}
-                    
+
                     {{ content | safe }}
                 </div>
-                
+
                 {% if tags and tags.length > 0 %}
                 <footer class="page-footer">
                     <div class="page-tags">
@@ -63,7 +63,7 @@ layout: base.njk
                 </footer>
                 {% endif %}
             </article>
-            
+
             {% if pagination.href.next or pagination.href.previous %}
             <nav class="pagination" aria-label="Pagination">
                 {% if pagination.href.previous %}
@@ -72,7 +72,7 @@ layout: base.njk
                     <span class="pagination-title">{{ pagination.previous.data.title }}</span>
                 </a>
                 {% endif %}
-                
+
                 {% if pagination.href.next %}
                 <a href="{{ pagination.href.next }}" class="pagination-link pagination-link--next">
                     <span class="pagination-direction">Next</span>

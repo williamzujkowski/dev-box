@@ -126,16 +126,16 @@ cd /home/william/git/dev-box
 
 ### Ubuntu 24.04 + VirtualBox + KVM
 
-**Issue:** `VERR_VMX_IN_VMX_ROOT_MODE` error  
-**Solution 1:** Automatic KVM module unloading in templates  
+**Issue:** `VERR_VMX_IN_VMX_ROOT_MODE` error
+**Solution 1:** Automatic KVM module unloading in templates
 **Solution 2:** Use libvirt provider instead
-(`use_vagrant_libvirt_fresh_vm.md`)  
+(`use_vagrant_libvirt_fresh_vm.md`)
 **Permanent Fix:** Kernel parameter `kvm.enable_virt_at_load=0`
 
 ### Libvirt Provider Benefits
 
-**Performance:** Native KVM integration without VirtualBox overhead  
-**Compatibility:** No conflicts with KVM modules  
+**Performance:** Native KVM integration without VirtualBox overhead
+**Compatibility:** No conflicts with KVM modules
 **Reliability:** Purpose-built for Linux KVM/QEMU virtualization
 
 ---

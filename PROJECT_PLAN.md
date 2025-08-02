@@ -273,6 +273,7 @@ Sample installs include:
 GitHub Actions workflow:
 
 - **Steps**:
+
   - Checkout code
   - Setup Python environment
   - Run `pre-commit` (black, flake8, shellcheck via hooks)

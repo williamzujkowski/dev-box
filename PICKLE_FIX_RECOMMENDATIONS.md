@@ -4,12 +4,12 @@
 
 ./sandbox-core/src/sandbox/utils/security.py
 ./sandbox-core/src/sandbox/utils/serialization.py
-./sandbox-core/security_scan.py
-./sandbox-core/tests/test_security_fixes.py
+./sandbox-core/security_scan.py ./sandbox-core/tests/test_security_fixes.py
 
 ## How to fix:
 
 Replace unsafe usage:
+
 ```python
 # UNSAFE (CWE-502)
 import pickle

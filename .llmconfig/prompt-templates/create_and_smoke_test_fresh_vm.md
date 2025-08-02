@@ -39,8 +39,10 @@ vagrant up --provider=virtualbox
 
 - **If exit code = 0:** proceed to STEP C.
 - **On failure** (look at STDERR):
+
   - **If seen:** "VirtualBox Guest Additions build failed", "headers/ dkms
     missing"
+
     - Update provisioning block (either inline or shell) to include:
 
       ```bash
@@ -57,6 +59,7 @@ vagrant up --provider=virtualbox
     - Rerun `vagrant up` once.
 
   - **If seen:** "cannot find box" for Ubuntu 24.04
+
     - Ensure box name is `hashicorp-education/ubuntu-24-04` (correct fallback).
     - If different, update it and commit:
 

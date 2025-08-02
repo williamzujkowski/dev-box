@@ -22,6 +22,7 @@ vagrant up --provider=virtualbox
 ```
 
 - If exit code = 0:
+
   - SSH test:
 
     ```bash
@@ -31,9 +32,11 @@ vagrant up --provider=virtualbox
   - On success: log that Vagrant test passed.
 
 - If failure:
+
   - Grab last 200 lines of stderr.
   - If failure contains known string about building guest additions or missing
     kernel headers:
+
     - Insert or update provisioning script to `sudo apt update` and
       `sudo apt install -y build-essential dkms linux-headers-$(uname -r)`
     - Commit with message:
@@ -47,6 +50,7 @@ vagrant up --provider=virtualbox
 
   - If the base box is unavailable or reported missing ("cannot find box for
     ubuntu‑24‑04"):
+
     - Update `Vagrantfile` to use:
 
       ```ruby
@@ -71,6 +75,7 @@ docker-compose -f docker-compose.smoketest.yml up -d
 ```
 
 - On failure:
+
   - Check logs:
 
     ```bash
@@ -78,6 +83,7 @@ docker-compose -f docker-compose.smoketest.yml up -d
     ```
 
   - If critical missing packages (`build-essential`, `linux-headers`):
+
     - Add to `Dockerfile` or `docker-compose` provisioning section:
 
       ```

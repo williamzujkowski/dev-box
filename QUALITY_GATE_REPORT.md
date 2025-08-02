@@ -1,7 +1,7 @@
 # 🔍 Comprehensive Quality Gate Report
 
-**Generated**: 2025-08-02 04:39:00 UTC  
-**Agent**: CIQualityGateAgent  
+**Generated**: 2025-08-02 04:39:00 UTC
+**Agent**: CIQualityGateAgent
 **Status**: ❌ **CRITICAL ISSUES DETECTED - QUALITY GATES FAILED**
 
 ## 📊 Executive Summary

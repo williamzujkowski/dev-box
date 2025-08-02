@@ -20,6 +20,7 @@ Libvirt/KVM virtualization technologies.
 ### Configuration Documentation
 
 - **`CLAUDE.md`** - Claude Code integration and SPARC workflow configuration
+
   - **Purpose**: Development workflow optimization for AI-assisted coding
   - **Features**: Parallel execution patterns, agent coordination, performance
     optimization
@@ -27,6 +28,7 @@ Libvirt/KVM virtualization technologies.
     content
 
 - **`README.md`** - Repository overview and quick start guide
+
   - **Purpose**: Repository entry point with essential information
   - **Content**: Quick start instructions, feature overview, documentation links
   - **Design**: Minimal content that redirects to comprehensive docs site
