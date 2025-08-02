@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  smoke-test:
+    image: ubuntu:24.04
+    container_name: dev-box-smoke-test
+    hostname: dev-box-smoke-test
+    command: >
+      bash -c "
+        apt-get update -y &&
+        apt-get install -y curl wget git vim nano &&
+        echo 'env-verifier: Docker container provisioned successfully on $(date)' > /tmp/provision-complete.txt &&
+        echo '✅ Docker smoke test completed successfully' &&
+        tail -f /dev/null
+      "
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    working_dir: /workspace
+    volumes:
+      - ./sandbox-core:/workspace:ro
+    networks:
+      - dev-box-network
+
+networks:
+  dev-box-network:
+    driver: bridge
