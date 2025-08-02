@@ -1,0 +1,14 @@
+# Core requirements for Sandbox Lifecycle Core
+
+# Standard library extensions
+psutil>=5.8.0          # System and process utilities
+pyyaml>=6.0            # YAML configuration parsing
+
+# Testing (optional)
+pytest>=7.0.0          # Testing framework
+pytest-asyncio>=0.21.0 # Async testing support
+
+# Development (optional)
+black>=23.0.0          # Code formatting
+flake8>=5.0.0          # Code linting
+mypy>=1.0.0            # Type checking

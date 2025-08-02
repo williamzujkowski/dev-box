@@ -8,6 +8,7 @@ This document outlines the structure of the repository.
     - README.md
     - dependabot.yml
     - CLAUDE.md
+    - PROJECT_PLAN.md
     - **.github/**
         - pull_request_template.md
         - **workflows/**

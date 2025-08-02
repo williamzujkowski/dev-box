@@ -1,0 +1,102 @@
+# Testing dependencies for LLM Sandbox Vagrant Agent
+
+# Core testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.1
+pytest-timeout>=2.1.0
+pytest-xdist>=3.3.1
+pytest-html>=3.2.0
+pytest-json-report>=1.5.0
+pytest-benchmark>=4.0.0
+
+# Test utilities
+faker>=19.6.2
+factory-boy>=3.3.0
+freezegun>=1.2.2
+responses>=0.23.3
+requests-mock>=1.11.0
+
+# Mock and fixtures
+unittest-mock>=1.0.1
+pytest-mock>=3.11.1
+pytest-fixtures>=0.1.0
+
+# Performance testing
+pytest-benchmark>=4.0.0
+memory-profiler>=0.60.0
+psutil>=5.9.5
+
+# Security testing
+bandit>=1.7.5
+safety>=2.3.5
+
+# Integration testing
+docker>=6.1.3
+testcontainers>=3.7.1
+
+# Coverage and reporting
+coverage>=7.3.0
+pytest-cov>=4.1.0
+coverage-badge>=1.1.0
+
+# Code quality
+flake8>=6.0.0
+black>=23.7.0
+isort>=5.12.0
+mypy>=1.5.1
+
+# YAML and configuration testing
+pyyaml>=6.0.1
+jsonschema>=4.19.0
+cerberus>=1.3.5
+
+# Network and HTTP testing
+httpx>=0.24.1
+aiohttp>=3.8.5
+pytest-httpx>=0.21.3
+pytest-asyncio>=0.21.1
+
+# Subprocess and system testing
+pexpect>=4.8.0
+ptyprocess>=0.7.0
+
+# Parallel testing
+pytest-xdist>=3.3.1
+pytest-parallel>=0.1.1
+
+# Fixtures and data generation
+pytest-factoryboy>=2.5.1
+model-bakery>=1.12.0
+
+# Logging testing
+pytest-logging>=2016.11.4
+
+# Environment and configuration
+python-dotenv>=1.0.0
+pytest-env>=1.0.1
+
+# Date/time testing
+freezegun>=1.2.2
+pytest-freezegun>=0.4.2
+
+# File system testing
+pytest-tmp-files>=0.1.0
+pyfakefs>=5.2.4
+
+# Network simulation
+pytest-httpserver>=1.0.8
+
+# Load testing (optional, for stress tests)
+locust>=2.16.1
+
+# Documentation testing
+pytest-doctestplus>=1.0.0
+
+# Plugin development
+pytest-plugin-helpers>=1.3.0
+
+# Additional utilities
+click>=8.1.7
+rich>=13.5.2
+tabulate>=0.9.0
