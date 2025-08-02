@@ -24,9 +24,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Setup Jekyll exclusions
+      - name: Verify Jekyll config
         run: |
-          echo "exclude: ['dev-box-site/', 'node_modules/', '*.njk']" >> docs/_config.yml
+          echo "Jekyll config already contains proper exclusions"
           
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1

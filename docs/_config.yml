@@ -1,3 +1,4 @@
+---
 # Jekyll Configuration for GitHub Pages
 title: Dev Box
 description: Development Environment and Tools
@@ -25,6 +26,8 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - README.md
+  - dev-box-site/
+  - '*.njk'
 
 # Include files
 include:
