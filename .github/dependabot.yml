@@ -1,0 +1,56 @@
+version: 2
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 3
+    groups:
+      python-dev-tools:
+        patterns:
+          - "black"
+          - "ruff"
+          - "mypy"
+          - "pytest*"
+          - "pre-commit"
+      python-security:
+        patterns:
+          - "bandit"
+          - "safety"
+      python-core:
+        patterns:
+          - "pydantic"
+          - "click"
+          - "rich"
+
+  # JavaScript dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 3
+    groups:
+      frontend-tools:
+        patterns:
+          - "eslint*"
+          - "prettier"
+          - "@commitlint/*"
+      build-tools:
+        patterns:
+          - "husky"
+          - "lint-staged"
+          - "conventional-changelog*"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 2
