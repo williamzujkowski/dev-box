@@ -435,8 +435,9 @@ class PerformanceBasedStrategy {
     const { performanceMetrics, membershipStatus, protocol } = analysisInput;
 
     // Analyze current performance bottlenecks
-    const bottlenecks =
-      await this.identifyPerformanceBottlenecks(performanceMetrics);
+    const bottlenecks = await this.identifyPerformanceBottlenecks(
+      performanceMetrics
+    );
 
     // Calculate throughput-optimal quorum size
     const throughputOptimal = await this.calculateThroughputOptimalQuorum(

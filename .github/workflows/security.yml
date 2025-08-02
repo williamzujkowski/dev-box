@@ -6,42 +6,42 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 6 * * 1'  # Weekly Monday 6 AM
+    - cron: "0 6 * * 1" # Weekly Monday 6 AM
 
 jobs:
   security-scan:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
-          
+          python-version: "3.12"
+
       - name: Install security tools
         run: |
           pip install bandit safety flake8-security
-          
+
       - name: Run Bandit security scan
         run: |
           bandit -r . -f json -o bandit-report.json
           bandit -r . -f txt
         continue-on-error: true
-        
+
       - name: Run Safety dependency scan
         run: |
           safety check --json --output safety-report.json
           safety check
         continue-on-error: true
-        
+
       - name: Run security linting
         run: |
           flake8 --select=S --statistics .
         continue-on-error: true
-        
+
       - name: Upload security reports
         uses: actions/upload-artifact@v4
         with:
@@ -50,7 +50,7 @@ jobs:
             bandit-report.json
             safety-report.json
         if: always()
-        
+
       - name: Security gate check
         run: |
           # Fail if high-severity issues found

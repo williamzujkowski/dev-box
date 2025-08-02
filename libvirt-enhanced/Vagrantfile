@@ -8,10 +8,10 @@ Vagrant.configure("2") do |config|
   # Ubuntu 24.04 LTS via hashicorp-education (libvirt compatible)
   config.vm.box = "hashicorp-education/ubuntu-24-04"
   config.vm.box_version = "0.1.0"
-  
+
   # VM hostname and description
   config.vm.hostname = "dev-toolchain-ubuntu"
-  
+
   # Libvirt provider configuration with enhanced settings
   config.vm.provider :libvirt do |libvirt|
     libvirt.driver = "kvm"
@@ -22,36 +22,36 @@ Vagrant.configure("2") do |config|
     libvirt.nested = true
     libvirt.volume_cache = "writeback"
     libvirt.graphics_type = "none"
-    
+
     # Storage optimization
     libvirt.storage :file, :size => '40G', :type => 'qcow2'
   end
-  
+
   # Network configuration with port forwarding for development services
   config.vm.network "private_network", ip: "192.168.56.100"
   config.vm.network "forwarded_port", guest: 3000, host: 3000  # React/Node.js
   config.vm.network "forwarded_port", guest: 8000, host: 8000  # Python/Django
   config.vm.network "forwarded_port", guest: 8080, host: 8080  # General web services
   config.vm.network "forwarded_port", guest: 5000, host: 5000  # Flask/API services
-  
+
   # Shared folders for development
   config.vm.synced_folder ".", "/vagrant", disabled: false
   config.vm.synced_folder "../", "/home/vagrant/host-workspace", create: true
-  
+
   # Development toolchain provisioning
   config.vm.provision "shell", name: "Development Toolchain Setup", inline: <<-SHELL
     set -e
-    
+
     echo "🚀 Starting Ubuntu 24.04 Development Environment Setup"
     echo "===================================================="
-    
+
     # Log function with timestamps
     log() {
         echo "[$(date +'%H:%M:%S')] dev-toolchain-installer: $1"
     }
-    
+
     export DEBIAN_FRONTEND=noninteractive
-    
+
     # 1️⃣ System Prerequisites
     log "Installing system prerequisites..."
     apt-get update -y
@@ -71,7 +71,7 @@ Vagrant.configure("2") do |config|
         jq \
         shellcheck \
         yamllint
-    
+
     # 2️⃣ HashiCorp Repository
     log "Setting up HashiCorp repository..."
     if [ ! -f /usr/share/keyrings/hashicorp-archive-keyring.gpg ]; then
@@ -79,7 +79,7 @@ Vagrant.configure("2") do |config|
         echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
         apt-get update -y
     fi
-    
+
     # 3️⃣ GitHub CLI Repository
     log "Setting up GitHub CLI..."
     if ! command -v gh >/dev/null 2>&1; then
@@ -88,18 +88,18 @@ Vagrant.configure("2") do |config|
         apt-get update -y
         apt-get install -y gh
     fi
-    
+
     # 4️⃣ Node.js 18+ Installation
     log "Installing Node.js 18+..."
     if ! node --version 2>/dev/null | grep -q "v1[89]\\|v[2-9][0-9]"; then
         curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
         apt-get install -y nodejs
     fi
-    
+
     # 5️⃣ Terraform and IaC Tools
     log "Installing Infrastructure as Code tools..."
     apt-get install -y terraform
-    
+
     # Install TFLint
     if ! command -v tflint >/dev/null 2>&1; then
         wget -O /tmp/tflint.zip "https://github.com/terraform-linters/tflint/releases/latest/download/tflint_linux_amd64.zip"
@@ -107,47 +107,47 @@ Vagrant.configure("2") do |config|
         chmod +x /usr/local/bin/tflint
         rm /tmp/tflint.zip
     fi
-    
+
     # Install tfsec
     if ! command -v tfsec >/dev/null 2>&1; then
         wget -O /usr/local/bin/tfsec "https://github.com/aquasecurity/tfsec/releases/latest/download/tfsec-linux-amd64"
         chmod +x /usr/local/bin/tfsec
     fi
-    
+
     # 6️⃣ Container Tools
     log "Installing container linting tools..."
     if ! command -v hadolint >/dev/null 2>&1; then
         wget -O /usr/local/bin/hadolint "https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64"
         chmod +x /usr/local/bin/hadolint
     fi
-    
+
     # 7️⃣ Modern CLI Tools
     log "Installing modern CLI tools..."
     apt-get install -y fd-find ripgrep bat exa
-    
+
     # Create symlinks for better names
     ln -sf /usr/bin/batcat /usr/local/bin/bat 2>/dev/null || true
     ln -sf /usr/bin/fdfind /usr/local/bin/fd 2>/dev/null || true
-    
+
     echo "✅ System-level tools installation complete!"
   SHELL
-  
+
   # User-level provisioning (run as vagrant user)
   config.vm.provision "shell", name: "User Environment Setup", privileged: false, inline: <<-SHELL
     set -e
-    
+
     echo "👤 Setting up user-level development tools..."
-    
+
     # Configure npm for global installs without sudo
     mkdir -p ~/.npm-global
     npm config set prefix '~/.npm-global'
     echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
     export PATH=~/.npm-global/bin:$PATH
-    
+
     # Install Claude Code CLI
     echo "🤖 Installing Claude Code CLI..."
     npm install -g @anthropic-ai/claude-code
-    
+
     # Verify Claude installation
     if command -v claude >/dev/null 2>&1; then
         echo "✅ Claude Code CLI installed successfully"
@@ -155,16 +155,16 @@ Vagrant.configure("2") do |config|
     else
         echo "❌ Claude Code CLI installation failed"
     fi
-    
+
     # Install uv (Python package installer)
     echo "🐍 Installing uv and ruff..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
     export PATH="$HOME/.cargo/bin:$PATH"
     echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
-    
+
     # Install ruff via uv
     ~/.cargo/bin/uv tool install ruff
-    
+
     # Install JavaScript/TypeScript development tools
     echo "📜 Installing JavaScript/TypeScript tools..."
     npm install -g \
@@ -175,11 +175,11 @@ Vagrant.configure("2") do |config|
         @typescript-eslint/eslint-plugin \
         ts-node \
         nodemon
-    
+
     # Create development workspace
     mkdir -p ~/workspace
     mkdir -p ~/workspace/{python,nodejs,terraform,docker}
-    
+
     # Create development environment configuration
     cat > ~/.dev-environment << 'EOF'
 # Development Environment Configuration
@@ -224,12 +224,12 @@ alias gpl='git pull'
 
 echo "🛠️  Development environment loaded!"
 EOF
-    
+
     # Add to .bashrc if not already present
     if ! grep -q ".dev-environment" ~/.bashrc; then
         echo "source ~/.dev-environment" >> ~/.bashrc
     fi
-    
+
     # Create validation script
     cat > ~/validate-dev-env.sh << 'EOF'
 #!/bin/bash
@@ -260,7 +260,7 @@ for tool_info in "${tools[@]}"; do
     tool="${tool_info%%:*}"
     description="${tool_info##*:}"
     total=$((total + 1))
-    
+
     if command -v "$tool" >/dev/null 2>&1; then
         version=$(eval "$tool --version 2>/dev/null | head -1" 2>/dev/null || echo "installed")
         echo "✅ $description: $version"
@@ -281,15 +281,15 @@ else
     exit 1
 fi
 EOF
-    
+
     chmod +x ~/validate-dev-env.sh
-    
+
     echo "✅ User environment setup complete!"
     echo ""
     echo "🎉 Development Toolchain Installation Summary:"
     echo "============================================="
     echo "🤖 AI Tools: Claude Code CLI"
-    echo "🐙 Git: GitHub CLI" 
+    echo "🐙 Git: GitHub CLI"
     echo "🐍 Python: uv + ruff"
     echo "🏗️  IaC: terraform + tflint + tfsec"
     echo "🐳 Container: hadolint"
@@ -305,7 +305,7 @@ EOF
     echo "📡 VM IP: 192.168.121.100"
     echo "🌐 Port forwards: 3000, 5000, 8000, 8080"
   SHELL
-  
+
   # Final validation
   config.vm.provision "shell", name: "Final Validation", privileged: false, inline: <<-SHELL
     echo "🧪 Running final development environment validation..."

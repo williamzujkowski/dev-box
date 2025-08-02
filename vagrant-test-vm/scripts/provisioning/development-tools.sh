@@ -11,15 +11,15 @@ apt-get install -y nodejs
 # Install Python and pip
 echo "Installing Python development tools..."
 apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    python3-dev
+  python3 \
+  python3-pip \
+  python3-venv \
+  python3-dev
 
 # Install Docker
 echo "Installing Docker..."
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
 apt-get update -y
 apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
@@ -29,27 +29,27 @@ usermod -aG docker vagrant
 # Install additional development tools
 echo "Installing additional development tools..."
 apt-get install -y \
-    git \
-    vim \
-    nano \
-    htop \
-    tree \
-    jq \
-    curl \
-    wget \
-    unzip \
-    zip \
-    tmux \
-    screen \
-    net-tools \
-    telnet \
-    netcat-openbsd
+  git \
+  vim \
+  nano \
+  htop \
+  tree \
+  jq \
+  curl \
+  wget \
+  unzip \
+  zip \
+  tmux \
+  screen \
+  net-tools \
+  telnet \
+  netcat-openbsd
 
 # Install VS Code (optional, for GUI environments)
 echo "Installing VS Code repository (for future use)..."
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg
 install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list
+echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" >/etc/apt/sources.list.d/vscode.list
 apt-get update -y
 
 # Create workspace directories
@@ -72,18 +72,18 @@ su - vagrant -c "npm install -g \
 # Install useful Python packages
 echo "Installing useful Python packages..."
 pip3 install \
-    requests \
-    flask \
-    fastapi \
-    uvicorn \
-    pytest \
-    black \
-    flake8 \
-    jupyter
+  requests \
+  flask \
+  fastapi \
+  uvicorn \
+  pytest \
+  black \
+  flake8 \
+  jupyter
 
 # Set up git config template
 echo "Setting up git configuration template..."
-cat > /home/vagrant/.gitconfig << EOF
+cat >/home/vagrant/.gitconfig <<EOF
 [user]
     name = Test User
     email = test@example.com
@@ -96,7 +96,7 @@ chown vagrant:vagrant /home/vagrant/.gitconfig
 
 # Set up bashrc additions
 echo "Adding useful aliases to bashrc..."
-cat >> /home/vagrant/.bashrc << 'EOF'
+cat >>/home/vagrant/.bashrc <<'EOF'
 
 # Custom aliases for development
 alias ll='ls -alF'

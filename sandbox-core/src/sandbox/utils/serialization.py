@@ -51,7 +51,7 @@ class StateSerializer:
             raise ValueError(f"Unsupported serialization format: {format_type}")
 
         except Exception as e:
-            self.logger.error(f"Serialization failed: {e}")
+            self.logger.exception(f"Serialization failed: {e}")
             raise
 
     async def deserialize(self, data: str, format_type: Optional[str] = None) -> Any:
@@ -75,7 +75,7 @@ class StateSerializer:
             raise ValueError(f"Unsupported deserialization format: {format_type}")
 
         except Exception as e:
-            self.logger.error(f"Deserialization failed: {e}")
+            self.logger.exception(f"Deserialization failed: {e}")
             raise
 
     async def _serialize_json(self, data: Any) -> str:
@@ -109,12 +109,13 @@ class StateSerializer:
             return secure_serializer.serialize(data)
         except Exception as e:
             # Fallback to pickle only for backward compatibility
-            logger.error(f"Secure serialization failed, falling back to pickle: {e}")
+            logger.exception(
+                f"Secure serialization failed, falling back to pickle: {e}"
+            )
             try:
                 # Note: Pickle should only be used for trusted data
                 pickled_data = pickle.dumps(data)
-                encoded_data = base64.b64encode(pickled_data).decode("utf-8")
-                return encoded_data
+                return base64.b64encode(pickled_data).decode("utf-8")
             except Exception as pickle_error:
                 raise ValueError(
                     f"Both secure and pickle serialization failed: {pickle_error}"
@@ -136,7 +137,7 @@ class StateSerializer:
         except Exception:
             # Security: Removed pickle fallback (fixes CWE-502)
             # Use secure JSON serialization instead of pickle for all data
-            logger.error(
+            logger.exception(
                 "Secure deserialization failed - pickle fallback disabled for security"
             )
             raise ValueError(
@@ -188,7 +189,7 @@ def serialize_for_storage(data: Any) -> str:
 
         return asyncio.run(serializer.serialize(data))
     except Exception as e:
-        logger.error(f"Storage serialization failed: {e}")
+        logger.exception(f"Storage serialization failed: {e}")
         return "{}"
 
 
@@ -208,5 +209,5 @@ def deserialize_from_storage(data: str) -> Any:
 
         return asyncio.run(serializer.deserialize(data))
     except Exception as e:
-        logger.error(f"Storage deserialization failed: {e}")
+        logger.exception(f"Storage deserialization failed: {e}")
         return None

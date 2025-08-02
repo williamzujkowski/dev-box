@@ -157,8 +157,9 @@ class NetworkLatencyOptimizer {
     const distanceOptimization = this.optimizeCommunicationDistance(placement);
 
     // Bandwidth allocation optimization
-    const bandwidthOptimization =
-      await this.optimizeBandwidthAllocation(network);
+    const bandwidthOptimization = await this.optimizeBandwidthAllocation(
+      network
+    );
 
     return {
       placement,

@@ -446,9 +446,7 @@
       "issue_severity": "LOW",
       "issue_text": "Consider possible security implications associated with the subprocess module.",
       "line_number": 9,
-      "line_range": [
-        9
-      ],
+      "line_range": [9],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_imports.html#b404-import-subprocess",
       "test_id": "B404",
       "test_name": "blacklist"
@@ -466,14 +464,7 @@
       "issue_severity": "LOW",
       "issue_text": "Starting a process with a partial executable path",
       "line_number": 32,
-      "line_range": [
-        32,
-        33,
-        34,
-        35,
-        36,
-        37
-      ],
+      "line_range": [32, 33, 34, 35, 36, 37],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b607_start_process_with_partial_path.html",
       "test_id": "B607",
       "test_name": "start_process_with_partial_path"
@@ -491,14 +482,7 @@
       "issue_severity": "LOW",
       "issue_text": "subprocess call - check for execution of untrusted input.",
       "line_number": 32,
-      "line_range": [
-        32,
-        33,
-        34,
-        35,
-        36,
-        37
-      ],
+      "line_range": [32, 33, 34, 35, 36, 37],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b603_subprocess_without_shell_equals_true.html",
       "test_id": "B603",
       "test_name": "subprocess_without_shell_equals_true"
@@ -516,11 +500,7 @@
       "issue_severity": "LOW",
       "issue_text": "Starting a process with a partial executable path",
       "line_number": 83,
-      "line_range": [
-        83,
-        84,
-        85
-      ],
+      "line_range": [83, 84, 85],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b607_start_process_with_partial_path.html",
       "test_id": "B607",
       "test_name": "start_process_with_partial_path"
@@ -538,11 +518,7 @@
       "issue_severity": "LOW",
       "issue_text": "subprocess call - check for execution of untrusted input.",
       "line_number": 83,
-      "line_range": [
-        83,
-        84,
-        85
-      ],
+      "line_range": [83, 84, 85],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b603_subprocess_without_shell_equals_true.html",
       "test_id": "B603",
       "test_name": "subprocess_without_shell_equals_true"
@@ -560,10 +536,7 @@
       "issue_severity": "LOW",
       "issue_text": "Try, Except, Pass detected.",
       "line_number": 246,
-      "line_range": [
-        246,
-        247
-      ],
+      "line_range": [246, 247],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b110_try_except_pass.html",
       "test_id": "B110",
       "test_name": "try_except_pass"
@@ -581,9 +554,7 @@
       "issue_severity": "HIGH",
       "issue_text": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
       "line_number": 768,
-      "line_range": [
-        768
-      ],
+      "line_range": [768],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b202_tarfile_unsafe_members.html",
       "test_id": "B202",
       "test_name": "tarfile_unsafe_members"
@@ -601,9 +572,7 @@
       "issue_severity": "MEDIUM",
       "issue_text": "Probable insecure usage of temp file/directory.",
       "line_number": 85,
-      "line_range": [
-        85
-      ],
+      "line_range": [85],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
       "test_id": "B108",
       "test_name": "hardcoded_tmp_directory"
@@ -621,9 +590,7 @@
       "issue_severity": "MEDIUM",
       "issue_text": "Probable insecure usage of temp file/directory.",
       "line_number": 85,
-      "line_range": [
-        85
-      ],
+      "line_range": [85],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
       "test_id": "B108",
       "test_name": "hardcoded_tmp_directory"
@@ -641,9 +608,7 @@
       "issue_severity": "LOW",
       "issue_text": "Consider possible security implications associated with pickle module.",
       "line_number": 10,
-      "line_range": [
-        10
-      ],
+      "line_range": [10],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_imports.html#b403-import-pickle",
       "test_id": "B403",
       "test_name": "blacklist"
@@ -661,9 +626,7 @@
       "issue_severity": "MEDIUM",
       "issue_text": "Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.",
       "line_number": 136,
-      "line_range": [
-        136
-      ],
+      "line_range": [136],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_calls.html#b301-pickle",
       "test_id": "B301",
       "test_name": "blacklist"
@@ -681,9 +644,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 53,
-      "line_range": [
-        53
-      ],
+      "line_range": [53],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -701,9 +662,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 54,
-      "line_range": [
-        54
-      ],
+      "line_range": [54],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -721,9 +680,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 55,
-      "line_range": [
-        55
-      ],
+      "line_range": [55],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -741,9 +698,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 60,
-      "line_range": [
-        60
-      ],
+      "line_range": [60],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -761,9 +716,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 61,
-      "line_range": [
-        61
-      ],
+      "line_range": [61],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -781,9 +734,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 62,
-      "line_range": [
-        62
-      ],
+      "line_range": [62],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -801,9 +752,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 63,
-      "line_range": [
-        63
-      ],
+      "line_range": [63],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -821,9 +770,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 64,
-      "line_range": [
-        64
-      ],
+      "line_range": [64],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -841,9 +788,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 65,
-      "line_range": [
-        65
-      ],
+      "line_range": [65],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -861,9 +806,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 66,
-      "line_range": [
-        66
-      ],
+      "line_range": [66],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -881,9 +824,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 67,
-      "line_range": [
-        67
-      ],
+      "line_range": [67],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -901,9 +842,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 76,
-      "line_range": [
-        76
-      ],
+      "line_range": [76],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -921,9 +860,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 85,
-      "line_range": [
-        85
-      ],
+      "line_range": [85],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -941,9 +878,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 89,
-      "line_range": [
-        89
-      ],
+      "line_range": [89],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -961,9 +896,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 90,
-      "line_range": [
-        90
-      ],
+      "line_range": [90],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -981,9 +914,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 91,
-      "line_range": [
-        91
-      ],
+      "line_range": [91],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1001,9 +932,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 92,
-      "line_range": [
-        92
-      ],
+      "line_range": [92],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1021,9 +950,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 93,
-      "line_range": [
-        93
-      ],
+      "line_range": [93],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1041,9 +968,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 94,
-      "line_range": [
-        94
-      ],
+      "line_range": [94],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1061,9 +986,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 95,
-      "line_range": [
-        95
-      ],
+      "line_range": [95],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1081,9 +1004,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 104,
-      "line_range": [
-        104
-      ],
+      "line_range": [104],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1101,9 +1022,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 113,
-      "line_range": [
-        113
-      ],
+      "line_range": [113],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1121,9 +1040,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 117,
-      "line_range": [
-        117
-      ],
+      "line_range": [117],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1141,9 +1058,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 120,
-      "line_range": [
-        120
-      ],
+      "line_range": [120],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1161,9 +1076,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 124,
-      "line_range": [
-        124
-      ],
+      "line_range": [124],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1181,9 +1094,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 128,
-      "line_range": [
-        128
-      ],
+      "line_range": [128],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1201,9 +1112,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 132,
-      "line_range": [
-        132
-      ],
+      "line_range": [132],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1221,9 +1130,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 144,
-      "line_range": [
-        144
-      ],
+      "line_range": [144],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1241,9 +1148,7 @@
       "issue_severity": "MEDIUM",
       "issue_text": "Probable insecure usage of temp file/directory.",
       "line_number": 155,
-      "line_range": [
-        155
-      ],
+      "line_range": [155],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
       "test_id": "B108",
       "test_name": "hardcoded_tmp_directory"
@@ -1261,9 +1166,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 159,
-      "line_range": [
-        159
-      ],
+      "line_range": [159],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1281,9 +1184,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 160,
-      "line_range": [
-        160
-      ],
+      "line_range": [160],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1301,9 +1202,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 171,
-      "line_range": [
-        171
-      ],
+      "line_range": [171],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1321,9 +1220,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 181,
-      "line_range": [
-        181
-      ],
+      "line_range": [181],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1341,9 +1238,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 187,
-      "line_range": [
-        187
-      ],
+      "line_range": [187],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1361,9 +1256,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 201,
-      "line_range": [
-        201
-      ],
+      "line_range": [201],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1381,9 +1274,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 202,
-      "line_range": [
-        202
-      ],
+      "line_range": [202],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1401,9 +1292,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 206,
-      "line_range": [
-        206
-      ],
+      "line_range": [206],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1421,9 +1310,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 207,
-      "line_range": [
-        207
-      ],
+      "line_range": [207],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1441,9 +1328,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 218,
-      "line_range": [
-        218
-      ],
+      "line_range": [218],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1461,9 +1346,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 219,
-      "line_range": [
-        219
-      ],
+      "line_range": [219],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1481,9 +1364,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 223,
-      "line_range": [
-        223
-      ],
+      "line_range": [223],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1501,9 +1382,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 224,
-      "line_range": [
-        224
-      ],
+      "line_range": [224],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1521,9 +1400,7 @@
       "issue_severity": "LOW",
       "issue_text": "Consider possible security implications associated with pickle module.",
       "line_number": 8,
-      "line_range": [
-        8
-      ],
+      "line_range": [8],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_imports.html#b403-import-pickle",
       "test_id": "B403",
       "test_name": "blacklist"
@@ -1541,9 +1418,7 @@
       "issue_severity": "HIGH",
       "issue_text": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
       "line_number": 36,
-      "line_range": [
-        36
-      ],
+      "line_range": [36],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b202_tarfile_unsafe_members.html",
       "test_id": "B202",
       "test_name": "tarfile_unsafe_members"
@@ -1561,9 +1436,7 @@
       "issue_severity": "HIGH",
       "issue_text": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
       "line_number": 54,
-      "line_range": [
-        54
-      ],
+      "line_range": [54],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b202_tarfile_unsafe_members.html",
       "test_id": "B202",
       "test_name": "tarfile_unsafe_members"
@@ -1581,9 +1454,7 @@
       "issue_severity": "HIGH",
       "issue_text": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
       "line_number": 72,
-      "line_range": [
-        72
-      ],
+      "line_range": [72],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b202_tarfile_unsafe_members.html",
       "test_id": "B202",
       "test_name": "tarfile_unsafe_members"
@@ -1601,9 +1472,7 @@
       "issue_severity": "HIGH",
       "issue_text": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
       "line_number": 93,
-      "line_range": [
-        93
-      ],
+      "line_range": [93],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b202_tarfile_unsafe_members.html",
       "test_id": "B202",
       "test_name": "tarfile_unsafe_members"
@@ -1621,9 +1490,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 95,
-      "line_range": [
-        95
-      ],
+      "line_range": [95],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1641,9 +1508,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 96,
-      "line_range": [
-        96
-      ],
+      "line_range": [96],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1661,9 +1526,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 97,
-      "line_range": [
-        97
-      ],
+      "line_range": [97],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1681,9 +1544,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 134,
-      "line_range": [
-        134
-      ],
+      "line_range": [134],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1701,9 +1562,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 149,
-      "line_range": [
-        149
-      ],
+      "line_range": [149],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1721,9 +1580,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 157,
-      "line_range": [
-        157
-      ],
+      "line_range": [157],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1741,9 +1598,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 158,
-      "line_range": [
-        158
-      ],
+      "line_range": [158],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1761,9 +1616,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 161,
-      "line_range": [
-        161
-      ],
+      "line_range": [161],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1781,9 +1634,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 162,
-      "line_range": [
-        162
-      ],
+      "line_range": [162],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1801,9 +1652,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 174,
-      "line_range": [
-        174
-      ],
+      "line_range": [174],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1821,9 +1670,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 184,
-      "line_range": [
-        184
-      ],
+      "line_range": [184],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1841,9 +1688,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 185,
-      "line_range": [
-        185
-      ],
+      "line_range": [185],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1861,9 +1706,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 197,
-      "line_range": [
-        197
-      ],
+      "line_range": [197],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1881,9 +1724,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 198,
-      "line_range": [
-        198
-      ],
+      "line_range": [198],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1901,9 +1742,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 199,
-      "line_range": [
-        199
-      ],
+      "line_range": [199],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1921,9 +1760,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 207,
-      "line_range": [
-        207
-      ],
+      "line_range": [207],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1941,9 +1778,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 208,
-      "line_range": [
-        208
-      ],
+      "line_range": [208],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1961,9 +1796,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 209,
-      "line_range": [
-        209
-      ],
+      "line_range": [209],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -1981,9 +1814,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 217,
-      "line_range": [
-        217
-      ],
+      "line_range": [217],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2001,9 +1832,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 218,
-      "line_range": [
-        218
-      ],
+      "line_range": [218],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2021,9 +1850,7 @@
       "issue_severity": "MEDIUM",
       "issue_text": "Probable insecure usage of temp file/directory.",
       "line_number": 108,
-      "line_range": [
-        108
-      ],
+      "line_range": [108],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
       "test_id": "B108",
       "test_name": "hardcoded_tmp_directory"
@@ -2041,9 +1868,7 @@
       "issue_severity": "LOW",
       "issue_text": "Possible hardcoded password: 'your-secret-key-here'",
       "line_number": 82,
-      "line_range": [
-        82
-      ],
+      "line_range": [82],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b105_hardcoded_password_string.html",
       "test_id": "B105",
       "test_name": "hardcoded_password_string"
@@ -2061,11 +1886,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 358,
-      "line_range": [
-        358,
-        359,
-        360
-      ],
+      "line_range": [358, 359, 360],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2083,9 +1904,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 365,
-      "line_range": [
-        365
-      ],
+      "line_range": [365],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2103,9 +1922,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 366,
-      "line_range": [
-        366
-      ],
+      "line_range": [366],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2123,11 +1940,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 372,
-      "line_range": [
-        372,
-        373,
-        374
-      ],
+      "line_range": [372, 373, 374],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2145,9 +1958,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 402,
-      "line_range": [
-        402
-      ],
+      "line_range": [402],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2165,11 +1976,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 403,
-      "line_range": [
-        403,
-        404,
-        405
-      ],
+      "line_range": [403, 404, 405],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2187,10 +1994,7 @@
       "issue_severity": "LOW",
       "issue_text": "Try, Except, Pass detected.",
       "line_number": 31,
-      "line_range": [
-        31,
-        32
-      ],
+      "line_range": [31, 32],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b110_try_except_pass.html",
       "test_id": "B110",
       "test_name": "try_except_pass"
@@ -2208,10 +2012,7 @@
       "issue_severity": "LOW",
       "issue_text": "Try, Except, Pass detected.",
       "line_number": 38,
-      "line_range": [
-        38,
-        39
-      ],
+      "line_range": [38, 39],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b110_try_except_pass.html",
       "test_id": "B110",
       "test_name": "try_except_pass"
@@ -2229,9 +2030,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 59,
-      "line_range": [
-        59
-      ],
+      "line_range": [59],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2249,9 +2048,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 63,
-      "line_range": [
-        63
-      ],
+      "line_range": [63],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2269,9 +2066,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 69,
-      "line_range": [
-        69
-      ],
+      "line_range": [69],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2289,9 +2084,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 74,
-      "line_range": [
-        74
-      ],
+      "line_range": [74],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2309,9 +2102,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 81,
-      "line_range": [
-        81
-      ],
+      "line_range": [81],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2329,9 +2120,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 85,
-      "line_range": [
-        85
-      ],
+      "line_range": [85],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2349,9 +2138,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 89,
-      "line_range": [
-        89
-      ],
+      "line_range": [89],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2369,9 +2156,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 250,
-      "line_range": [
-        250
-      ],
+      "line_range": [250],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2389,9 +2174,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 254,
-      "line_range": [
-        254
-      ],
+      "line_range": [254],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2409,9 +2192,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 258,
-      "line_range": [
-        258
-      ],
+      "line_range": [258],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2429,9 +2210,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 262,
-      "line_range": [
-        262
-      ],
+      "line_range": [262],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2449,9 +2228,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 280,
-      "line_range": [
-        280
-      ],
+      "line_range": [280],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2469,9 +2246,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 298,
-      "line_range": [
-        298
-      ],
+      "line_range": [298],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2489,9 +2264,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 302,
-      "line_range": [
-        302
-      ],
+      "line_range": [302],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2509,9 +2282,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 355,
-      "line_range": [
-        355
-      ],
+      "line_range": [355],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2529,9 +2300,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 359,
-      "line_range": [
-        359
-      ],
+      "line_range": [359],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2549,9 +2318,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 363,
-      "line_range": [
-        363
-      ],
+      "line_range": [363],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2569,9 +2336,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 374,
-      "line_range": [
-        374
-      ],
+      "line_range": [374],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2589,9 +2354,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 380,
-      "line_range": [
-        380
-      ],
+      "line_range": [380],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2609,9 +2372,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 442,
-      "line_range": [
-        442
-      ],
+      "line_range": [442],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2629,9 +2390,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 443,
-      "line_range": [
-        443
-      ],
+      "line_range": [443],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2649,9 +2408,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 458,
-      "line_range": [
-        458
-      ],
+      "line_range": [458],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2669,9 +2426,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 486,
-      "line_range": [
-        486
-      ],
+      "line_range": [486],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2689,9 +2444,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 527,
-      "line_range": [
-        527
-      ],
+      "line_range": [527],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2709,9 +2462,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 531,
-      "line_range": [
-        531
-      ],
+      "line_range": [531],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2729,9 +2480,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 542,
-      "line_range": [
-        542
-      ],
+      "line_range": [542],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2749,9 +2498,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 546,
-      "line_range": [
-        546
-      ],
+      "line_range": [546],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2769,9 +2516,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 558,
-      "line_range": [
-        558
-      ],
+      "line_range": [558],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2789,9 +2534,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 562,
-      "line_range": [
-        562
-      ],
+      "line_range": [562],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2809,9 +2552,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 62,
-      "line_range": [
-        62
-      ],
+      "line_range": [62],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2829,9 +2570,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 63,
-      "line_range": [
-        63
-      ],
+      "line_range": [63],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2849,9 +2588,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 112,
-      "line_range": [
-        112
-      ],
+      "line_range": [112],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2869,9 +2606,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 113,
-      "line_range": [
-        113
-      ],
+      "line_range": [113],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2889,9 +2624,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 154,
-      "line_range": [
-        154
-      ],
+      "line_range": [154],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2909,9 +2642,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 155,
-      "line_range": [
-        155
-      ],
+      "line_range": [155],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2929,9 +2660,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 224,
-      "line_range": [
-        224
-      ],
+      "line_range": [224],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2949,9 +2678,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 225,
-      "line_range": [
-        225
-      ],
+      "line_range": [225],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2969,9 +2696,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 267,
-      "line_range": [
-        267
-      ],
+      "line_range": [267],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -2989,9 +2714,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 306,
-      "line_range": [
-        306
-      ],
+      "line_range": [306],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3009,9 +2732,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 307,
-      "line_range": [
-        307
-      ],
+      "line_range": [307],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3029,9 +2750,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 369,
-      "line_range": [
-        369
-      ],
+      "line_range": [369],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3049,11 +2768,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 370,
-      "line_range": [
-        370,
-        371,
-        372
-      ],
+      "line_range": [370, 371, 372],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3071,9 +2786,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 417,
-      "line_range": [
-        417
-      ],
+      "line_range": [417],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3091,9 +2804,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 418,
-      "line_range": [
-        418
-      ],
+      "line_range": [418],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3111,9 +2822,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 449,
-      "line_range": [
-        449
-      ],
+      "line_range": [449],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3131,9 +2840,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 511,
-      "line_range": [
-        511
-      ],
+      "line_range": [511],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3151,9 +2858,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 528,
-      "line_range": [
-        528
-      ],
+      "line_range": [528],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3171,9 +2876,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 529,
-      "line_range": [
-        529
-      ],
+      "line_range": [529],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3191,9 +2894,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 551,
-      "line_range": [
-        551
-      ],
+      "line_range": [551],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3211,9 +2912,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 564,
-      "line_range": [
-        564
-      ],
+      "line_range": [564],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3231,9 +2930,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 599,
-      "line_range": [
-        599
-      ],
+      "line_range": [599],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3251,9 +2948,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 611,
-      "line_range": [
-        611
-      ],
+      "line_range": [611],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3271,9 +2966,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 612,
-      "line_range": [
-        612
-      ],
+      "line_range": [612],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3291,9 +2984,7 @@
       "issue_severity": "LOW",
       "issue_text": "Consider possible security implications associated with the subprocess module.",
       "line_number": 12,
-      "line_range": [
-        12
-      ],
+      "line_range": [12],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_imports.html#b404-import-subprocess",
       "test_id": "B404",
       "test_name": "blacklist"
@@ -3311,11 +3002,7 @@
       "issue_severity": "LOW",
       "issue_text": "subprocess call - check for execution of untrusted input.",
       "line_number": 249,
-      "line_range": [
-        249,
-        250,
-        251
-      ],
+      "line_range": [249, 250, 251],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b603_subprocess_without_shell_equals_true.html",
       "test_id": "B603",
       "test_name": "subprocess_without_shell_equals_true"
@@ -3333,9 +3020,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 35,
-      "line_range": [
-        35
-      ],
+      "line_range": [35],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3353,9 +3038,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 43,
-      "line_range": [
-        43
-      ],
+      "line_range": [43],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3373,11 +3056,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 51,
-      "line_range": [
-        51,
-        52,
-        53
-      ],
+      "line_range": [51, 52, 53],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3395,9 +3074,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 67,
-      "line_range": [
-        67
-      ],
+      "line_range": [67],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3415,9 +3092,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 81,
-      "line_range": [
-        81
-      ],
+      "line_range": [81],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3435,9 +3110,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 95,
-      "line_range": [
-        95
-      ],
+      "line_range": [95],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3455,9 +3128,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 109,
-      "line_range": [
-        109
-      ],
+      "line_range": [109],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3475,9 +3146,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 123,
-      "line_range": [
-        123
-      ],
+      "line_range": [123],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3495,9 +3164,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 202,
-      "line_range": [
-        202
-      ],
+      "line_range": [202],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3515,9 +3182,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 218,
-      "line_range": [
-        218
-      ],
+      "line_range": [218],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3535,11 +3200,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 245,
-      "line_range": [
-        245,
-        246,
-        247
-      ],
+      "line_range": [245, 246, 247],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3557,11 +3218,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 249,
-      "line_range": [
-        249,
-        250,
-        251
-      ],
+      "line_range": [249, 250, 251],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3579,9 +3236,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 259,
-      "line_range": [
-        259
-      ],
+      "line_range": [259],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3599,9 +3254,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 263,
-      "line_range": [
-        263
-      ],
+      "line_range": [263],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3619,9 +3272,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 267,
-      "line_range": [
-        267
-      ],
+      "line_range": [267],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3639,9 +3290,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 276,
-      "line_range": [
-        276
-      ],
+      "line_range": [276],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3659,9 +3308,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 337,
-      "line_range": [
-        337
-      ],
+      "line_range": [337],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3679,9 +3326,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 351,
-      "line_range": [
-        351
-      ],
+      "line_range": [351],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3699,9 +3344,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 352,
-      "line_range": [
-        352
-      ],
+      "line_range": [352],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3719,9 +3362,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 370,
-      "line_range": [
-        370
-      ],
+      "line_range": [370],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3739,9 +3380,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 386,
-      "line_range": [
-        386
-      ],
+      "line_range": [386],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3759,9 +3398,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 387,
-      "line_range": [
-        387
-      ],
+      "line_range": [387],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3779,9 +3416,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 391,
-      "line_range": [
-        391
-      ],
+      "line_range": [391],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3799,9 +3434,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 418,
-      "line_range": [
-        418
-      ],
+      "line_range": [418],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3819,9 +3452,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 419,
-      "line_range": [
-        419
-      ],
+      "line_range": [419],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3839,9 +3470,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 517,
-      "line_range": [
-        517
-      ],
+      "line_range": [517],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3859,11 +3488,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 536,
-      "line_range": [
-        536,
-        537,
-        538
-      ],
+      "line_range": [536, 537, 538],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3881,11 +3506,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 548,
-      "line_range": [
-        548,
-        549,
-        550
-      ],
+      "line_range": [548, 549, 550],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3903,11 +3524,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 556,
-      "line_range": [
-        556,
-        557,
-        558
-      ],
+      "line_range": [556, 557, 558],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3925,9 +3542,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 569,
-      "line_range": [
-        569
-      ],
+      "line_range": [569],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3945,9 +3560,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 574,
-      "line_range": [
-        574
-      ],
+      "line_range": [574],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3965,9 +3578,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 581,
-      "line_range": [
-        581
-      ],
+      "line_range": [581],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -3985,11 +3596,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 603,
-      "line_range": [
-        603,
-        604,
-        605
-      ],
+      "line_range": [603, 604, 605],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4007,9 +3614,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 39,
-      "line_range": [
-        39
-      ],
+      "line_range": [39],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4027,9 +3632,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 59,
-      "line_range": [
-        59
-      ],
+      "line_range": [59],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4047,9 +3650,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 60,
-      "line_range": [
-        60
-      ],
+      "line_range": [60],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4067,9 +3668,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 72,
-      "line_range": [
-        72
-      ],
+      "line_range": [72],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4087,9 +3686,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 91,
-      "line_range": [
-        91
-      ],
+      "line_range": [91],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4107,9 +3704,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 118,
-      "line_range": [
-        118
-      ],
+      "line_range": [118],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4127,9 +3722,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 127,
-      "line_range": [
-        127
-      ],
+      "line_range": [127],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4147,9 +3740,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 137,
-      "line_range": [
-        137
-      ],
+      "line_range": [137],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4167,9 +3758,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 146,
-      "line_range": [
-        146
-      ],
+      "line_range": [146],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4187,9 +3776,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 155,
-      "line_range": [
-        155
-      ],
+      "line_range": [155],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4207,9 +3794,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 168,
-      "line_range": [
-        168
-      ],
+      "line_range": [168],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4227,9 +3812,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 171,
-      "line_range": [
-        171
-      ],
+      "line_range": [171],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4247,9 +3830,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 187,
-      "line_range": [
-        187
-      ],
+      "line_range": [187],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4267,9 +3848,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 190,
-      "line_range": [
-        190
-      ],
+      "line_range": [190],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4287,9 +3866,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 211,
-      "line_range": [
-        211
-      ],
+      "line_range": [211],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4307,9 +3884,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 214,
-      "line_range": [
-        214
-      ],
+      "line_range": [214],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4327,9 +3902,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 230,
-      "line_range": [
-        230
-      ],
+      "line_range": [230],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4347,9 +3920,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 241,
-      "line_range": [
-        241
-      ],
+      "line_range": [241],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4367,9 +3938,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 251,
-      "line_range": [
-        251
-      ],
+      "line_range": [251],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4387,9 +3956,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 268,
-      "line_range": [
-        268
-      ],
+      "line_range": [268],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4407,9 +3974,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 278,
-      "line_range": [
-        278
-      ],
+      "line_range": [278],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4427,9 +3992,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 305,
-      "line_range": [
-        305
-      ],
+      "line_range": [305],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4447,9 +4010,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 306,
-      "line_range": [
-        306
-      ],
+      "line_range": [306],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4467,9 +4028,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 307,
-      "line_range": [
-        307
-      ],
+      "line_range": [307],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4487,9 +4046,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 308,
-      "line_range": [
-        308
-      ],
+      "line_range": [308],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4507,9 +4064,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 325,
-      "line_range": [
-        325
-      ],
+      "line_range": [325],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4527,9 +4082,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 326,
-      "line_range": [
-        326
-      ],
+      "line_range": [326],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4547,9 +4100,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 336,
-      "line_range": [
-        336
-      ],
+      "line_range": [336],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4567,9 +4118,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 340,
-      "line_range": [
-        340
-      ],
+      "line_range": [340],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4587,9 +4136,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 362,
-      "line_range": [
-        362
-      ],
+      "line_range": [362],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4607,9 +4154,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 363,
-      "line_range": [
-        363
-      ],
+      "line_range": [363],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4627,9 +4172,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 364,
-      "line_range": [
-        364
-      ],
+      "line_range": [364],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4647,9 +4190,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 365,
-      "line_range": [
-        365
-      ],
+      "line_range": [365],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4667,9 +4208,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 396,
-      "line_range": [
-        396
-      ],
+      "line_range": [396],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4687,9 +4226,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 403,
-      "line_range": [
-        403
-      ],
+      "line_range": [403],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4707,9 +4244,7 @@
       "issue_severity": "LOW",
       "issue_text": "Consider possible security implications associated with the subprocess module.",
       "line_number": 8,
-      "line_range": [
-        8
-      ],
+      "line_range": [8],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_imports.html#b404-import-subprocess",
       "test_id": "B404",
       "test_name": "blacklist"
@@ -4727,9 +4262,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 38,
-      "line_range": [
-        38
-      ],
+      "line_range": [38],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4747,9 +4280,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 39,
-      "line_range": [
-        39
-      ],
+      "line_range": [39],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4767,9 +4298,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 55,
-      "line_range": [
-        55
-      ],
+      "line_range": [55],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4787,9 +4316,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 65,
-      "line_range": [
-        65
-      ],
+      "line_range": [65],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4807,9 +4334,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 75,
-      "line_range": [
-        75
-      ],
+      "line_range": [75],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4827,9 +4352,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 87,
-      "line_range": [
-        87
-      ],
+      "line_range": [87],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4847,9 +4370,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 96,
-      "line_range": [
-        96
-      ],
+      "line_range": [96],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4867,9 +4388,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 106,
-      "line_range": [
-        106
-      ],
+      "line_range": [106],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4887,9 +4406,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 125,
-      "line_range": [
-        125
-      ],
+      "line_range": [125],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4907,9 +4424,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 137,
-      "line_range": [
-        137
-      ],
+      "line_range": [137],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4927,9 +4442,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 146,
-      "line_range": [
-        146
-      ],
+      "line_range": [146],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4947,9 +4460,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 147,
-      "line_range": [
-        147
-      ],
+      "line_range": [147],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4967,9 +4478,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 156,
-      "line_range": [
-        156
-      ],
+      "line_range": [156],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -4987,9 +4496,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 166,
-      "line_range": [
-        166
-      ],
+      "line_range": [166],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5007,9 +4514,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 183,
-      "line_range": [
-        183
-      ],
+      "line_range": [183],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5027,9 +4532,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 184,
-      "line_range": [
-        184
-      ],
+      "line_range": [184],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5047,9 +4550,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 185,
-      "line_range": [
-        185
-      ],
+      "line_range": [185],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5067,9 +4568,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 203,
-      "line_range": [
-        203
-      ],
+      "line_range": [203],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5087,9 +4586,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 217,
-      "line_range": [
-        217
-      ],
+      "line_range": [217],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5107,9 +4604,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 230,
-      "line_range": [
-        230
-      ],
+      "line_range": [230],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5127,9 +4622,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 244,
-      "line_range": [
-        244
-      ],
+      "line_range": [244],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5147,9 +4640,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 257,
-      "line_range": [
-        257
-      ],
+      "line_range": [257],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5167,9 +4658,7 @@
       "issue_severity": "MEDIUM",
       "issue_text": "Probable insecure usage of temp file/directory.",
       "line_number": 264,
-      "line_range": [
-        264
-      ],
+      "line_range": [264],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
       "test_id": "B108",
       "test_name": "hardcoded_tmp_directory"
@@ -5187,9 +4676,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 268,
-      "line_range": [
-        268
-      ],
+      "line_range": [268],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5207,9 +4694,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 278,
-      "line_range": [
-        278
-      ],
+      "line_range": [278],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5227,9 +4712,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 301,
-      "line_range": [
-        301
-      ],
+      "line_range": [301],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5247,9 +4730,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 332,
-      "line_range": [
-        332
-      ],
+      "line_range": [332],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5267,9 +4748,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 349,
-      "line_range": [
-        349
-      ],
+      "line_range": [349],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5287,12 +4766,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 367,
-      "line_range": [
-        367,
-        368,
-        369,
-        370
-      ],
+      "line_range": [367, 368, 369, 370],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5310,9 +4784,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 403,
-      "line_range": [
-        403
-      ],
+      "line_range": [403],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5330,9 +4802,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 404,
-      "line_range": [
-        404
-      ],
+      "line_range": [404],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5350,9 +4820,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 419,
-      "line_range": [
-        419
-      ],
+      "line_range": [419],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5370,9 +4838,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 420,
-      "line_range": [
-        420
-      ],
+      "line_range": [420],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5390,9 +4856,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 431,
-      "line_range": [
-        431
-      ],
+      "line_range": [431],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5410,9 +4874,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 432,
-      "line_range": [
-        432
-      ],
+      "line_range": [432],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5430,9 +4892,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 447,
-      "line_range": [
-        447
-      ],
+      "line_range": [447],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5450,9 +4910,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 481,
-      "line_range": [
-        481
-      ],
+      "line_range": [481],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5470,9 +4928,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 483,
-      "line_range": [
-        483
-      ],
+      "line_range": [483],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5490,9 +4946,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 484,
-      "line_range": [
-        484
-      ],
+      "line_range": [484],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5510,9 +4964,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 504,
-      "line_range": [
-        504
-      ],
+      "line_range": [504],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5530,9 +4982,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 509,
-      "line_range": [
-        509
-      ],
+      "line_range": [509],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"
@@ -5550,9 +5000,7 @@
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
       "line_number": 547,
-      "line_range": [
-        547
-      ],
+      "line_range": [547],
       "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b101_assert_used.html",
       "test_id": "B101",
       "test_name": "assert_used"

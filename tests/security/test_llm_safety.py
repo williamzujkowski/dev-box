@@ -48,9 +48,9 @@ class TestCommandValidation:
 
         for command in suspicious_commands:
             requires_confirmation = self._command_requires_confirmation(command)
-            assert requires_confirmation, (
-                f"Suspicious command '{command}' should require confirmation"
-            )
+            assert (
+                requires_confirmation
+            ), f"Suspicious command '{command}' should require confirmation"
 
     def test_command_injection_prevention(self):
         """Test prevention of command injection attacks."""
@@ -242,13 +242,13 @@ class TestSandboxIsolation:
                 vm_id, test["target"], test["port"]
             )
             if test["should_block"]:
-                assert not access_result, (
-                    f"Access to {test['target']}:{test['port']} should be blocked"
-                )
+                assert (
+                    not access_result
+                ), f"Access to {test['target']}:{test['port']} should be blocked"
             else:
-                assert access_result, (
-                    f"Access to {test['target']}:{test['port']} should be allowed"
-                )
+                assert (
+                    access_result
+                ), f"Access to {test['target']}:{test['port']} should be allowed"
 
     def test_resource_limits_enforcement(self, test_vm_manager):
         """Test that resource limits are enforced."""
@@ -533,9 +533,9 @@ class TestSecurityPolicyEnforcement:
 
             for command in test_commands:
                 path_access_blocked = self._test_path_access_blocked(vm_id, command)
-                assert path_access_blocked, (
-                    f"Access to restricted path '{path}' should be blocked"
-                )
+                assert (
+                    path_access_blocked
+                ), f"Access to restricted path '{path}' should be blocked"
 
     def test_network_policy_enforcement(self, test_vm_manager):
         """Test enforcement of network policies."""
@@ -545,17 +545,17 @@ class TestSecurityPolicyEnforcement:
         allowed_domains = self.security_policies["network_policies"]["allowed_domains"]
         for domain in allowed_domains:
             access_allowed = self._test_domain_access(vm_id, domain)
-            assert access_allowed, (
-                f"Access to allowed domain '{domain}' should be permitted"
-            )
+            assert (
+                access_allowed
+            ), f"Access to allowed domain '{domain}' should be permitted"
 
         # Test blocked domains
         blocked_domains = self.security_policies["network_policies"]["blocked_domains"]
         for domain in blocked_domains:
             access_blocked = self._test_domain_access_blocked(vm_id, domain)
-            assert access_blocked, (
-                f"Access to blocked domain '{domain}' should be denied"
-            )
+            assert (
+                access_blocked
+            ), f"Access to blocked domain '{domain}' should be denied"
 
     def test_resource_policy_enforcement(self, test_vm_manager):
         """Test enforcement of resource policies."""
@@ -600,9 +600,9 @@ class TestSecurityPolicyEnforcement:
                 "violation" in str(call).lower() or "blocked" in str(call).lower()
                 for call in mock_logger.warning.call_args_list
             )
-            assert violation_logged, (
-                f"Policy violation of type '{violation['type']}' should be logged"
-            )
+            assert (
+                violation_logged
+            ), f"Policy violation of type '{violation['type']}' should be logged"
 
     def _test_command_blocked(self, vm_id, command):
         """Test if command is blocked by policy."""

@@ -215,12 +215,12 @@
 
 ## Test Environment Information
 
-- **Test Date**: ****\_\_\_****
-- **Tester**: ****\_\_\_****
-- **Host OS**: ****\_\_\_****
-- **VirtualBox Version**: ****\_\_\_****
-- **Vagrant Version**: ****\_\_\_****
-- **Box Version**: ****\_\_\_****
+- **Test Date**: \***\*\_\_\_\*\***
+- **Tester**: \***\*\_\_\_\*\***
+- **Host OS**: \***\*\_\_\_\*\***
+- **VirtualBox Version**: \***\*\_\_\_\*\***
+- **Vagrant Version**: \***\*\_\_\_\*\***
+- **Box Version**: \***\*\_\_\_\*\***
 
 ## Notes
 

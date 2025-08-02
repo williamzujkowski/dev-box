@@ -89,12 +89,14 @@ npx claude-flow@alpha memory retrieve --key "project/standards"
 ### Phase 2: Deep Analysis
 
 1. **Static Analysis**
+
    - Run linters and type checkers
    - Execute security scanners
    - Perform complexity analysis
    - Check test coverage
 
 2. **Pattern Recognition**
+
    - Identify recurring issues
    - Detect anti-patterns
    - Find optimization opportunities

@@ -12,6 +12,7 @@ guarantees, state tracking, and rollback capabilities.
 ### ✅ Core Components Implemented
 
 1. **SandboxCore** (`src/sandbox/lifecycle/core.py`)
+
    - Main orchestration engine
    - Lifecycle management (initialize, suspend, resume, cleanup)
    - Operation execution with safety checks
@@ -19,6 +20,7 @@ guarantees, state tracking, and rollback capabilities.
    - Error handling and recovery
 
 2. **SandboxInitializer** (`src/sandbox/lifecycle/initializer.py`)
+
    - Workspace setup and directory structure creation
    - Resource allocation and limits configuration
    - Security configuration and validation
@@ -26,6 +28,7 @@ guarantees, state tracking, and rollback capabilities.
    - Cleanup and archival capabilities
 
 3. **StateManager** (`src/sandbox/lifecycle/state_manager.py`)
+
    - SQLite-based persistent state storage
    - Versioned state entries with history tracking
    - State snapshots and rollback support
@@ -33,6 +36,7 @@ guarantees, state tracking, and rollback capabilities.
    - Cross-session persistence
 
 4. **StateTracker** (`src/sandbox/monitoring/tracker.py`)
+
    - Real-time operation tracking and performance monitoring
    - Resource usage monitoring (CPU, memory, disk, network)
    - Historical data collection and analysis
@@ -40,6 +44,7 @@ guarantees, state tracking, and rollback capabilities.
    - Automatic data cleanup and maintenance
 
 5. **HealthMonitor** (`src/sandbox/monitoring/health.py`)
+
    - Comprehensive health assessment and monitoring
    - System resource health checks
    - Process and filesystem monitoring
@@ -47,6 +52,7 @@ guarantees, state tracking, and rollback capabilities.
    - Configurable health check intervals and thresholds
 
 6. **RollbackManager** (`src/sandbox/safety/rollback.py`)
+
    - Filesystem snapshots with compression support
    - Full and selective rollback capabilities
    - Integrity validation and corruption detection
@@ -63,21 +69,25 @@ guarantees, state tracking, and rollback capabilities.
 ### 🔧 Utility Modules
 
 8. **Filesystem Utilities** (`src/sandbox/utils/filesystem.py`)
+
    - Safe file operations with proper permissions
    - Path validation and security checks
    - Disk usage monitoring and analysis
 
 9. **Serialization Utilities** (`src/sandbox/utils/serialization.py`)
+
    - Safe JSON and pickle serialization
    - Support for complex data types and dataclasses
    - Error handling and validation
 
 10. **Configuration Validation** (`src/sandbox/utils/validation.py`)
+
     - Comprehensive configuration validation
     - Resource limits and safety constraints validation
     - Consistency checking across configuration sections
 
 11. **Resource Management** (`src/sandbox/utils/resources.py`)
+
     - Resource allocation and limit enforcement
     - System resource monitoring integration
 

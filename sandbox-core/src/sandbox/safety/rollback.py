@@ -15,10 +15,7 @@ from dataclasses import field
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import List
 from typing import Optional
-from typing import Tuple
 
 from ..utils.security import SecureTarExtractor
 from ..utils.security import SecurityError
@@ -42,7 +39,7 @@ class SnapshotMetadata:
     operation_id: Optional[str] = None
     compression_ratio: float = 0.0
     encryption_enabled: bool = False
-    tags: List[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
 
     @property
     def created_at(self) -> str:
@@ -59,12 +56,12 @@ class RollbackPlan:
 
     snapshot_id: str
     rollback_type: str  # full, selective, state_only
-    affected_paths: List[Path]
+    affected_paths: list[Path]
     estimated_duration: float
     risk_level: str  # low, medium, high
     backup_current: bool = True
     validation_required: bool = True
-    rollback_steps: List[Dict[str, Any]] = field(default_factory=list)
+    rollback_steps: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -75,8 +72,8 @@ class RollbackResult:
     snapshot_id: str
     rollback_duration: float
     files_restored: int
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
     backup_snapshot_id: Optional[str] = None
     validation_passed: bool = False
 
@@ -113,7 +110,7 @@ class RollbackManager:
         )
 
         # Snapshot tracking
-        self.snapshots_metadata: Dict[str, SnapshotMetadata] = {}
+        self.snapshots_metadata: dict[str, SnapshotMetadata] = {}
 
         # Configuration
         self.max_snapshots = config.safety_constraints.get("max_snapshots", 10)
@@ -153,7 +150,7 @@ class RollbackManager:
             return True
 
         except Exception as e:
-            self.logger.error(f"Failed to initialize rollback manager: {e}")
+            self.logger.exception(f"Failed to initialize rollback manager: {e}")
             return False
 
     async def create_snapshot(
@@ -161,7 +158,7 @@ class RollbackManager:
         description: str,
         snapshot_type: str = "manual",
         operation_id: Optional[str] = None,
-        tags: Optional[List[str]] = None,
+        tags: Optional[list[str]] = None,
     ) -> Optional[str]:
         """
         Create a new sandbox snapshot
@@ -237,7 +234,7 @@ class RollbackManager:
             return snapshot_id
 
         except Exception as e:
-            self.logger.error(f"Failed to create snapshot: {e}")
+            self.logger.exception(f"Failed to create snapshot: {e}")
 
             # Cleanup failed snapshot
             try:
@@ -331,13 +328,13 @@ class RollbackManager:
         except Exception as e:
             result.errors.append(f"Rollback failed: {e!s}")
             result.rollback_duration = time.time() - start_time
-            self.logger.error(f"Rollback failed: {e}")
+            self.logger.exception(f"Rollback failed: {e}")
 
         return result
 
     async def list_snapshots(
         self, include_metadata: bool = False
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         List available snapshots
 
@@ -379,7 +376,7 @@ class RollbackManager:
             return snapshots
 
         except Exception as e:
-            self.logger.error(f"Failed to list snapshots: {e}")
+            self.logger.exception(f"Failed to list snapshots: {e}")
             return []
 
     async def delete_snapshot(self, snapshot_id: str) -> bool:
@@ -414,7 +411,7 @@ class RollbackManager:
             return True
 
         except Exception as e:
-            self.logger.error(f"Failed to delete snapshot {snapshot_id}: {e}")
+            self.logger.exception(f"Failed to delete snapshot {snapshot_id}: {e}")
             return False
 
     async def cleanup_old_snapshots(self, max_age_hours: Optional[int] = None) -> int:
@@ -470,10 +467,10 @@ class RollbackManager:
             return cleaned_count
 
         except Exception as e:
-            self.logger.error(f"Failed to cleanup old snapshots: {e}")
+            self.logger.exception(f"Failed to cleanup old snapshots: {e}")
             return 0
 
-    async def get_snapshot_info(self, snapshot_id: str) -> Optional[Dict[str, Any]]:
+    async def get_snapshot_info(self, snapshot_id: str) -> Optional[dict[str, Any]]:
         """
         Get detailed information about a snapshot
 
@@ -512,7 +509,7 @@ class RollbackManager:
             }
 
         except Exception as e:
-            self.logger.error(f"Failed to get snapshot info for {snapshot_id}: {e}")
+            self.logger.exception(f"Failed to get snapshot info for {snapshot_id}: {e}")
             return None
 
     async def cleanup(self) -> bool:
@@ -532,7 +529,7 @@ class RollbackManager:
             return True
 
         except Exception as e:
-            self.logger.error(f"Rollback manager cleanup failed: {e}")
+            self.logger.exception(f"Rollback manager cleanup failed: {e}")
             return False
 
     # Private methods
@@ -551,7 +548,7 @@ class RollbackManager:
                     f"Loaded metadata for {len(self.snapshots_metadata)} snapshots"
                 )
         except Exception as e:
-            self.logger.error(f"Failed to load metadata: {e}")
+            self.logger.exception(f"Failed to load metadata: {e}")
 
     async def _save_metadata(self):
         """Save snapshot metadata to disk"""
@@ -582,7 +579,7 @@ class RollbackManager:
                 json.dump(data, f, indent=2)
 
         except Exception as e:
-            self.logger.error(f"Failed to save metadata: {e}")
+            self.logger.exception(f"Failed to save metadata: {e}")
 
     async def _save_snapshot_metadata(self, metadata: SnapshotMetadata):
         """Save individual snapshot metadata"""
@@ -611,9 +608,9 @@ class RollbackManager:
                 )
 
         except Exception as e:
-            self.logger.error(f"Failed to save snapshot metadata: {e}")
+            self.logger.exception(f"Failed to save snapshot metadata: {e}")
 
-    async def _determine_snapshot_paths(self) -> List[Path]:
+    async def _determine_snapshot_paths(self) -> list[Path]:
         """Determine which paths to include in snapshot"""
         paths = []
 
@@ -635,8 +632,8 @@ class RollbackManager:
         return paths
 
     async def _create_snapshot_archive(
-        self, source_paths: List[Path], archive_path: Path
-    ) -> Tuple[int, int]:
+        self, source_paths: list[Path], archive_path: Path
+    ) -> tuple[int, int]:
         """Create compressed archive of source paths"""
         file_count = 0
 
@@ -658,7 +655,7 @@ class RollbackManager:
         size_bytes = archive_path.stat().st_size
         return file_count, size_bytes
 
-    async def _calculate_uncompressed_size(self, source_paths: List[Path]) -> int:
+    async def _calculate_uncompressed_size(self, source_paths: list[Path]) -> int:
         """Calculate total uncompressed size of source paths"""
         total_size = 0
 
@@ -723,7 +720,7 @@ class RollbackManager:
             return True
 
         except Exception as e:
-            self.logger.error(f"Failed to validate snapshot integrity: {e}")
+            self.logger.exception(f"Failed to validate snapshot integrity: {e}")
             return False
 
     async def _create_rollback_plan(
@@ -766,17 +763,15 @@ class RollbackManager:
             extractor = SecureTarExtractor(max_size=500 * 1024 * 1024)  # 500MB limit
             try:
                 # Use secure extraction with path validation (fixes CVE-2025-4517)
-                extracted_files = extractor.extract_safely(
-                    snapshot_file, temp_dir
-                )  # nosec B202
+                extracted_files = extractor.extract_safely(snapshot_file, temp_dir)  # nosec B202
                 logger.info(
                     f"Safely extracted {len(extracted_files)} files from snapshot"
                 )
             except SecurityError as e:
-                logger.error(f"Security violation during tar extraction: {e}")
+                logger.exception(f"Security violation during tar extraction: {e}")
                 raise ValueError(f"Unsafe tar archive detected: {e}")
             except Exception as e:
-                logger.error(f"Failed to extract tar archive: {e}")
+                logger.exception(f"Failed to extract tar archive: {e}")
                 raise ValueError(f"Could not extract snapshot: {e}")
 
             # Restore files based on plan
@@ -824,7 +819,7 @@ class RollbackManager:
             return True
 
         except Exception as e:
-            self.logger.error(f"Rollback validation failed: {e}")
+            self.logger.exception(f"Rollback validation failed: {e}")
             return False
 
     async def _maybe_cleanup_snapshots(self):

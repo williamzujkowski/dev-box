@@ -429,8 +429,9 @@ class PerformanceValidator {
     validation.overall.score /= totalWeight;
 
     // Generate recommendations
-    validation.recommendations =
-      await this.generateValidationRecommendations(validation);
+    validation.recommendations = await this.generateValidationRecommendations(
+      validation
+    );
 
     return validation;
   }

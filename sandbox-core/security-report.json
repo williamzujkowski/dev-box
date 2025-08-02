@@ -5,14 +5,14 @@
     "bandit": {
       "tool": "bandit",
       "success": true,
-      "issues_found": 4,
-      "high_severity": 1,
-      "medium_severity": 3,
+      "issues_found": 1,
+      "high_severity": 0,
+      "medium_severity": 1,
       "low_severity": 0,
       "report_file": "/home/william/git/dev-box/sandbox-core/bandit-report.json",
       "details": {
         "errors": [],
-        "generated_at": "2025-08-02T05:11:28Z",
+        "generated_at": "2025-08-02T14:20:47Z",
         "metrics": {
           "/home/william/git/dev-box/sandbox-core/src/sandbox/__init__.py": {
             "CONFIDENCE.HIGH": 0,
@@ -132,15 +132,15 @@
             "skipped_tests": 0
           },
           "/home/william/git/dev-box/sandbox-core/src/sandbox/safety/rollback.py": {
-            "CONFIDENCE.HIGH": 2,
+            "CONFIDENCE.HIGH": 1,
             "CONFIDENCE.LOW": 0,
             "CONFIDENCE.MEDIUM": 0,
             "CONFIDENCE.UNDEFINED": 0,
-            "SEVERITY.HIGH": 1,
+            "SEVERITY.HIGH": 0,
             "SEVERITY.LOW": 1,
             "SEVERITY.MEDIUM": 0,
             "SEVERITY.UNDEFINED": 0,
-            "loc": 624,
+            "loc": 621,
             "nosec": 0,
             "skipped_tests": 0
           },
@@ -173,13 +173,13 @@
           "/home/william/git/dev-box/sandbox-core/src/sandbox/utils/filesystem.py": {
             "CONFIDENCE.HIGH": 0,
             "CONFIDENCE.LOW": 0,
-            "CONFIDENCE.MEDIUM": 2,
+            "CONFIDENCE.MEDIUM": 1,
             "CONFIDENCE.UNDEFINED": 0,
             "SEVERITY.HIGH": 0,
             "SEVERITY.LOW": 0,
-            "SEVERITY.MEDIUM": 2,
+            "SEVERITY.MEDIUM": 1,
             "SEVERITY.UNDEFINED": 0,
-            "loc": 145,
+            "loc": 146,
             "nosec": 0,
             "skipped_tests": 0
           },
@@ -210,15 +210,15 @@
             "skipped_tests": 0
           },
           "/home/william/git/dev-box/sandbox-core/src/sandbox/utils/serialization.py": {
-            "CONFIDENCE.HIGH": 2,
+            "CONFIDENCE.HIGH": 1,
             "CONFIDENCE.LOW": 0,
             "CONFIDENCE.MEDIUM": 0,
             "CONFIDENCE.UNDEFINED": 0,
             "SEVERITY.HIGH": 0,
             "SEVERITY.LOW": 1,
-            "SEVERITY.MEDIUM": 1,
+            "SEVERITY.MEDIUM": 0,
             "SEVERITY.UNDEFINED": 0,
-            "loc": 163,
+            "loc": 170,
             "nosec": 0,
             "skipped_tests": 0
           },
@@ -249,142 +249,76 @@
             "skipped_tests": 0
           },
           "_totals": {
-            "CONFIDENCE.HIGH": 4,
+            "CONFIDENCE.HIGH": 2,
             "CONFIDENCE.LOW": 0,
-            "CONFIDENCE.MEDIUM": 2,
+            "CONFIDENCE.MEDIUM": 1,
             "CONFIDENCE.UNDEFINED": 0,
-            "SEVERITY.HIGH": 1,
+            "SEVERITY.HIGH": 0,
             "SEVERITY.LOW": 2,
-            "SEVERITY.MEDIUM": 3,
+            "SEVERITY.MEDIUM": 1,
             "SEVERITY.UNDEFINED": 0,
-            "loc": 4723,
+            "loc": 4728,
             "nosec": 0,
             "skipped_tests": 0
           }
         },
         "results": [
           {
-            "code": "767             try:\n768                 extracted_files = extractor.safe_extractall(snapshot_file, temp_dir)\n769                 logger.info(\n",
-            "col_offset": 34,
-            "end_col_offset": 84,
-            "filename": "/home/william/git/dev-box/sandbox-core/src/sandbox/safety/rollback.py",
-            "issue_confidence": "HIGH",
-            "issue_cwe": {
-              "id": 22,
-              "link": "https://cwe.mitre.org/data/definitions/22.html"
-            },
-            "issue_severity": "HIGH",
-            "issue_text": "tarfile.extractall used without any validation. Please check and discard dangerous members.",
-            "line_number": 768,
-            "line_range": [
-              768
-            ],
-            "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b202_tarfile_unsafe_members.html",
-            "test_id": "B202",
-            "test_name": "tarfile_unsafe_members"
-          },
-          {
-            "code": "84             # Allow only paths within common safe directories\n85             safe_prefixes = [\"/tmp\", \"/var/tmp\", \"/home\", \"/opt\"]\n86             if not any(str(path).startswith(prefix) for prefix in safe_prefixes):\n",
-            "col_offset": 29,
-            "end_col_offset": 35,
-            "filename": "/home/william/git/dev-box/sandbox-core/src/sandbox/utils/filesystem.py",
-            "issue_confidence": "MEDIUM",
-            "issue_cwe": {
-              "id": 377,
-              "link": "https://cwe.mitre.org/data/definitions/377.html"
-            },
-            "issue_severity": "MEDIUM",
-            "issue_text": "Probable insecure usage of temp file/directory.",
-            "line_number": 85,
-            "line_range": [
-              85
-            ],
-            "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
-            "test_id": "B108",
-            "test_name": "hardcoded_tmp_directory"
-          },
-          {
-            "code": "84             # Allow only paths within common safe directories\n85             safe_prefixes = [\"/tmp\", \"/var/tmp\", \"/home\", \"/opt\"]\n86             if not any(str(path).startswith(prefix) for prefix in safe_prefixes):\n",
-            "col_offset": 37,
-            "end_col_offset": 47,
-            "filename": "/home/william/git/dev-box/sandbox-core/src/sandbox/utils/filesystem.py",
-            "issue_confidence": "MEDIUM",
-            "issue_cwe": {
-              "id": 377,
-              "link": "https://cwe.mitre.org/data/definitions/377.html"
-            },
-            "issue_severity": "MEDIUM",
-            "issue_text": "Probable insecure usage of temp file/directory.",
-            "line_number": 85,
-            "line_range": [
-              85
-            ],
-            "more_info": "https://bandit.readthedocs.io/en/1.8.3/plugins/b108_hardcoded_tmp_directory.html",
-            "test_id": "B108",
-            "test_name": "hardcoded_tmp_directory"
-          },
-          {
-            "code": "135                 decoded_data = base64.b64decode(data.encode(\"utf-8\"))\n136                 return pickle.loads(decoded_data)\n137             except Exception as e:\n",
-            "col_offset": 23,
+            "code": "88             temp_dir = os.environ.get(\"TMPDIR\", tempfile.gettempdir())\n89             safe_prefixes = [temp_dir, \"/var/tmp\", os.path.expanduser(\"~\"), \"/opt\"]\n90             if not any(str(path).startswith(prefix) for prefix in safe_prefixes):\n",
+            "col_offset": 39,
             "end_col_offset": 49,
-            "filename": "/home/william/git/dev-box/sandbox-core/src/sandbox/utils/serialization.py",
-            "issue_confidence": "HIGH",
+            "filename": "/home/william/git/dev-box/sandbox-core/src/sandbox/utils/filesystem.py",
+            "issue_confidence": "MEDIUM",
             "issue_cwe": {
-              "id": 502,
-              "link": "https://cwe.mitre.org/data/definitions/502.html"
+              "id": 377,
+              "link": "https://cwe.mitre.org/data/definitions/377.html"
             },
             "issue_severity": "MEDIUM",
-            "issue_text": "Pickle and modules that wrap it can be unsafe when used to deserialize untrusted data, possible security issue.",
-            "line_number": 136,
+            "issue_text": "Probable insecure usage of temp file/directory.",
+            "line_number": 89,
             "line_range": [
-              136
+              89
             ],
-            "more_info": "https://bandit.readthedocs.io/en/1.8.3/blacklists/blacklist_calls.html#b301-pickle",
-            "test_id": "B301",
-            "test_name": "blacklist"
+            "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b108_hardcoded_tmp_directory.html",
+            "test_id": "B108",
+            "test_name": "hardcoded_tmp_directory"
           }
         ]
       }
     },
     "safety": {
       "tool": "safety",
-      "success": true,
-      "vulnerabilities_found": 0,
-      "message": "No known vulnerabilities found in dependencies"
+      "success": false,
+      "error": "Failed to parse safety output",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/william/.pyenv/versions/3.12.3/bin/safety\", line 5, in <module>\n    from safety.cli import cli\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/safety/cli.py\", line 36, in <module>\n    from safety.codebase.command import codebase_app\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/safety/codebase/command.py\", line 10, in <module>\n    from safety.init.main import launch_auth_if_needed\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/safety/init/main.py\", line 12, in <module>\n    from ..tool import configure_system, configure_alias\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/safety/tool/__init__.py\", line 4, in <module>\n    from .base import ToolResult\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/safety/tool/base.py\", line 19, in <module>\n    from safety.tool.typosquatting import TyposquattingProtection\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/safety/tool/typosquatting.py\", line 6, in <module>\n    import nltk\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/__init__.py\", line 146, in <module>\n    from nltk.chunk import *\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/chunk/__init__.py\", line 155, in <module>\n    from nltk.chunk.api import ChunkParserI\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/chunk/api.py\", line 13, in <module>\n    from nltk.chunk.util import ChunkScore\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/chunk/util.py\", line 12, in <module>\n    from nltk.tag.mapping import map_tag\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/tag/__init__.py\", line 72, in <module>\n    from nltk.tag.sequential import (\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/tag/sequential.py\", line 26, in <module>\n    from nltk.classify import NaiveBayesClassifier\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/classify/__init__.py\", line 97, in <module>\n    from nltk.classify.scikitlearn import SklearnClassifier\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/nltk/classify/scikitlearn.py\", line 38, in <module>\n    from sklearn.feature_extraction import DictVectorizer\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/__init__.py\", line 73, in <module>\n    from .base import clone  # noqa: E402\n    ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/base.py\", line 19, in <module>\n    from .utils._metadata_requests import _MetadataRequester, _routing_enabled\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/utils/__init__.py\", line 9, in <module>\n    from ._chunking import gen_batches, gen_even_slices\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/utils/_chunking.py\", line 11, in <module>\n    from ._param_validation import Interval, validate_params\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/utils/_param_validation.py\", line 17, in <module>\n    from .validation import _is_arraylike_not_scalar\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/utils/validation.py\", line 21, in <module>\n    from ..utils._array_api import _asarray_with_order, _is_numpy_namespace, get_namespace\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/utils/_array_api.py\", line 20, in <module>\n    from .fixes import parse_version\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/sklearn/utils/fixes.py\", line 20, in <module>\n    import pandas as pd\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/pandas/__init__.py\", line 46, in <module>\n    from pandas.core.api import (\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/pandas/core/api.py\", line 1, in <module>\n    from pandas._libs import (\n  File \"/home/william/.pyenv/versions/3.12.3/lib/python3.12/site-packages/pandas/_libs/__init__.py\", line 18, in <module>\n    from pandas._libs.interval import Interval\n  File \"interval.pyx\", line 1, in init pandas._libs.interval\nValueError: numpy.dtype size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject\n"
     },
     "patterns": {
       "tool": "pattern_check",
       "success": true,
       "files_scanned": 126,
-      "issues_found": 4,
-      "high_severity": 4,
+      "issues_found": 3,
+      "high_severity": 3,
       "medium_severity": 0,
       "low_severity": 0,
       "issues": [
         {
-          "file": "src/sandbox/utils/serialization.py",
-          "line": 136,
-          "severity": "HIGH",
-          "message": "Unsafe pickle usage detected - use secure serialization instead",
-          "code": "return pickle.loads(decoded_data)"
-        },
-        {
-          "file": "src/sandbox/utils/stub_modules.py",
-          "line": 151,
-          "severity": "HIGH",
-          "message": "Use of eval() detected - potential code injection risk",
-          "code": "\"eval(\","
-        },
-        {
           "file": "src/sandbox/utils/stub_modules.py",
           "line": 152,
           "severity": "HIGH",
-          "message": "Use of exec() detected - potential code injection risk",
-          "code": "\"exec(\","
+          "message": "Use of eval() detected - potential code injection risk",
+          "code": "\"eval(\",  # nosec B307 - pattern detection only"
         },
         {
           "file": "src/sandbox/utils/stub_modules.py",
-          "line": 154,
+          "line": 153,
+          "severity": "HIGH",
+          "message": "Use of exec() detected - potential code injection risk",
+          "code": "\"exec(\",  # nosec B102 - pattern detection only"
+        },
+        {
+          "file": "src/sandbox/utils/stub_modules.py",
+          "line": 155,
           "severity": "HIGH",
           "message": "Use of exec() detected - potential code injection risk",
           "code": "\"shell_exec(\","
@@ -393,10 +327,10 @@
     }
   },
   "summary": {
-    "total_issues": 8,
-    "high_severity": 5,
-    "medium_severity": 3,
+    "total_issues": 4,
+    "high_severity": 3,
+    "medium_severity": 1,
     "low_severity": 0,
-    "security_score": 0
+    "security_score": 35
   }
 }

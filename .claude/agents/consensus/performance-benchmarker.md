@@ -626,7 +626,11 @@ class ResourceUsageMonitor {
       bottlenecks.push({
         type: "MEMORY",
         severity: "MEDIUM",
-        description: `High memory growth rate (${(memoryGrowth.rate / 1024 / 1024).toFixed(2)} MB/s)`,
+        description: `High memory growth rate (${(
+          memoryGrowth.rate /
+          1024 /
+          1024
+        ).toFixed(2)} MB/s)`,
       });
     }
 
@@ -639,7 +643,11 @@ class ResourceUsageMonitor {
       bottlenecks.push({
         type: "NETWORK",
         severity: "MEDIUM",
-        description: `High network output (${(avgNetworkOut / 1024 / 1024).toFixed(2)} MB/s)`,
+        description: `High network output (${(
+          avgNetworkOut /
+          1024 /
+          1024
+        ).toFixed(2)} MB/s)`,
       });
     }
 

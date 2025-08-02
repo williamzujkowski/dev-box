@@ -261,10 +261,10 @@ class StateManager:
                 cursor = self._db_conn.cursor()
                 cursor.execute(
                     """
-                    SELECT key, value, timestamp, version, encrypted, metadata 
-                    FROM state_entries 
-                    WHERE key = ? 
-                    ORDER BY version DESC 
+                    SELECT key, value, timestamp, version, encrypted, metadata
+                    FROM state_entries
+                    WHERE key = ?
+                    ORDER BY version DESC
                     LIMIT ?
                     """,
                     (key, limit),
@@ -391,8 +391,8 @@ class StateManager:
                 cursor = self._db_conn.cursor()
                 cursor.execute(
                     """
-                    SELECT snapshot_id, timestamp, metadata, size_bytes 
-                    FROM snapshots 
+                    SELECT snapshot_id, timestamp, metadata, size_bytes
+                    FROM snapshots
                     ORDER BY timestamp DESC
                     """
                 )
@@ -434,11 +434,11 @@ class StateManager:
                 # Delete old state entries (keep latest version of each key)
                 cursor.execute(
                     """
-                    DELETE FROM state_entries 
-                    WHERE timestamp < ? 
+                    DELETE FROM state_entries
+                    WHERE timestamp < ?
                     AND version NOT IN (
-                        SELECT MAX(version) 
-                        FROM state_entries s2 
+                        SELECT MAX(version)
+                        FROM state_entries s2
                         WHERE s2.key = state_entries.key
                     )
                     """,
@@ -502,7 +502,7 @@ class StateManager:
                 metadata TEXT,
                 UNIQUE(key, version)
             );
-            
+
             CREATE TABLE IF NOT EXISTS snapshots (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 snapshot_id TEXT UNIQUE NOT NULL,
@@ -510,7 +510,7 @@ class StateManager:
                 metadata TEXT,
                 size_bytes INTEGER DEFAULT 0
             );
-            
+
             CREATE TABLE IF NOT EXISTS snapshot_entries (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 snapshot_id TEXT NOT NULL,
@@ -522,7 +522,7 @@ class StateManager:
                 metadata TEXT,
                 FOREIGN KEY (snapshot_id) REFERENCES snapshots (snapshot_id)
             );
-            
+
             CREATE INDEX IF NOT EXISTS idx_state_key ON state_entries (key);
             CREATE INDEX IF NOT EXISTS idx_state_timestamp ON state_entries (timestamp);
             CREATE INDEX IF NOT EXISTS idx_snapshot_timestamp ON snapshots (timestamp);
@@ -566,8 +566,8 @@ class StateManager:
         if version is not None:
             cursor.execute(
                 """
-                SELECT key, value, timestamp, version, encrypted, metadata 
-                FROM state_entries 
+                SELECT key, value, timestamp, version, encrypted, metadata
+                FROM state_entries
                 WHERE key = ? AND version = ?
                 """,
                 (key, version),
@@ -575,10 +575,10 @@ class StateManager:
         else:
             cursor.execute(
                 """
-                SELECT key, value, timestamp, version, encrypted, metadata 
-                FROM state_entries 
-                WHERE key = ? 
-                ORDER BY version DESC 
+                SELECT key, value, timestamp, version, encrypted, metadata
+                FROM state_entries
+                WHERE key = ?
+                ORDER BY version DESC
                 LIMIT 1
                 """,
                 (key,),
@@ -602,11 +602,11 @@ class StateManager:
         cursor = self._db_conn.cursor()
         cursor.execute(
             """
-            SELECT key, value, timestamp, version, encrypted, metadata 
+            SELECT key, value, timestamp, version, encrypted, metadata
             FROM state_entries s1
             WHERE version = (
-                SELECT MAX(version) 
-                FROM state_entries s2 
+                SELECT MAX(version)
+                FROM state_entries s2
                 WHERE s2.key = s1.key
             )
             ORDER BY key
@@ -650,7 +650,7 @@ class StateManager:
         for entry in snapshot.state_entries:
             cursor.execute(
                 """
-                INSERT INTO snapshot_entries 
+                INSERT INTO snapshot_entries
                 (snapshot_id, key, value, timestamp, version, encrypted, metadata)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
@@ -687,8 +687,8 @@ class StateManager:
         # Load snapshot entries
         cursor.execute(
             """
-            SELECT key, value, timestamp, version, encrypted, metadata 
-            FROM snapshot_entries 
+            SELECT key, value, timestamp, version, encrypted, metadata
+            FROM snapshot_entries
             WHERE snapshot_id = ?
             ORDER BY key
             """,

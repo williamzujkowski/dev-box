@@ -48,16 +48,19 @@ sudo ./kvm-unload.sh --verbose
 #### Safety Mechanisms
 
 1. **VM Detection**: Automatically detects running VMs from:
+
    - virsh (libvirt/KVM)
    - QEMU processes
    - VirtualBox VMs
 
 2. **Backup System**: Creates timestamped backups including:
+
    - Current module state
    - System messages (dmesg)
    - Existing blacklist files
 
 3. **Rollback Capability**: Can restore previous state including:
+
    - Module loading state
    - Blacklist configurations
 

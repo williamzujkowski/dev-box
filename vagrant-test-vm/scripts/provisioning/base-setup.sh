@@ -11,21 +11,21 @@ apt-get upgrade -y
 # Install essential packages
 echo "Installing essential packages..."
 apt-get install -y \
-    curl \
-    wget \
-    git \
-    vim \
-    htop \
-    tree \
-    unzip \
-    software-properties-common \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    lsb-release \
-    build-essential \
-    dkms \
-    linux-headers-$(uname -r)
+  curl \
+  wget \
+  git \
+  vim \
+  htop \
+  tree \
+  unzip \
+  software-properties-common \
+  apt-transport-https \
+  ca-certificates \
+  gnupg \
+  lsb-release \
+  build-essential \
+  dkms \
+  linux-headers-$(uname -r)
 
 # Configure timezone
 echo "Configuring timezone..."

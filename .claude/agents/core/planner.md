@@ -104,12 +104,14 @@ plan:
 ## Best Practices
 
 1. Always create plans that are:
+
    - Specific and actionable
    - Measurable and time-bound
    - Realistic and achievable
    - Flexible and adaptable
 
 2. Consider:
+
    - Available resources and constraints
    - Team capabilities and workload
    - External dependencies and blockers

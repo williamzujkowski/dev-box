@@ -202,15 +202,15 @@ def sample_vagrantfile_template():
 Vagrant.configure("2") do |config|
   config.vm.box = "{{ vm.box }}"
   config.vm.box_version = "{{ vm.box_version }}"
-  
+
   config.vm.provider "virtualbox" do |vb|
     vb.memory = {{ vm.memory }}
     vb.cpus = {{ vm.cpus }}
   end
-  
+
   # Network configuration
   config.vm.network "{{ vm.network }}", type: "dhcp"
-  
+
   # Provisioning
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
@@ -355,9 +355,9 @@ def test_vm_manager():
 def assert_vm_state(vm, expected_state):
     """Assert VM is in expected state."""
     actual_state = vm.status()
-    assert actual_state == expected_state, (
-        f"Expected VM state '{expected_state}', got '{actual_state}'"
-    )
+    assert (
+        actual_state == expected_state
+    ), f"Expected VM state '{expected_state}', got '{actual_state}'"
 
 
 def assert_command_blocked(result, command):
@@ -369,9 +369,9 @@ def assert_command_blocked(result, command):
 def assert_file_permissions(filepath, expected_permissions):
     """Assert file has expected permissions."""
     actual_permissions = oct(os.stat(filepath).st_mode)[-3:]
-    assert actual_permissions == expected_permissions, (
-        f"File {filepath} has permissions {actual_permissions}, expected {expected_permissions}"
-    )
+    assert (
+        actual_permissions == expected_permissions
+    ), f"File {filepath} has permissions {actual_permissions}, expected {expected_permissions}"
 
 
 # Performance testing utilities
@@ -400,9 +400,9 @@ class PerformanceTimer:
     def assert_within_limit(self, limit_seconds):
         elapsed = self.elapsed()
         assert elapsed is not None, "Timer was not properly started/stopped"
-        assert elapsed <= limit_seconds, (
-            f"Operation took {elapsed:.2f}s, expected <= {limit_seconds}s"
-        )
+        assert (
+            elapsed <= limit_seconds
+        ), f"Operation took {elapsed:.2f}s, expected <= {limit_seconds}s"
 
 
 @pytest.fixture

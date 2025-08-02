@@ -38,7 +38,7 @@ async def safe_mkdir(
         path.mkdir(mode=mode, parents=parents, exist_ok=exist_ok)
         return True
     except Exception as e:
-        logger.error(f"Failed to create directory {path}: {e}")
+        logger.exception(f"Failed to create directory {path}: {e}")
         return False
 
 
@@ -58,7 +58,7 @@ async def safe_chmod(path: Union[str, Path], mode: int) -> bool:
         path.chmod(mode)
         return True
     except Exception as e:
-        logger.error(f"Failed to change permissions for {path}: {e}")
+        logger.exception(f"Failed to change permissions for {path}: {e}")
         return False
 
 
@@ -123,13 +123,10 @@ class FilesystemChecker:
                 return False
 
             # Check write permission
-            if not os.access(path, os.W_OK):
-                return False
-
-            return True
+            return os.access(path, os.W_OK)
 
         except Exception as e:
-            self.logger.error(f"Failed to check accessibility for {path}: {e}")
+            self.logger.exception(f"Failed to check accessibility for {path}: {e}")
             return False
 
     async def get_disk_usage(self, path: Union[str, Path]) -> dict:
@@ -151,7 +148,7 @@ class FilesystemChecker:
                 "usage_percent": (usage.used / usage.total) * 100,
             }
         except Exception as e:
-            self.logger.error(f"Failed to get disk usage for {path}: {e}")
+            self.logger.exception(f"Failed to get disk usage for {path}: {e}")
             return {}
 
     async def check_permissions(self, path: Union[str, Path]) -> dict:
@@ -189,5 +186,5 @@ class FilesystemChecker:
             }
 
         except Exception as e:
-            self.logger.error(f"Failed to check permissions for {path}: {e}")
+            self.logger.exception(f"Failed to check permissions for {path}: {e}")
             return {}

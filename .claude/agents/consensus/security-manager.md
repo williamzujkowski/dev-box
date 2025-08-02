@@ -375,8 +375,9 @@ class ConsensusSecurityMonitor {
     const requestAnalyzer = new RequestPatternAnalyzer();
 
     // Analyze request patterns for anomalies
-    const anomalousRequests =
-      await requestAnalyzer.detectAnomalies(incomingRequests);
+    const anomalousRequests = await requestAnalyzer.detectAnomalies(
+      incomingRequests
+    );
 
     if (anomalousRequests.length > 0) {
       // Implement progressive response strategies
@@ -598,8 +599,9 @@ class ByzantineConsensusSecurityWrapper {
 
   async executeSecureConsensus(proposal) {
     // Sign proposal with threshold signature
-    const signedProposal =
-      await this.security.thresholdSignature.sign(proposal);
+    const signedProposal = await this.security.thresholdSignature.sign(
+      proposal
+    );
 
     // Monitor consensus execution for attacks
     const monitor = this.security.startConsensusMonitoring();

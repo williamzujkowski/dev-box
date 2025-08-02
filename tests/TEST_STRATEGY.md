@@ -70,17 +70,20 @@ tests/unit/
 #### Test Scenarios
 
 1. **Full Lifecycle Test**
+
    - Initialize → Provision → Snapshot → Execute → Rollback → Destroy
    - Verify state consistency at each step
    - Validate resource cleanup
 
 2. **Rollback Reliability Test**
+
    - Create snapshot before risky operation
    - Simulate failure during operation
    - Verify successful rollback to clean state
    - Test multiple consecutive rollbacks
 
 3. **Network Isolation Test**
+
    - Verify VM network restrictions
    - Test egress filtering
    - Validate host protection

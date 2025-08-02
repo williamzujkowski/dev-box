@@ -246,8 +246,9 @@ const mcpIntegration = {
   // Topology optimization
   async optimizeTopology(swarmId) {
     const currentTopology = await mcp.swarm_status({ swarmId });
-    const optimizedTopology =
-      await this.calculateOptimalTopology(currentTopology);
+    const optimizedTopology = await this.calculateOptimalTopology(
+      currentTopology
+    );
 
     if (optimizedTopology.improvement > 0.1) {
       // 10% improvement threshold
