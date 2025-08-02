@@ -1,6 +1,7 @@
 # hook post-edit
 
-Execute post-edit processing including formatting, validation, and memory updates.
+Execute post-edit processing including formatting, validation, and memory
+updates.
 
 ## Usage
 

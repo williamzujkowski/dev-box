@@ -2,11 +2,11 @@ name: "CodeQL Analysis"
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
-    - cron: '0 0 * * 0'  # At 00:00 on Sunday
+    - cron: "0 0 * * 0" # At 00:00 on Sunday
 
 jobs:
   analyze:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'python' ]  # Update with languages for your project
+        language: ["python"] # Update with languages for your project
         # Supported options: cpp, csharp, go, java, javascript, python, ruby
 
     steps:

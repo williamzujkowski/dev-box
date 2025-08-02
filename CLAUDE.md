@@ -2,9 +2,11 @@
 
 ## 🚨 CRITICAL: CONCURRENT EXECUTION FOR ALL ACTIONS
 
-**ABSOLUTE RULE**: ALL operations MUST be concurrent/parallel in a single message:
+**ABSOLUTE RULE**: ALL operations MUST be concurrent/parallel in a single
+message:
 
 ### 🔴 MANDATORY CONCURRENT PATTERNS:
+
 1. **TodoWrite**: ALWAYS batch ALL todos in ONE call (5-10+ todos minimum)
 2. **Task tool**: ALWAYS spawn ALL agents in ONE message with full instructions
 3. **File operations**: ALWAYS batch ALL reads/writes/edits in ONE message
@@ -14,6 +16,7 @@
 ### ⚡ GOLDEN RULE: "1 MESSAGE = ALL RELATED OPERATIONS"
 
 **Examples of CORRECT concurrent execution:**
+
 ```javascript
 // ✅ CORRECT: Everything in ONE message
 [Single Message]:
@@ -31,6 +34,7 @@
 ```
 
 **Examples of WRONG sequential execution:**
+
 ```javascript
 // ❌ WRONG: Multiple messages (NEVER DO THIS)
 Message 1: TodoWrite { todos: [single todo] }
@@ -45,6 +49,7 @@ Message 6: Bash("npm install")
 ### 🎯 CONCURRENT EXECUTION CHECKLIST:
 
 Before sending ANY message, ask yourself:
+
 - ✅ Are ALL related TodoWrite operations batched together?
 - ✅ Are ALL Task spawning operations in ONE message?
 - ✅ Are ALL file operations (Read/Write/Edit) batched together?
@@ -54,24 +59,38 @@ Before sending ANY message, ask yourself:
 If ANY answer is "No", you MUST combine operations into a single message!
 
 ## Project Overview
-This project uses the SPARC (Specification, Pseudocode, Architecture, Refinement, Completion) methodology for systematic Test-Driven Development with AI assistance through Claude-Flow orchestration.
 
-**🚀 Batchtools Optimization Enabled**: This configuration includes optimized prompts and parallel processing capabilities for improved performance and efficiency.
+This project uses the SPARC (Specification, Pseudocode, Architecture,
+Refinement, Completion) methodology for systematic Test-Driven Development with
+AI assistance through Claude-Flow orchestration.
+
+**🚀 Batchtools Optimization Enabled**: This configuration includes optimized
+prompts and parallel processing capabilities for improved performance and
+efficiency.
 
 ## SPARC Development Commands
 
 ### Core SPARC Commands
+
 - `npx claude-flow sparc modes`: List all available SPARC development modes
-- `npx claude-flow sparc run <mode> "<task>"`: Execute specific SPARC mode for a task
-- `npx claude-flow sparc tdd "<feature>"`: Run complete TDD workflow using SPARC methodology
-- `npx claude-flow sparc info <mode>`: Get detailed information about a specific mode
+- `npx claude-flow sparc run <mode> "<task>"`: Execute specific SPARC mode for a
+  task
+- `npx claude-flow sparc tdd "<feature>"`: Run complete TDD workflow using SPARC
+  methodology
+- `npx claude-flow sparc info <mode>`: Get detailed information about a specific
+  mode
 
 ### Batchtools Commands (Optimized)
-- `npx claude-flow sparc batch <modes> "<task>"`: Execute multiple SPARC modes in parallel
-- `npx claude-flow sparc pipeline "<task>"`: Execute full SPARC pipeline with parallel processing
-- `npx claude-flow sparc concurrent <mode> "<tasks-file>"`: Process multiple tasks concurrently
+
+- `npx claude-flow sparc batch <modes> "<task>"`: Execute multiple SPARC modes
+  in parallel
+- `npx claude-flow sparc pipeline "<task>"`: Execute full SPARC pipeline with
+  parallel processing
+- `npx claude-flow sparc concurrent <mode> "<tasks-file>"`: Process multiple
+  tasks concurrently
 
 ### Standard Build Commands
+
 - `npm run build`: Build the project
 - `npm run test`: Run the test suite
 - `npm run lint`: Run linter and format checks
@@ -80,49 +99,71 @@ This project uses the SPARC (Specification, Pseudocode, Architecture, Refinement
 ## SPARC Methodology Workflow (Batchtools Enhanced)
 
 ### 1. Specification Phase (Parallel Analysis)
+
 ```bash
 # Create detailed specifications with concurrent requirements analysis
 npx claude-flow sparc run spec-pseudocode "Define user authentication requirements" --parallel
 ```
-**Batchtools Optimization**: Simultaneously analyze multiple requirement sources, validate constraints in parallel, and generate comprehensive specifications.
+
+**Batchtools Optimization**: Simultaneously analyze multiple requirement
+sources, validate constraints in parallel, and generate comprehensive
+specifications.
 
 ### 2. Pseudocode Phase (Concurrent Logic Design)
+
 ```bash
 # Develop algorithmic logic with parallel pattern analysis
 npx claude-flow sparc run spec-pseudocode "Create authentication flow pseudocode" --batch-optimize
 ```
-**Batchtools Optimization**: Process multiple algorithm patterns concurrently, validate logic flows in parallel, and optimize data structures simultaneously.
+
+**Batchtools Optimization**: Process multiple algorithm patterns concurrently,
+validate logic flows in parallel, and optimize data structures simultaneously.
 
 ### 3. Architecture Phase (Parallel Component Design)
+
 ```bash
 # Design system architecture with concurrent component analysis
 npx claude-flow sparc run architect "Design authentication service architecture" --parallel
 ```
-**Batchtools Optimization**: Generate multiple architectural alternatives simultaneously, validate integration points in parallel, and create comprehensive documentation concurrently.
+
+**Batchtools Optimization**: Generate multiple architectural alternatives
+simultaneously, validate integration points in parallel, and create
+comprehensive documentation concurrently.
 
 ### 4. Refinement Phase (Parallel TDD Implementation)
+
 ```bash
 # Execute Test-Driven Development with parallel test generation
 npx claude-flow sparc tdd "implement user authentication system" --batch-tdd
 ```
-**Batchtools Optimization**: Generate multiple test scenarios simultaneously, implement and validate code in parallel, and optimize performance concurrently.
+
+**Batchtools Optimization**: Generate multiple test scenarios simultaneously,
+implement and validate code in parallel, and optimize performance concurrently.
 
 ### 5. Completion Phase (Concurrent Integration)
+
 ```bash
 # Integration with parallel validation and documentation
 npx claude-flow sparc run integration "integrate authentication with user management" --parallel
 ```
-**Batchtools Optimization**: Run integration tests in parallel, generate documentation concurrently, and validate requirements simultaneously.
+
+**Batchtools Optimization**: Run integration tests in parallel, generate
+documentation concurrently, and validate requirements simultaneously.
 
 ## Batchtools Integration Features
 
 ### Parallel Processing Capabilities
-- **Concurrent File Operations**: Read, analyze, and modify multiple files simultaneously
-- **Parallel Code Analysis**: Analyze dependencies, patterns, and architecture concurrently
+
+- **Concurrent File Operations**: Read, analyze, and modify multiple files
+  simultaneously
+- **Parallel Code Analysis**: Analyze dependencies, patterns, and architecture
+  concurrently
 - **Batch Test Generation**: Create comprehensive test suites in parallel
-- **Concurrent Documentation**: Generate multiple documentation formats simultaneously
+- **Concurrent Documentation**: Generate multiple documentation formats
+  simultaneously
 
 ### Performance Optimizations
+
 - **Smart Batching**: Group related operations for optimal performance
 - **Pipeline Processing**: Chain dependent operations with parallel stages
 - **Resource Management**: Efficient utilization of system resources
@@ -131,6 +172,7 @@ npx claude-flow sparc run integration "integrate authentication with user manage
 ## Performance Benchmarks
 
 ### Batchtools Performance Improvements
+
 - **File Operations**: Up to 300% faster with parallel processing
 - **Code Analysis**: 250% improvement with concurrent pattern recognition
 - **Test Generation**: 400% faster with parallel test creation
@@ -140,13 +182,19 @@ npx claude-flow sparc run integration "integrate authentication with user manage
 ## Code Style and Best Practices (Batchtools Enhanced)
 
 ### SPARC Development Principles with Batchtools
-- **Modular Design**: Keep files under 500 lines, optimize with parallel analysis
-- **Environment Safety**: Never hardcode secrets, validate with concurrent checks
-- **Test-First**: Always write tests before implementation using parallel generation
+
+- **Modular Design**: Keep files under 500 lines, optimize with parallel
+  analysis
+- **Environment Safety**: Never hardcode secrets, validate with concurrent
+  checks
+- **Test-First**: Always write tests before implementation using parallel
+  generation
 - **Clean Architecture**: Separate concerns with concurrent validation
-- **Parallel Documentation**: Maintain clear, up-to-date documentation with concurrent updates
+- **Parallel Documentation**: Maintain clear, up-to-date documentation with
+  concurrent updates
 
 ### Batchtools Best Practices
+
 - **Parallel Operations**: Use batchtools for independent tasks
 - **Concurrent Validation**: Validate multiple aspects simultaneously
 - **Batch Processing**: Group similar operations for efficiency
@@ -155,25 +203,31 @@ npx claude-flow sparc run integration "integrate authentication with user manage
 
 ## Important Notes (Enhanced)
 
-- Always run tests before committing with parallel execution (`npm run test --parallel`)
-- Use SPARC memory system with concurrent operations to maintain context across sessions
-- Follow the Red-Green-Refactor cycle with parallel test generation during TDD phases
+- Always run tests before committing with parallel execution
+  (`npm run test --parallel`)
+- Use SPARC memory system with concurrent operations to maintain context across
+  sessions
+- Follow the Red-Green-Refactor cycle with parallel test generation during TDD
+  phases
 - Document architectural decisions with concurrent validation in memory
-- Regular security reviews with parallel analysis for authentication or data handling code
-- Claude Code slash commands provide quick access to batchtools-optimized SPARC modes
+- Regular security reviews with parallel analysis for authentication or data
+  handling code
+- Claude Code slash commands provide quick access to batchtools-optimized SPARC
+  modes
 - Monitor system resources during parallel operations for optimal performance
 
 ## Available Agents (54 Total)
 
 ### 🚀 Concurrent Agent Usage
 
-**CRITICAL**: Always spawn multiple agents concurrently using the Task tool in a single message:
+**CRITICAL**: Always spawn multiple agents concurrently using the Task tool in a
+single message:
 
 ```javascript
 // ✅ CORRECT: Concurrent agent deployment
 [Single Message]:
   - Task("Agent 1", "full instructions", "agent-type-1")
-  - Task("Agent 2", "full instructions", "agent-type-2") 
+  - Task("Agent 2", "full instructions", "agent-type-2")
   - Task("Agent 3", "full instructions", "agent-type-3")
   - Task("Agent 4", "full instructions", "agent-type-4")
   - Task("Agent 5", "full instructions", "agent-type-5")
@@ -182,6 +236,7 @@ npx claude-flow sparc run integration "integrate authentication with user manage
 ### 📋 Agent Categories & Concurrent Patterns
 
 #### **Core Development Agents**
+
 - `coder` - Implementation specialist
 - `reviewer` - Code quality assurance
 - `tester` - Test creation and validation
@@ -189,16 +244,18 @@ npx claude-flow sparc run integration "integrate authentication with user manage
 - `researcher` - Information gathering
 
 **Concurrent Usage:**
+
 ```bash
 # Deploy full development swarm
 Task("Research requirements", "...", "researcher")
-Task("Plan architecture", "...", "planner") 
+Task("Plan architecture", "...", "planner")
 Task("Implement features", "...", "coder")
 Task("Create tests", "...", "tester")
 Task("Review code", "...", "reviewer")
 ```
 
 #### **Swarm Coordination Agents**
+
 - `hierarchical-coordinator` - Queen-led coordination
 - `mesh-coordinator` - Peer-to-peer networks
 - `adaptive-coordinator` - Dynamic topology
@@ -206,6 +263,7 @@ Task("Review code", "...", "reviewer")
 - `swarm-memory-manager` - Distributed memory
 
 **Concurrent Swarm Deployment:**
+
 ```bash
 # Deploy multi-topology coordination
 Task("Hierarchical coordination", "...", "hierarchical-coordinator")
@@ -214,6 +272,7 @@ Task("Adaptive optimization", "...", "adaptive-coordinator")
 ```
 
 #### **Consensus & Distributed Systems**
+
 - `byzantine-coordinator` - Byzantine fault tolerance
 - `raft-manager` - Leader election protocols
 - `gossip-coordinator` - Epidemic dissemination
@@ -223,6 +282,7 @@ Task("Adaptive optimization", "...", "adaptive-coordinator")
 - `security-manager` - Cryptographic security
 
 #### **Performance & Optimization**
+
 - `perf-analyzer` - Bottleneck identification
 - `performance-benchmarker` - Performance testing
 - `task-orchestrator` - Workflow optimization
@@ -230,6 +290,7 @@ Task("Adaptive optimization", "...", "adaptive-coordinator")
 - `smart-agent` - Intelligent coordination
 
 #### **GitHub & Repository Management**
+
 - `github-modes` - Comprehensive GitHub integration
 - `pr-manager` - Pull request management
 - `code-review-swarm` - Multi-agent code review
@@ -241,6 +302,7 @@ Task("Adaptive optimization", "...", "adaptive-coordinator")
 - `multi-repo-swarm` - Cross-repository coordination
 
 #### **SPARC Methodology Agents**
+
 - `sparc-coord` - SPARC orchestration
 - `sparc-coder` - TDD implementation
 - `specification` - Requirements analysis
@@ -249,6 +311,7 @@ Task("Adaptive optimization", "...", "adaptive-coordinator")
 - `refinement` - Iterative improvement
 
 #### **Specialized Development**
+
 - `backend-dev` - API development
 - `mobile-dev` - React Native development
 - `ml-developer` - Machine learning
@@ -259,19 +322,22 @@ Task("Adaptive optimization", "...", "adaptive-coordinator")
 - `base-template-generator` - Boilerplate creation
 
 #### **Testing & Validation**
+
 - `tdd-london-swarm` - Mock-driven TDD
 - `production-validator` - Real implementation validation
 
 #### **Migration & Planning**
+
 - `migration-planner` - System migrations
 - `swarm-init` - Topology initialization
 
 ### 🎯 Concurrent Agent Patterns
 
 #### **Full-Stack Development Swarm (8 agents)**
+
 ```bash
 Task("System architecture", "...", "system-architect")
-Task("Backend APIs", "...", "backend-dev") 
+Task("Backend APIs", "...", "backend-dev")
 Task("Frontend mobile", "...", "mobile-dev")
 Task("Database design", "...", "coder")
 Task("API documentation", "...", "api-docs")
@@ -281,16 +347,18 @@ Task("Production validation", "...", "production-validator")
 ```
 
 #### **Distributed System Swarm (6 agents)**
+
 ```bash
 Task("Byzantine consensus", "...", "byzantine-coordinator")
 Task("Raft coordination", "...", "raft-manager")
-Task("Gossip protocols", "...", "gossip-coordinator") 
+Task("Gossip protocols", "...", "gossip-coordinator")
 Task("CRDT synchronization", "...", "crdt-synchronizer")
 Task("Security management", "...", "security-manager")
 Task("Performance monitoring", "...", "perf-analyzer")
 ```
 
 #### **GitHub Workflow Swarm (5 agents)**
+
 ```bash
 Task("PR management", "...", "pr-manager")
 Task("Code review", "...", "code-review-swarm")
@@ -300,10 +368,11 @@ Task("Workflow automation", "...", "workflow-automation")
 ```
 
 #### **SPARC TDD Swarm (7 agents)**
+
 ```bash
 Task("Requirements spec", "...", "specification")
 Task("Algorithm design", "...", "pseudocode")
-Task("System architecture", "...", "architecture") 
+Task("System architecture", "...", "architecture")
 Task("TDD implementation", "...", "sparc-coder")
 Task("London school tests", "...", "tdd-london-swarm")
 Task("Iterative refinement", "...", "refinement")
@@ -313,25 +382,45 @@ Task("Production validation", "...", "production-validator")
 ### ⚡ Performance Optimization
 
 **Agent Selection Strategy:**
+
 - **High Priority**: Use 3-5 agents max for critical path
 - **Medium Priority**: Use 5-8 agents for complex features
 - **Large Projects**: Use 8+ agents with proper coordination
 
 **Memory Management:**
+
 - Use `memory-coordinator` for cross-agent state
 - Implement `swarm-memory-manager` for distributed coordination
 - Apply `collective-intelligence-coordinator` for decision-making
 
-For more information about SPARC methodology and batchtools optimization, see: 
+## dev-box Integration
+
+This Claude Code configuration is specifically optimized for the dev-box
+development environment platform. For project-specific documentation, see:
+
+- **📖 [dev-box Documentation Site](docs/dev-box-site/)** - Comprehensive
+  project documentation
+- **🚀 [Getting Started Guide](docs/dev-box-site/src/getting-started/)** -
+  Installation and setup
+- **📖 [User Guides](docs/dev-box-site/src/guides/)** - Vagrant workflows and
+  best practices
+- **🔧 [API Reference](docs/dev-box-site/src/api/)** - CLI commands and
+  configuration
+- **🔍 [Troubleshooting](docs/dev-box-site/src/troubleshooting/)** - Common
+  issues and solutions
+
+For more information about SPARC methodology and batchtools optimization, see:
+
 - SPARC Guide: https://github.com/ruvnet/claude-code-flow/docs/sparc.md
-- Batchtools Documentation: https://github.com/ruvnet/claude-code-flow/docs/batchtools.md
+- Batchtools Documentation:
+  https://github.com/ruvnet/claude-code-flow/docs/batchtools.md
 
 # important-instruction-reminders
-Message 3: Task("Agent 2")
-Message 4: Read("file1.js")
-Message 5: Write("output1.js")
-Message 6: Bash("npm install")
-// This is 6x slower and breaks coordination!
+
+Message 3: Task("Agent 2") Message 4: Read("file1.js") Message 5:
+Write("output1.js") Message 6: Bash("npm install") // This is 6x slower and
+breaks coordination!
+
 ```
 
 ### 🎯 CONCURRENT EXECUTION CHECKLIST:
@@ -436,8 +525,10 @@ If ANY answer is "No", you MUST combine operations into a single message!
 ### ⚡ THE GOLDEN RULE OF SWARMS
 
 ```
+
 If you need to do X operations, they should be in 1 message, not X messages
-```
+
+````
 
 ### 🚨 MANDATORY TODO AND TASK BATCHING
 
@@ -474,7 +565,7 @@ If you need to do X operations, they should be in 1 message, not X messages
   Write "app/package.json"
   Write "app/README.md"
   Write "app/src/index.js"
-```
+````
 
 **❌ WRONG - Multiple Messages (NEVER DO THIS):**
 
@@ -552,7 +643,8 @@ Once configured, Claude Flow MCP tools enhance Claude Code's coordination:
 ### Coordination Tools:
 
 - `mcp__claude-flow__swarm_init` - Set up coordination topology for Claude Code
-- `mcp__claude-flow__agent_spawn` - Create cognitive patterns to guide Claude Code
+- `mcp__claude-flow__agent_spawn` - Create cognitive patterns to guide Claude
+  Code
 - `mcp__claude-flow__task_orchestrate` - Break down and coordinate complex tasks
 
 ### Monitoring Tools:
@@ -607,7 +699,8 @@ Once configured, Claude Flow MCP tools enhance Claude Code's coordination:
 **Step 3:** Coordinate research execution
 
 - Tool: `mcp__claude-flow__task_orchestrate`
-- Parameters: `{"task": "Research neural architecture search papers", "strategy": "adaptive"}`
+- Parameters:
+  `{"task": "Research neural architecture search papers", "strategy": "adaptive"}`
 - Result: Claude Code systematically searches, reads, and analyzes papers
 
 **What Actually Happens:**
@@ -623,12 +716,14 @@ Once configured, Claude Flow MCP tools enhance Claude Code's coordination:
 
 ### Development Coordination Example
 
-**Context:** Claude Code needs to build a complex system with multiple components
+**Context:** Claude Code needs to build a complex system with multiple
+components
 
 **Step 1:** Set up development coordination
 
 - Tool: `mcp__claude-flow__swarm_init`
-- Parameters: `{"topology": "hierarchical", "maxAgents": 8, "strategy": "specialized"}`
+- Parameters:
+  `{"topology": "hierarchical", "maxAgents": 8, "strategy": "specialized"}`
 - Result: Hierarchical structure for organized development
 
 **Step 2:** Define development perspectives
@@ -640,7 +735,8 @@ Once configured, Claude Flow MCP tools enhance Claude Code's coordination:
 **Step 3:** Coordinate implementation
 
 - Tool: `mcp__claude-flow__task_orchestrate`
-- Parameters: `{"task": "Implement user authentication with JWT", "strategy": "parallel"}`
+- Parameters:
+  `{"task": "Implement user authentication with JWT", "strategy": "parallel"}`
 - Result: Claude Code implements features using its native tools
 
 **What Actually Happens:**
@@ -661,7 +757,8 @@ Once configured, Claude Flow MCP tools enhance Claude Code's coordination:
 **Step 1:** Initialize GitHub swarm
 
 - Tool: `mcp__claude-flow__github_swarm`
-- Parameters: `{"repository": "owner/repo", "agents": 5, "focus": "maintenance"}`
+- Parameters:
+  `{"repository": "owner/repo", "agents": 5, "focus": "maintenance"}`
 - Result: Specialized swarm for repository management
 
 **Step 2:** Analyze repository health
@@ -787,16 +884,21 @@ See `.claude/commands/` for detailed documentation on all features.
 
 **MANDATORY**: When using swarms, you MUST:
 
-1. **SPAWN ALL AGENTS IN ONE BATCH** - Use multiple tool calls in a SINGLE message
-2. **EXECUTE TASKS IN PARALLEL** - Never wait for one task before starting another
-3. **USE BATCHTOOL FOR EVERYTHING** - Multiple operations = Single message with multiple tools
-4. **ALL AGENTS MUST USE COORDINATION TOOLS** - Every spawned agent MUST use claude-flow hooks and memory
+1. **SPAWN ALL AGENTS IN ONE BATCH** - Use multiple tool calls in a SINGLE
+   message
+2. **EXECUTE TASKS IN PARALLEL** - Never wait for one task before starting
+   another
+3. **USE BATCHTOOL FOR EVERYTHING** - Multiple operations = Single message with
+   multiple tools
+4. **ALL AGENTS MUST USE COORDINATION TOOLS** - Every spawned agent MUST use
+   claude-flow hooks and memory
 
 ### 🎯 AGENT COUNT CONFIGURATION
 
 **CRITICAL: Dynamic Agent Count Rules**
 
-1. **Check CLI Arguments First**: If user runs `npx claude-flow@alpha --agents 5`, use 5 agents
+1. **Check CLI Arguments First**: If user runs
+   `npx claude-flow@alpha --agents 5`, use 5 agents
 2. **Auto-Decide if No Args**: Without CLI args, analyze task complexity:
    - Simple tasks (1-3 components): 3-4 agents
    - Medium tasks (4-6 components): 5-7 agents
@@ -815,9 +917,9 @@ maxAgents = CLI_ARGS.agents || determineAgentCount(task);
 
 function determineAgentCount(task) {
   // Analyze task complexity
-  if (task.includes(['API', 'database', 'auth', 'tests'])) return 8;
-  if (task.includes(['frontend', 'backend'])) return 6;
-  if (task.includes(['simple', 'script'])) return 3;
+  if (task.includes(["API", "database", "auth", "tests"])) return 8;
+  if (task.includes(["frontend", "backend"])) return 6;
+  if (task.includes(["simple", "script"])) return 3;
   return 5; // default
 }
 ```
@@ -1093,7 +1195,8 @@ mcp__claude-flow__memory_usage
 1. **Batch Everything**: Never operate on single files when multiple are needed
 2. **Parallel First**: Always think "what can run simultaneously?"
 3. **Memory is Key**: Use memory for ALL cross-agent coordination
-4. **Monitor Progress**: Use mcp**claude-flow**swarm_monitor for real-time tracking
+4. **Monitor Progress**: Use mcp**claude-flow**swarm_monitor for real-time
+   tracking
 5. **Auto-Optimize**: Let hooks handle topology and agent selection
 
 ### 🎨 VISUAL SWARM STATUS
@@ -1182,4 +1285,5 @@ Claude Flow extends the base coordination with:
 
 ---
 
-Remember: **Claude Flow coordinates, Claude Code creates!** Start with `mcp__claude-flow__swarm_init` to enhance your development workflow.
+Remember: **Claude Flow coordinates, Claude Code creates!** Start with
+`mcp__claude-flow__swarm_init` to enhance your development workflow.

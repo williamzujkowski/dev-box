@@ -1,16 +1,20 @@
 # Sandbox Lifecycle Core
 
-A comprehensive Python framework for managing isolated execution environments with safety guarantees, state tracking, and rollback capabilities.
+A comprehensive Python framework for managing isolated execution environments
+with safety guarantees, state tracking, and rollback capabilities.
 
 ## Features
 
 ### 🏗️ Core Architecture
-- **Modular Design**: Clean separation of concerns with lifecycle, monitoring, and safety modules
+
+- **Modular Design**: Clean separation of concerns with lifecycle, monitoring,
+  and safety modules
 - **Async/Await Support**: Fully asynchronous operations for better performance
 - **Type Safety**: Comprehensive type hints and validation
 - **Extensible**: Plugin-friendly architecture for custom implementations
 
 ### 🔒 Safety & Security
+
 - **Operation Validation**: Pre-execution safety checks with configurable rules
 - **Pattern Matching**: Dangerous command and content detection
 - **Resource Limits**: CPU, memory, disk, and network usage constraints
@@ -18,6 +22,7 @@ A comprehensive Python framework for managing isolated execution environments wi
 - **Sandboxing**: Isolated workspace with controlled access
 
 ### 📸 State Management & Rollback
+
 - **State Snapshots**: Point-in-time state capture with compression
 - **Rollback Capability**: Full or selective state restoration
 - **Version Control**: Versioned state entries with history tracking
@@ -25,6 +30,7 @@ A comprehensive Python framework for managing isolated execution environments wi
 - **Automatic Cleanup**: Configurable retention policies
 
 ### 📊 Monitoring & Health
+
 - **Real-time Tracking**: Resource usage and operation monitoring
 - **Health Checks**: System health assessment with automated recovery
 - **Performance Metrics**: Comprehensive performance analytics
@@ -69,11 +75,11 @@ async def main():
             "network": {"allow_external": False}
         }
     )
-    
+
     # Create and initialize sandbox
     sandbox = SandboxCore(config)
     await sandbox.initialize()
-    
+
     # Execute operation
     operation = {
         "type": "file_operation",
@@ -81,10 +87,10 @@ async def main():
         "command": "echo 'Hello, Sandbox!'",
         "files": ["output.txt"]
     }
-    
+
     result = await sandbox.execute_operation(operation)
     print(f"Operation result: {result}")
-    
+
     # Cleanup
     await sandbox.cleanup()
 
@@ -119,43 +125,57 @@ sandbox-core/
 ## Key Components
 
 ### SandboxCore
+
 The main orchestrator that coordinates all sandbox operations:
+
 - Lifecycle management (initialize, suspend, resume, cleanup)
 - Operation execution with safety checks
 - Component coordination and error handling
 
 ### SandboxInitializer
+
 Handles sandbox environment setup:
+
 - Workspace creation and structure
 - Resource allocation and limits
 - Security configuration and validation
 
 ### StateManager
+
 Manages persistent state with versioning:
+
 - SQLite-based storage with encryption support
 - State snapshots and history tracking
 - Cross-session persistence and recovery
 
 ### StateTracker
+
 Real-time monitoring and metrics collection:
+
 - Resource usage tracking (CPU, memory, disk, network)
 - Operation performance metrics
 - Historical data analysis
 
 ### HealthMonitor
+
 Continuous health assessment:
+
 - System resource health checks
 - Process and filesystem monitoring
 - Automated recovery mechanisms
 
 ### RollbackManager
+
 Comprehensive rollback capabilities:
+
 - Filesystem snapshots with compression
 - Incremental and full backups
 - Integrity validation and corruption detection
 
 ### SafetyValidator
+
 Security and safety validation:
+
 - Pattern-based content filtering
 - Resource usage validation
 - Risk assessment and scoring
@@ -204,17 +224,20 @@ pytest tests/ --cov=src/sandbox --cov-report=html
 ## Safety Features
 
 ### Operation Validation
+
 - Pre-execution safety checks
 - Dangerous command detection
 - Resource limit enforcement
 - Risk-based approval workflows
 
 ### Content Filtering
+
 - Pattern-based malicious content detection
 - File type and extension validation
 - Size limits and content scanning
 
 ### Isolation
+
 - Workspace-confined operations
 - Network access controls
 - Process isolation and resource limits
@@ -222,16 +245,19 @@ pytest tests/ --cov=src/sandbox --cov-report=html
 ## Monitoring & Observability
 
 ### Metrics Collection
+
 - Real-time resource usage monitoring
 - Operation performance tracking
 - Historical trend analysis
 
 ### Health Monitoring
+
 - Automated health checks
 - System resource validation
 - Self-healing capabilities
 
 ### Event System
+
 - Operation lifecycle events
 - Threshold violation alerts
 - Custom event handlers
@@ -239,16 +265,19 @@ pytest tests/ --cov=src/sandbox --cov-report=html
 ## Advanced Features
 
 ### State Management
+
 - Versioned state with rollback support
 - Cross-session persistence
 - Encrypted sensitive data storage
 
 ### Snapshot & Recovery
+
 - Point-in-time state capture
 - Incremental backup support
 - Automated cleanup policies
 
 ### Extensibility
+
 - Plugin architecture for custom validators
 - Custom operation types
 - Configurable monitoring checks
@@ -256,12 +285,14 @@ pytest tests/ --cov=src/sandbox --cov-report=html
 ## Development
 
 ### Project Structure
+
 - Clean modular architecture
 - Comprehensive type hints
 - Extensive documentation
 - Full test coverage
 
 ### Code Quality
+
 - Black code formatting
 - Flake8 linting
 - MyPy type checking
@@ -269,7 +300,8 @@ pytest tests/ --cov=src/sandbox --cov-report=html
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for
+details.
 
 ## Contributing
 
@@ -281,4 +313,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For questions, issues, or contributions, please refer to the project's issue tracker or documentation.
+For questions, issues, or contributions, please refer to the project's issue
+tracker or documentation.

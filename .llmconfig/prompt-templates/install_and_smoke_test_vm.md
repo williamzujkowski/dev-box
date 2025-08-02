@@ -38,7 +38,8 @@ sudo apt update
 sudo apt install -y virtualbox-7.1
 ```
 
-If users are not members of the `vboxusers` group, add automatically (able to run guest additions builds without root):
+If users are not members of the `vboxusers` group, add automatically (able to
+run guest additions builds without root):
 
 ```bash
 sudo usermod -aG vboxusers $(whoami)
@@ -91,11 +92,10 @@ Bring up VM:
 vagrant up --provider=virtualbox
 ```
 
-* **If exit code 0**: move to SSH test.
-* **On failure**:
-
-  * Inspect the last 200 lines of the output.
-  * **If mentions missing Guest Additions kernel headers or DKMS**:
+- **If exit code 0**: move to SSH test.
+- **On failure**:
+  - Inspect the last 200 lines of the output.
+  - **If mentions missing Guest Additions kernel headers or DKMS**:
 
     ```bash
     sed -i -e '/guest additions install/a sudo apt update && sudo apt install -y build-essential dkms linux-headers-$(uname -r)' Vagrantfile \
@@ -104,7 +104,9 @@ vagrant up --provider=virtualbox
     git commit -m "fix: install prerequisites for VirtualBox Guest Additions"
     vagrant up --provider=virtualbox
     ```
-  * **If box not found ("cannot find box ubuntu-24-04")**: confirm fallback base box is set (as above) and retry.
+
+  - **If box not found ("cannot find box ubuntu-24-04")**: confirm fallback base
+    box is set (as above) and retry.
 
 Test VM connectivity:
 
@@ -112,7 +114,8 @@ Test VM connectivity:
 vagrant ssh -c "uname -r && echo env-verifier‑host: Ubuntu‑24.04 VM SSH OK"
 ```
 
-On failure, diagnose: SSH keys, port mapping, or network setup; surface errors for manual review.
+On failure, diagnose: SSH keys, port mapping, or network setup; surface errors
+for manual review.
 
 ---
 
@@ -120,19 +123,19 @@ On failure, diagnose: SSH keys, port mapping, or network setup; surface errors f
 
 Upon successful SSH connection and prior host setup:
 
-* Log:
+- Log:
 
 ```
 env-verifier-host: Ubuntu 24.04 VM prepared and smoke test passed 🎯
 ```
 
-* If any commit operations occurred, push changes:
+- If any commit operations occurred, push changes:
 
 ```bash
 git push origin HEAD
 ```
 
-* If remote not configured, log:
+- If remote not configured, log:
 
 ```
 env-verifier-host: no remote detected — commit remains local
@@ -142,26 +145,35 @@ env-verifier-host: no remote detected — commit remains local
 
 ## Behavioral Rules
 
-* Only install or modify files when strictly necessary (e.g. if missing binary or provisioning fails).
-* Do NOT commit temporary files, logs, or `.ARG-files.log`.
-* Use structured, audit-friendly logs for each step.
-* Do not pause workflow unless ambiguity arises (e.g. conflicting commands that need human approval).
+- Only install or modify files when strictly necessary (e.g. if missing binary
+  or provisioning fails).
+- Do NOT commit temporary files, logs, or `.ARG-files.log`.
+- Use structured, audit-friendly logs for each step.
+- Do not pause workflow unless ambiguity arises (e.g. conflicting commands that
+  need human approval).
 
 ---
 
 ## Allowed Modifications
 
-* `.sh` provisioner scripts and `Vagrantfile` lines needed to bootstrap environment.
-* Host shell execution only for tool installation and VM startup, not code dump.
+- `.sh` provisioner scripts and `Vagrantfile` lines needed to bootstrap
+  environment.
+- Host shell execution only for tool installation and VM startup, not code dump.
 
 ---
 
 **Why This Matters**
 
-* Ubuntu 24.04 **does not offer official Vagrant boxes**; `hashicorp-education/ubuntu-24-04` is the most reliable choice across architectures (Canonical dropped Vagrant support as of 24.04).
-* Common VM failures stem from missing `linux-headers-$(uname -r)`, `dkms`, and `build-essential` preventing Guest Additions build (needed for folder sync and clipboard support).
-* Installing VirtualBox via Oracle's apt repository ensures up-to-date 7.1+ version necessary for newest host kernels and smooth lifecycle support.
-* Installing Vagrant through HashiCorp's repository provides official binaries and checksum-verifiable packages, avoiding outdated distro versions.
+- Ubuntu 24.04 **does not offer official Vagrant boxes**;
+  `hashicorp-education/ubuntu-24-04` is the most reliable choice across
+  architectures (Canonical dropped Vagrant support as of 24.04).
+- Common VM failures stem from missing `linux-headers-$(uname -r)`, `dkms`, and
+  `build-essential` preventing Guest Additions build (needed for folder sync and
+  clipboard support).
+- Installing VirtualBox via Oracle's apt repository ensures up-to-date 7.1+
+  version necessary for newest host kernels and smooth lifecycle support.
+- Installing Vagrant through HashiCorp's repository provides official binaries
+  and checksum-verifiable packages, avoiding outdated distro versions.
 
 ---
 

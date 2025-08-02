@@ -4,8 +4,8 @@
 sandbox_id: "default-sandbox"
 workspace_path: "/tmp/sandbox-workspace"
 auto_cleanup: true
-snapshot_frequency: 300  # seconds
-max_execution_time: 3600  # seconds
+snapshot_frequency: 300 # seconds
+max_execution_time: 3600 # seconds
 
 # Resource limits
 resource_limits:
@@ -22,13 +22,13 @@ safety_constraints:
   max_snapshots: 10
   compress_snapshots: true
   incremental_snapshots: true
-  auto_cleanup_hours: 168  # 1 week
+  auto_cleanup_hours: 168 # 1 week
   encrypt_snapshots: false
   encrypt_state: false
-  
+
   # Content size limits
   max_content_size_mb: 10
-  
+
   # Network constraints
   network:
     allow_external: false
@@ -36,10 +36,10 @@ safety_constraints:
 
 # Monitoring configuration
 monitoring_config:
-  collection_interval: 30  # seconds
-  health_check_interval: 60  # seconds
+  collection_interval: 30 # seconds
+  health_check_interval: 60 # seconds
   max_operation_history: 1000
-  
+
   # Resource thresholds
   resource_thresholds:
     cpu_percent: 80
@@ -48,7 +48,7 @@ monitoring_config:
     memory_mb: 800
     disk_mb: 1600
     min_free_space_mb: 100
-  
+
   # Critical thresholds
   critical_thresholds:
     cpu_percent: 95
@@ -56,13 +56,13 @@ monitoring_config:
     disk_percent: 95
     max_zombie_processes: 10
     max_total_processes: 1000
-  
-  # Warning thresholds  
+
+  # Warning thresholds
   warning_thresholds:
     cpu_percent: 70
     memory_percent: 70
     disk_percent: 70
-  
+
   # Health check configuration
   enabled_health_checks:
     - resource_usage
@@ -70,6 +70,6 @@ monitoring_config:
     - process_health
     - network
     - application
-  
+
   # Recovery settings
   auto_recovery: true

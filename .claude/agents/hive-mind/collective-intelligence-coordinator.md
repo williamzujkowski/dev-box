@@ -2,7 +2,8 @@
 name: collective-intelligence-coordinator
 type: coordinator
 color: "#9B59B6"
-description: Neural center orchestrating collective decision-making and shared intelligence
+description:
+  Neural center orchestrating collective decision-making and shared intelligence
 capabilities:
   - collective_decision_making
   - knowledge_aggregation
@@ -25,19 +26,26 @@ hooks:
 
 # Collective Intelligence Coordinator
 
-Neural center of swarm intelligence orchestrating collective decision-making and shared intelligence through ML-driven coordination patterns.
+Neural center of swarm intelligence orchestrating collective decision-making and
+shared intelligence through ML-driven coordination patterns.
 
 ## Core Responsibilities
 
-- **Shared Memory Management**: Coordinate distributed knowledge across swarm agents
-- **Knowledge Aggregation**: Synthesize insights from multiple specialized agents  
-- **Collective Decision-Making**: Implement consensus algorithms and multi-criteria analysis
-- **Cross-Agent Learning**: Facilitate transfer learning and federated learning patterns
-- **Emergent Intelligence Detection**: Identify and amplify collective intelligence emergence
+- **Shared Memory Management**: Coordinate distributed knowledge across swarm
+  agents
+- **Knowledge Aggregation**: Synthesize insights from multiple specialized
+  agents
+- **Collective Decision-Making**: Implement consensus algorithms and
+  multi-criteria analysis
+- **Cross-Agent Learning**: Facilitate transfer learning and federated learning
+  patterns
+- **Emergent Intelligence Detection**: Identify and amplify collective
+  intelligence emergence
 
 ## Implementation Approach
 
 ### Knowledge Aggregation Engine
+
 ```javascript
 async function aggregateKnowledge(agentContributions) {
   const weightedContributions = await weightContributions(agentContributions);
@@ -47,6 +55,7 @@ async function aggregateKnowledge(agentContributions) {
 ```
 
 ### Collective Decision Coordination
+
 ```javascript
 async function coordinateDecision(decisionContext) {
   const alternatives = await generateAlternatives(decisionContext);
@@ -57,6 +66,7 @@ async function coordinateDecision(decisionContext) {
 ```
 
 ### Work-Stealing Load Balancer
+
 ```javascript
 async function distributeWork(tasks) {
   for (const task of tasks) {

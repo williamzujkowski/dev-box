@@ -2,7 +2,9 @@
 name: crdt-synchronizer
 type: synchronizer
 color: "#4CAF50"
-description: Implements Conflict-free Replicated Data Types for eventually consistent state synchronization
+description:
+  Implements Conflict-free Replicated Data Types for eventually consistent state
+  synchronization
 capabilities:
   - state_based_crdts
   - operation_based_crdts
@@ -25,19 +27,24 @@ hooks:
 
 # CRDT Synchronizer
 
-Implements Conflict-free Replicated Data Types for eventually consistent distributed state synchronization.
+Implements Conflict-free Replicated Data Types for eventually consistent
+distributed state synchronization.
 
 ## Core Responsibilities
 
-1. **CRDT Implementation**: Deploy state-based and operation-based conflict-free data types
-2. **Data Structure Management**: Handle counters, sets, registers, and composite structures
+1. **CRDT Implementation**: Deploy state-based and operation-based conflict-free
+   data types
+2. **Data Structure Management**: Handle counters, sets, registers, and
+   composite structures
 3. **Delta Synchronization**: Implement efficient incremental state updates
 4. **Conflict Resolution**: Ensure deterministic conflict-free merge operations
-5. **Causal Consistency**: Maintain proper ordering of causally related operations
+5. **Causal Consistency**: Maintain proper ordering of causally related
+   operations
 
 ## Technical Implementation
 
 ### Base CRDT Framework
+
 ```javascript
 class CRDTSynchronizer {
   constructor(nodeId, replicationGroup) {
@@ -54,29 +61,29 @@ class CRDTSynchronizer {
   registerCRDT(name, crdtType, initialState = null) {
     const crdt = this.createCRDTInstance(crdtType, initialState);
     this.crdtInstances.set(name, crdt);
-    
+
     // Subscribe to CRDT changes for delta tracking
-    crdt.onUpdate((delta) => {
+    crdt.onUpdate(delta => {
       this.trackDelta(name, delta);
     });
-    
+
     return crdt;
   }
 
   // Create specific CRDT instance
   createCRDTInstance(type, initialState) {
     switch (type) {
-      case 'G_COUNTER':
+      case "G_COUNTER":
         return new GCounter(this.nodeId, this.replicationGroup, initialState);
-      case 'PN_COUNTER':
+      case "PN_COUNTER":
         return new PNCounter(this.nodeId, this.replicationGroup, initialState);
-      case 'OR_SET':
+      case "OR_SET":
         return new ORSet(this.nodeId, initialState);
-      case 'LWW_REGISTER':
+      case "LWW_REGISTER":
         return new LWWRegister(this.nodeId, initialState);
-      case 'OR_MAP':
+      case "OR_MAP":
         return new ORMap(this.nodeId, this.replicationGroup, initialState);
-      case 'RGA':
+      case "RGA":
         return new RGA(this.nodeId, initialState);
       default:
         throw new Error(`Unknown CRDT type: ${type}`);
@@ -86,7 +93,7 @@ class CRDTSynchronizer {
   // Synchronize with peer nodes
   async synchronize(peerNodes = null) {
     const targets = peerNodes || Array.from(this.replicationGroup);
-    
+
     for (const peer of targets) {
       if (peer !== this.nodeId) {
         await this.synchronizeWithPeer(peer);
@@ -98,16 +105,16 @@ class CRDTSynchronizer {
     // Get current state and deltas
     const localState = this.getCurrentState();
     const deltas = this.getDeltasSince(peerNode);
-    
+
     // Send sync request
     const syncRequest = {
-      type: 'CRDT_SYNC_REQUEST',
+      type: "CRDT_SYNC_REQUEST",
       sender: this.nodeId,
       vectorClock: this.vectorClock.clone(),
       state: localState,
-      deltas: deltas
+      deltas: deltas,
     };
-    
+
     try {
       const response = await this.sendSyncRequest(peerNode, syncRequest);
       await this.processSyncResponse(response);
@@ -119,44 +126,45 @@ class CRDTSynchronizer {
 ```
 
 ### G-Counter Implementation
+
 ```javascript
 class GCounter {
   constructor(nodeId, replicationGroup, initialState = null) {
     this.nodeId = nodeId;
     this.replicationGroup = replicationGroup;
     this.payload = new Map();
-    
+
     // Initialize counters for all nodes
     for (const node of replicationGroup) {
       this.payload.set(node, 0);
     }
-    
+
     if (initialState) {
       this.merge(initialState);
     }
-    
+
     this.updateCallbacks = [];
   }
 
   // Increment operation (can only be performed by owner node)
   increment(amount = 1) {
     if (amount < 0) {
-      throw new Error('G-Counter only supports positive increments');
+      throw new Error("G-Counter only supports positive increments");
     }
-    
+
     const oldValue = this.payload.get(this.nodeId) || 0;
     const newValue = oldValue + amount;
     this.payload.set(this.nodeId, newValue);
-    
+
     // Notify observers
     this.notifyUpdate({
-      type: 'INCREMENT',
+      type: "INCREMENT",
       node: this.nodeId,
       oldValue: oldValue,
       newValue: newValue,
-      delta: amount
+      delta: amount,
     });
-    
+
     return newValue;
   }
 
@@ -168,7 +176,7 @@ class GCounter {
   // Merge with another G-Counter state
   merge(otherState) {
     let changed = false;
-    
+
     for (const [node, otherValue] of otherState.payload) {
       const currentValue = this.payload.get(node) || 0;
       if (otherValue > currentValue) {
@@ -176,11 +184,11 @@ class GCounter {
         changed = true;
       }
     }
-    
+
     if (changed) {
       this.notifyUpdate({
-        type: 'MERGE',
-        mergedFrom: otherState
+        type: "MERGE",
+        mergedFrom: otherState,
       });
     }
   }
@@ -190,12 +198,12 @@ class GCounter {
     for (const [node, otherValue] of otherState.payload) {
       const currentValue = this.payload.get(node) || 0;
       if (currentValue < otherValue) {
-        return 'LESS_THAN';
+        return "LESS_THAN";
       } else if (currentValue > otherValue) {
-        return 'GREATER_THAN';
+        return "GREATER_THAN";
       }
     }
-    return 'EQUAL';
+    return "EQUAL";
   }
 
   // Clone current state
@@ -216,6 +224,7 @@ class GCounter {
 ```
 
 ### OR-Set Implementation
+
 ```javascript
 class ORSet {
   constructor(nodeId, initialState = null) {
@@ -223,30 +232,30 @@ class ORSet {
     this.elements = new Map(); // element -> Set of unique tags
     this.tombstones = new Set(); // removed element tags
     this.tagCounter = 0;
-    
+
     if (initialState) {
       this.merge(initialState);
     }
-    
+
     this.updateCallbacks = [];
   }
 
   // Add element to set
   add(element) {
     const tag = this.generateUniqueTag();
-    
+
     if (!this.elements.has(element)) {
       this.elements.set(element, new Set());
     }
-    
+
     this.elements.get(element).add(tag);
-    
+
     this.notifyUpdate({
-      type: 'ADD',
+      type: "ADD",
       element: element,
-      tag: tag
+      tag: tag,
     });
-    
+
     return tag;
   }
 
@@ -255,22 +264,22 @@ class ORSet {
     if (!this.elements.has(element)) {
       return false; // Element not present
     }
-    
+
     const tags = this.elements.get(element);
     const removedTags = [];
-    
+
     // Add all tags to tombstones
     for (const tag of tags) {
       this.tombstones.add(tag);
       removedTags.push(tag);
     }
-    
+
     this.notifyUpdate({
-      type: 'REMOVE',
+      type: "REMOVE",
       element: element,
-      removedTags: removedTags
+      removedTags: removedTags,
     });
-    
+
     return true;
   }
 
@@ -279,23 +288,23 @@ class ORSet {
     if (!this.elements.has(element)) {
       return false;
     }
-    
+
     const tags = this.elements.get(element);
-    
+
     // Element is present if it has at least one non-tombstoned tag
     for (const tag of tags) {
       if (!this.tombstones.has(tag)) {
         return true;
       }
     }
-    
+
     return false;
   }
 
   // Get all elements in set
   values() {
     const result = new Set();
-    
+
     for (const [element, tags] of this.elements) {
       // Include element if it has at least one non-tombstoned tag
       for (const tag of tags) {
@@ -305,22 +314,22 @@ class ORSet {
         }
       }
     }
-    
+
     return result;
   }
 
   // Merge with another OR-Set
   merge(otherState) {
     let changed = false;
-    
+
     // Merge elements and their tags
     for (const [element, otherTags] of otherState.elements) {
       if (!this.elements.has(element)) {
         this.elements.set(element, new Set());
       }
-      
+
       const currentTags = this.elements.get(element);
-      
+
       for (const tag of otherTags) {
         if (!currentTags.has(tag)) {
           currentTags.add(tag);
@@ -328,7 +337,7 @@ class ORSet {
         }
       }
     }
-    
+
     // Merge tombstones
     for (const tombstone of otherState.tombstones) {
       if (!this.tombstones.has(tombstone)) {
@@ -336,11 +345,11 @@ class ORSet {
         changed = true;
       }
     }
-    
+
     if (changed) {
       this.notifyUpdate({
-        type: 'MERGE',
-        mergedFrom: otherState
+        type: "MERGE",
+        mergedFrom: otherState,
       });
     }
   }
@@ -360,6 +369,7 @@ class ORSet {
 ```
 
 ### LWW-Register Implementation
+
 ```javascript
 class LWWRegister {
   constructor(nodeId, initialValue = null) {
@@ -373,19 +383,21 @@ class LWWRegister {
   // Set new value with timestamp
   set(newValue, timestamp = null) {
     const ts = timestamp || Date.now();
-    
-    if (ts > this.timestamp || 
-        (ts === this.timestamp && this.nodeId > this.getLastWriter())) {
+
+    if (
+      ts > this.timestamp ||
+      (ts === this.timestamp && this.nodeId > this.getLastWriter())
+    ) {
       const oldValue = this.value;
       this.value = newValue;
       this.timestamp = ts;
       this.vectorClock.increment();
-      
+
       this.notifyUpdate({
-        type: 'SET',
+        type: "SET",
         oldValue: oldValue,
         newValue: newValue,
-        timestamp: ts
+        timestamp: ts,
       });
     }
   }
@@ -397,22 +409,23 @@ class LWWRegister {
 
   // Merge with another LWW-Register
   merge(otherRegister) {
-    if (otherRegister.timestamp > this.timestamp ||
-        (otherRegister.timestamp === this.timestamp && 
-         otherRegister.nodeId > this.nodeId)) {
-      
+    if (
+      otherRegister.timestamp > this.timestamp ||
+      (otherRegister.timestamp === this.timestamp &&
+        otherRegister.nodeId > this.nodeId)
+    ) {
       const oldValue = this.value;
       this.value = otherRegister.value;
       this.timestamp = otherRegister.timestamp;
-      
+
       this.notifyUpdate({
-        type: 'MERGE',
+        type: "MERGE",
         oldValue: oldValue,
         newValue: this.value,
-        mergedFrom: otherRegister
+        mergedFrom: otherRegister,
       });
     }
-    
+
     // Merge vector clocks
     this.vectorClock.merge(otherRegister.vectorClock);
   }
@@ -433,6 +446,7 @@ class LWWRegister {
 ```
 
 ### RGA (Replicated Growable Array) Implementation
+
 ```javascript
 class RGA {
   constructor(nodeId, initialSequence = []) {
@@ -440,53 +454,53 @@ class RGA {
     this.sequence = [];
     this.tombstones = new Set();
     this.vertexCounter = 0;
-    
+
     // Initialize with sequence
     for (const element of initialSequence) {
       this.insert(this.sequence.length, element);
     }
-    
+
     this.updateCallbacks = [];
   }
 
   // Insert element at position
   insert(position, element) {
     const vertex = this.createVertex(element, position);
-    
+
     // Find insertion point based on causal ordering
     const insertionIndex = this.findInsertionIndex(vertex, position);
-    
+
     this.sequence.splice(insertionIndex, 0, vertex);
-    
+
     this.notifyUpdate({
-      type: 'INSERT',
+      type: "INSERT",
       position: insertionIndex,
       element: element,
-      vertex: vertex
+      vertex: vertex,
     });
-    
+
     return vertex.id;
   }
 
   // Remove element at position
   remove(position) {
     if (position < 0 || position >= this.visibleLength()) {
-      throw new Error('Position out of bounds');
+      throw new Error("Position out of bounds");
     }
-    
+
     const visibleVertex = this.getVisibleVertex(position);
     if (visibleVertex) {
       this.tombstones.add(visibleVertex.id);
-      
+
       this.notifyUpdate({
-        type: 'REMOVE',
+        type: "REMOVE",
         position: position,
-        vertex: visibleVertex
+        vertex: visibleVertex,
       });
-      
+
       return true;
     }
-    
+
     return false;
   }
 
@@ -499,20 +513,24 @@ class RGA {
 
   // Get visible length
   visibleLength() {
-    return this.sequence.filter(vertex => !this.tombstones.has(vertex.id)).length;
+    return this.sequence.filter(vertex => !this.tombstones.has(vertex.id))
+      .length;
   }
 
   // Merge with another RGA
   merge(otherRGA) {
     let changed = false;
-    
+
     // Merge sequences
-    const mergedSequence = this.mergeSequences(this.sequence, otherRGA.sequence);
+    const mergedSequence = this.mergeSequences(
+      this.sequence,
+      otherRGA.sequence
+    );
     if (mergedSequence.length !== this.sequence.length) {
       this.sequence = mergedSequence;
       changed = true;
     }
-    
+
     // Merge tombstones
     for (const tombstone of otherRGA.tombstones) {
       if (!this.tombstones.has(tombstone)) {
@@ -520,24 +538,25 @@ class RGA {
         changed = true;
       }
     }
-    
+
     if (changed) {
       this.notifyUpdate({
-        type: 'MERGE',
-        mergedFrom: otherRGA
+        type: "MERGE",
+        mergedFrom: otherRGA,
       });
     }
   }
 
   createVertex(element, position) {
-    const leftVertex = position > 0 ? this.getVisibleVertex(position - 1) : null;
-    
+    const leftVertex =
+      position > 0 ? this.getVisibleVertex(position - 1) : null;
+
     return {
       id: `${this.nodeId}-${++this.vertexCounter}`,
       element: element,
       leftOrigin: leftVertex ? leftVertex.id : null,
       timestamp: Date.now(),
-      nodeId: this.nodeId
+      nodeId: this.nodeId,
     };
   }
 
@@ -545,7 +564,7 @@ class RGA {
     // Simplified insertion logic - in practice would use more sophisticated
     // causal ordering based on left origins and vector clocks
     let visibleCount = 0;
-    
+
     for (let i = 0; i < this.sequence.length; i++) {
       if (!this.tombstones.has(this.sequence[i].id)) {
         if (visibleCount === targetPosition) {
@@ -554,13 +573,13 @@ class RGA {
         visibleCount++;
       }
     }
-    
+
     return this.sequence.length;
   }
 
   getVisibleVertex(position) {
     let visibleCount = 0;
-    
+
     for (const vertex of this.sequence) {
       if (!this.tombstones.has(vertex.id)) {
         if (visibleCount === position) {
@@ -569,7 +588,7 @@ class RGA {
         visibleCount++;
       }
     }
-    
+
     return null;
   }
 
@@ -577,13 +596,13 @@ class RGA {
     // Simplified merge - real implementation would use topological sort
     // based on causal dependencies
     const merged = [...seq1];
-    
+
     for (const vertex of seq2) {
       if (!merged.find(v => v.id === vertex.id)) {
         merged.push(vertex);
       }
     }
-    
+
     // Sort by timestamp for basic ordering
     return merged.sort((a, b) => a.timestamp - b.timestamp);
   }
@@ -599,6 +618,7 @@ class RGA {
 ```
 
 ### Delta-State CRDT Framework
+
 ```javascript
 class DeltaStateCRDT {
   constructor(baseCRDT) {
@@ -613,11 +633,11 @@ class DeltaStateCRDT {
     const oldState = this.baseCRDT.clone();
     const result = this.baseCRDT.applyOperation(operation);
     const newState = this.baseCRDT.clone();
-    
+
     // Compute delta
     const delta = this.computeDelta(oldState, newState);
     this.addDelta(delta);
-    
+
     return result;
   }
 
@@ -626,9 +646,9 @@ class DeltaStateCRDT {
     this.deltaBuffer.push({
       delta: delta,
       timestamp: Date.now(),
-      vectorClock: this.baseCRDT.vectorClock.clone()
+      vectorClock: this.baseCRDT.vectorClock.clone(),
     });
-    
+
     // Maintain buffer size
     if (this.deltaBuffer.length > this.maxDeltaBuffer) {
       this.deltaBuffer.shift();
@@ -638,8 +658,8 @@ class DeltaStateCRDT {
   // Get deltas since last sync with peer
   getDeltasSince(peerNode) {
     const lastSync = this.lastSyncVector.get(peerNode) || new VectorClock();
-    
-    return this.deltaBuffer.filter(deltaEntry => 
+
+    return this.deltaBuffer.filter(deltaEntry =>
       deltaEntry.vectorClock.isAfter(lastSync)
     );
   }
@@ -647,7 +667,7 @@ class DeltaStateCRDT {
   // Apply received deltas
   applyDeltas(deltas) {
     const sortedDeltas = this.sortDeltasByCausalOrder(deltas);
-    
+
     for (const delta of sortedDeltas) {
       this.baseCRDT.merge(delta.delta);
     }
@@ -658,8 +678,8 @@ class DeltaStateCRDT {
     // Implementation depends on specific CRDT type
     // This is a simplified version
     return {
-      type: 'STATE_DELTA',
-      changes: this.compareStates(oldState, newState)
+      type: "STATE_DELTA",
+      changes: this.compareStates(oldState, newState),
     };
   }
 
@@ -674,8 +694,8 @@ class DeltaStateCRDT {
 
   // Garbage collection for old deltas
   garbageCollectDeltas() {
-    const cutoffTime = Date.now() - (24 * 60 * 60 * 1000); // 24 hours
-    
+    const cutoffTime = Date.now() - 24 * 60 * 60 * 1000; // 24 hours
+
     this.deltaBuffer = this.deltaBuffer.filter(
       deltaEntry => deltaEntry.timestamp > cutoffTime
     );
@@ -686,58 +706,61 @@ class DeltaStateCRDT {
 ## MCP Integration Hooks
 
 ### Memory Coordination for CRDT State
+
 ```javascript
 // Store CRDT state persistently
 await this.mcpTools.memory_usage({
-  action: 'store',
+  action: "store",
   key: `crdt_state_${this.crdtName}`,
   value: JSON.stringify({
     type: this.crdtType,
     state: this.serializeState(),
     vectorClock: Array.from(this.vectorClock.entries()),
-    lastSync: Array.from(this.lastSyncVector.entries())
+    lastSync: Array.from(this.lastSyncVector.entries()),
   }),
-  namespace: 'crdt_synchronization',
-  ttl: 0 // Persistent
+  namespace: "crdt_synchronization",
+  ttl: 0, // Persistent
 });
 
 // Coordinate delta synchronization
 await this.mcpTools.memory_usage({
-  action: 'store',
+  action: "store",
   key: `deltas_${this.nodeId}_${Date.now()}`,
   value: JSON.stringify(this.getDeltasSince(null)),
-  namespace: 'crdt_deltas',
-  ttl: 86400000 // 24 hours
+  namespace: "crdt_deltas",
+  ttl: 86400000, // 24 hours
 });
 ```
 
 ### Performance Monitoring
+
 ```javascript
 // Track CRDT synchronization metrics
 await this.mcpTools.metrics_collect({
   components: [
-    'crdt_merge_time',
-    'delta_generation_time',
-    'sync_convergence_time',
-    'memory_usage_per_crdt'
-  ]
+    "crdt_merge_time",
+    "delta_generation_time",
+    "sync_convergence_time",
+    "memory_usage_per_crdt",
+  ],
 });
 
 // Neural pattern learning for sync optimization
 await this.mcpTools.neural_patterns({
-  action: 'learn',
-  operation: 'crdt_sync_optimization',
+  action: "learn",
+  operation: "crdt_sync_optimization",
   outcome: JSON.stringify({
     syncPattern: this.lastSyncPattern,
     convergenceTime: this.lastConvergenceTime,
-    networkTopology: this.networkState
-  })
+    networkTopology: this.networkState,
+  }),
 });
 ```
 
 ## Advanced CRDT Features
 
 ### Causal Consistency Tracker
+
 ```javascript
 class CausalTracker {
   constructor(nodeId) {
@@ -751,7 +774,7 @@ class CausalTracker {
   trackEvent(event) {
     event.vectorClock = this.vectorClock.clone();
     this.vectorClock.increment();
-    
+
     // Check if event can be delivered
     if (this.canDeliver(event)) {
       this.deliverEvent(event);
@@ -783,10 +806,10 @@ class CausalTracker {
     if (!this.deliveredEvents.has(event.id)) {
       // Update vector clock
       this.vectorClock.merge(event.vectorClock);
-      
+
       // Mark as delivered
       this.deliveredEvents.add(event.id);
-      
+
       // Apply event to CRDT
       this.applyCRDTOperation(event);
     }
@@ -800,13 +823,13 @@ class CausalTracker {
 
   checkBufferedEvents() {
     const deliverable = [];
-    
+
     for (const [eventId, event] of this.causalBuffer) {
       if (this.canDeliver(event)) {
         deliverable.push(event);
       }
     }
-    
+
     // Deliver events in causal order
     for (const event of deliverable) {
       this.causalBuffer.delete(event.id);
@@ -817,6 +840,7 @@ class CausalTracker {
 ```
 
 ### CRDT Composition Framework
+
 ```javascript
 class CRDTComposer {
   constructor() {
@@ -828,35 +852,39 @@ class CRDTComposer {
   defineComposite(name, schema) {
     this.compositeTypes.set(name, {
       schema: schema,
-      factory: (nodeId, replicationGroup) => 
-        this.createComposite(schema, nodeId, replicationGroup)
+      factory: (nodeId, replicationGroup) =>
+        this.createComposite(schema, nodeId, replicationGroup),
     });
   }
 
   createComposite(schema, nodeId, replicationGroup) {
     const composite = new CompositeCRDT(nodeId, replicationGroup);
-    
+
     for (const [fieldName, fieldSpec] of Object.entries(schema)) {
-      const fieldCRDT = this.createFieldCRDT(fieldSpec, nodeId, replicationGroup);
+      const fieldCRDT = this.createFieldCRDT(
+        fieldSpec,
+        nodeId,
+        replicationGroup
+      );
       composite.addField(fieldName, fieldCRDT);
     }
-    
+
     return composite;
   }
 
   createFieldCRDT(fieldSpec, nodeId, replicationGroup) {
     switch (fieldSpec.type) {
-      case 'counter':
-        return fieldSpec.decrements ? 
-          new PNCounter(nodeId, replicationGroup) :
-          new GCounter(nodeId, replicationGroup);
-      case 'set':
+      case "counter":
+        return fieldSpec.decrements
+          ? new PNCounter(nodeId, replicationGroup)
+          : new GCounter(nodeId, replicationGroup);
+      case "set":
         return new ORSet(nodeId);
-      case 'register':
+      case "register":
         return new LWWRegister(nodeId);
-      case 'map':
+      case "map":
         return new ORMap(nodeId, replicationGroup, fieldSpec.valueType);
-      case 'sequence':
+      case "sequence":
         return new RGA(nodeId);
       default:
         throw new Error(`Unknown CRDT field type: ${fieldSpec.type}`);
@@ -874,13 +902,13 @@ class CompositeCRDT {
 
   addField(name, crdt) {
     this.fields.set(name, crdt);
-    
+
     // Subscribe to field updates
-    crdt.onUpdate((delta) => {
+    crdt.onUpdate(delta => {
       this.notifyUpdate({
-        type: 'FIELD_UPDATE',
+        type: "FIELD_UPDATE",
         field: name,
-        delta: delta
+        delta: delta,
       });
     });
   }
@@ -891,34 +919,34 @@ class CompositeCRDT {
 
   merge(otherComposite) {
     let changed = false;
-    
+
     for (const [fieldName, fieldCRDT] of this.fields) {
       const otherField = otherComposite.fields.get(fieldName);
       if (otherField) {
         const oldState = fieldCRDT.clone();
         fieldCRDT.merge(otherField);
-        
+
         if (!this.statesEqual(oldState, fieldCRDT)) {
           changed = true;
         }
       }
     }
-    
+
     if (changed) {
       this.notifyUpdate({
-        type: 'COMPOSITE_MERGE',
-        mergedFrom: otherComposite
+        type: "COMPOSITE_MERGE",
+        mergedFrom: otherComposite,
       });
     }
   }
 
   serialize() {
     const serialized = {};
-    
+
     for (const [fieldName, fieldCRDT] of this.fields) {
       serialized[fieldName] = fieldCRDT.serialize();
     }
-    
+
     return serialized;
   }
 
@@ -935,6 +963,7 @@ class CompositeCRDT {
 ## Integration with Consensus Protocols
 
 ### CRDT-Enhanced Consensus
+
 ```javascript
 class CRDTConsensusIntegrator {
   constructor(consensusProtocol, crdtSynchronizer) {
@@ -947,29 +976,29 @@ class CRDTConsensusIntegrator {
   async hybridUpdate(operation) {
     // Step 1: Achieve consensus on operation ordering
     const consensusResult = await this.consensus.propose({
-      type: 'CRDT_OPERATION',
+      type: "CRDT_OPERATION",
       operation: operation,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
-    
+
     if (consensusResult.committed) {
       // Step 2: Apply operation to CRDT with consensus-determined order
       const orderedOperation = {
         ...operation,
         consensusIndex: consensusResult.index,
-        globalTimestamp: consensusResult.timestamp
+        globalTimestamp: consensusResult.timestamp,
       };
-      
+
       await this.crdt.applyOrderedOperation(orderedOperation);
-      
+
       return {
         success: true,
         consensusIndex: consensusResult.index,
-        crdtState: this.crdt.getCurrentState()
+        crdtState: this.crdt.getCurrentState(),
       };
     }
-    
-    return { success: false, reason: 'Consensus failed' };
+
+    return { success: false, reason: "Consensus failed" };
   }
 
   // Optimized read operations using CRDT without consensus
@@ -982,7 +1011,7 @@ class CRDTConsensusIntegrator {
     // Verify current CRDT state against consensus
     const consensusState = await this.consensus.getCommittedState();
     const crdtState = this.crdt.getCurrentState();
-    
+
     if (this.statesConsistent(consensusState, crdtState)) {
       return this.crdt.read(key);
     } else {
@@ -994,4 +1023,7 @@ class CRDTConsensusIntegrator {
 }
 ```
 
-This CRDT Synchronizer provides comprehensive support for conflict-free replicated data types, enabling eventually consistent distributed state management that complements consensus protocols for different consistency requirements.
+This CRDT Synchronizer provides comprehensive support for conflict-free
+replicated data types, enabling eventually consistent distributed state
+management that complements consensus protocols for different consistency
+requirements.

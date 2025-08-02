@@ -1,39 +1,41 @@
 # 📁 Project File Tree
+
 This document outlines the structure of the repository.
+
 - **./**
-    - .gitignore
-    - CODEOWNERS
-    - CONTRIBUTING.md
-    - FILE_TREE.md
-    - README.md
-    - dependabot.yml
-    - CLAUDE.md
-    - PROJECT_PLAN.md
-    - **.github/**
-        - pull_request_template.md
-        - **workflows/**
-            - **workflows/**
-                - ci.yml
-                - codeql-analysis.yml
-                - dependency-review.yml
-        - **ISSUE_TEMPLATE/**
-            - **ISSUE_TEMPLATE/**
-                - bug_report.md
-                - config.yml
-                - feature_request.md
-    - **.llmconfig/** - *Contains LLM agent configurations and rules*
-        - agent-rules.md
-        - **prompt-templates/** - *Templates for LLM interactions*
-            - .gitkeep
-        - **context/** - *Context information for LLM agents*
-            - .gitkeep
-    - **config/** - *Configuration files*
-        - .gitkeep
-    - **docs/** - *Documentation files*
-        - .gitkeep
-    - **scripts/** - *Utility scripts*
-        - .gitkeep
-    - **src/** - *Source code*
-        - .gitkeep
-    - **tests/** - *Test files*
-        - .gitkeep
+  - .gitignore
+  - CODEOWNERS
+  - CONTRIBUTING.md
+  - FILE_TREE.md
+  - README.md
+  - dependabot.yml
+  - CLAUDE.md
+  - PROJECT_PLAN.md
+  - **.github/**
+    - pull_request_template.md
+    - **workflows/**
+      - **workflows/**
+        - ci.yml
+        - codeql-analysis.yml
+        - dependency-review.yml
+    - **ISSUE_TEMPLATE/**
+      - **ISSUE_TEMPLATE/**
+        - bug_report.md
+        - config.yml
+        - feature_request.md
+  - **.llmconfig/** - _Contains LLM agent configurations and rules_
+    - agent-rules.md
+    - **prompt-templates/** - _Templates for LLM interactions_
+      - .gitkeep
+    - **context/** - _Context information for LLM agents_
+      - .gitkeep
+  - **config/** - _Configuration files_
+    - .gitkeep
+  - **docs/** - _Documentation files_
+    - .gitkeep
+  - **scripts/** - _Utility scripts_
+    - .gitkeep
+  - **src/** - _Source code_
+    - .gitkeep
+  - **tests/** - _Test files_
+    - .gitkeep

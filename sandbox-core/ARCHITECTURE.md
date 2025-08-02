@@ -2,11 +2,16 @@
 
 ## Executive Summary
 
-This document presents a comprehensive architecture for a production-ready sandbox isolation and rollback safety system. The architecture integrates research findings on isolation techniques with a practical implementation that provides defense-in-depth security, reliable rollback mechanisms, and comprehensive monitoring capabilities.
+This document presents a comprehensive architecture for a production-ready
+sandbox isolation and rollback safety system. The architecture integrates
+research findings on isolation techniques with a practical implementation that
+provides defense-in-depth security, reliable rollback mechanisms, and
+comprehensive monitoring capabilities.
 
 ## System Overview
 
-The Sandbox Rollback Safety Architecture implements a layered approach to secure execution environments with the following core principles:
+The Sandbox Rollback Safety Architecture implements a layered approach to secure
+execution environments with the following core principles:
 
 - **Defense in Depth**: Multiple layers of isolation and validation
 - **Fail-Safe Design**: Default to secure state on failures
@@ -18,7 +23,8 @@ The Sandbox Rollback Safety Architecture implements a layered approach to secure
 
 ### 1.1 Core Orchestration Layer
 
-**SandboxCore** serves as the central orchestrator managing the complete lifecycle:
+**SandboxCore** serves as the central orchestrator managing the complete
+lifecycle:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -33,6 +39,7 @@ The Sandbox Rollback Safety Architecture implements a layered approach to secure
 ```
 
 **Key Features:**
+
 - Asynchronous operation execution
 - Component lifecycle coordination
 - Background task management for monitoring
@@ -41,6 +48,7 @@ The Sandbox Rollback Safety Architecture implements a layered approach to secure
 ### 1.2 Isolation and Safety Layer
 
 #### SafetyValidator
+
 Implements multi-level safety validation with configurable rules:
 
 ```
@@ -56,12 +64,14 @@ Implements multi-level safety validation with configurable rules:
 ```
 
 **Validation Rules:**
+
 - **Critical Risk**: Dangerous system commands (`rm -rf /`, `sudo rm`, `mkfs`)
 - **High Risk**: Network commands, filesystem modifications, code injection
 - **Medium Risk**: Sensitive data patterns, resource limit violations
 - **Low Risk**: Minor policy violations, warnings
 
 #### SandboxInitializer
+
 Manages secure environment setup:
 
 ```
@@ -79,6 +89,7 @@ Manages secure environment setup:
 ### 1.3 State Management and Rollback Layer
 
 #### StateManager
+
 Provides versioned state persistence with encryption support:
 
 ```
@@ -94,6 +105,7 @@ Provides versioned state persistence with encryption support:
 ```
 
 #### RollbackManager
+
 Comprehensive rollback and recovery system:
 
 ```
@@ -109,6 +121,7 @@ Comprehensive rollback and recovery system:
 ```
 
 **Snapshot Types:**
+
 - **Manual**: User-initiated snapshots
 - **Automatic**: Scheduled or threshold-based snapshots
 - **Pre-operation**: Created before risky operations
@@ -116,6 +129,7 @@ Comprehensive rollback and recovery system:
 ### 1.4 Monitoring and Health Layer
 
 #### StateTracker
+
 Real-time operation and performance monitoring:
 
 ```
@@ -131,6 +145,7 @@ Real-time operation and performance monitoring:
 ```
 
 #### HealthMonitor
+
 Continuous system health assessment:
 
 ```
@@ -163,17 +178,17 @@ graph TD
     J --> K[HealthMonitor]
     K --> L[Update State]
     L --> M[Return Result]
-    
+
     subgraph "Monitoring Layer"
         J
         K
     end
-    
+
     subgraph "Safety Layer"
         C
         G
     end
-    
+
     subgraph "Persistence Layer"
         E
     end
@@ -231,12 +246,12 @@ graph TD
 
 ### 3.2 Risk-Based Decision Matrix
 
-| Risk Level | Validation Action | Pre-checks Required | Snapshot Required |
-|------------|------------------|-------------------|-------------------|
-| Low        | Auto-approve     | Basic validation  | Optional          |
-| Medium     | Auto-approve     | Standard checks   | Yes               |
-| High       | Require confirmation | Enhanced checks | Yes + Backup     |
-| Critical   | Block operation  | Full analysis     | N/A               |
+| Risk Level | Validation Action    | Pre-checks Required | Snapshot Required |
+| ---------- | -------------------- | ------------------- | ----------------- |
+| Low        | Auto-approve         | Basic validation    | Optional          |
+| Medium     | Auto-approve         | Standard checks     | Yes               |
+| High       | Require confirmation | Enhanced checks     | Yes + Backup      |
+| Critical   | Block operation      | Full analysis       | N/A               |
 
 ## 4. Rollback and Recovery Architecture
 
@@ -268,6 +283,7 @@ graph TD
 ### 4.2 Recovery Workflows
 
 #### Standard Recovery Process
+
 1. **Pre-recovery Validation**
    - Snapshot integrity verification
    - Risk assessment for rollback operation
@@ -284,6 +300,7 @@ graph TD
    - Performance monitoring
 
 #### Emergency Recovery Process
+
 1. **Rapid Detection**
    - Automated failure detection
    - Critical threshold monitoring
@@ -349,7 +366,7 @@ btrfs_config:
   incremental_snapshots: true
   send_receive_backups: true
 
-# ZFS Integration  
+# ZFS Integration
 zfs_config:
   dataset: sandbox/workspaces
   snapshot_frequency: 300s
@@ -389,14 +406,14 @@ zfs_config:
 
 ### 6.2 Threat Model Coverage
 
-| Threat Category | Mitigation Strategy | Implementation |
-|-----------------|-------------------|----------------|
-| Code Injection | Pattern detection + validation | SafetyValidator rules |
-| Privilege Escalation | Container isolation + limits | SandboxInitializer |
-| Data Exfiltration | Network restrictions + monitoring | StateTracker + config |
-| Resource Exhaustion | Resource quotas + monitoring | HealthMonitor |
-| State Corruption | Integrity validation + backups | RollbackManager |
-| Configuration Tampering | Read-only configs + validation | All components |
+| Threat Category         | Mitigation Strategy               | Implementation        |
+| ----------------------- | --------------------------------- | --------------------- |
+| Code Injection          | Pattern detection + validation    | SafetyValidator rules |
+| Privilege Escalation    | Container isolation + limits      | SandboxInitializer    |
+| Data Exfiltration       | Network restrictions + monitoring | StateTracker + config |
+| Resource Exhaustion     | Resource quotas + monitoring      | HealthMonitor         |
+| State Corruption        | Integrity validation + backups    | RollbackManager       |
+| Configuration Tampering | Read-only configs + validation    | All components        |
 
 ## 7. Performance and Scalability
 
@@ -445,19 +462,19 @@ production:
     compress_snapshots: true
     encrypt_snapshots: true
     auto_cleanup_hours: 72
-    
+
   resource_limits:
     memory_mb: 2048
     cpu_percent: 75
     disk_mb: 4096
-    
+
   monitoring_config:
     collection_interval: 15
     health_check_interval: 30
     critical_thresholds:
       cpu_percent: 90
       memory_percent: 90
-      
+
   security_config:
     validation_level: strict
     require_confirmation: true
@@ -480,18 +497,18 @@ production:
 @app.post("/sandbox/execute")
 async def execute_operation(operation: OperationRequest):
     sandbox = await get_sandbox(operation.sandbox_id)
-    
+
     # Safety validation
     validation_result = await sandbox.validate_operation(operation.dict())
     if not validation_result.is_safe:
         raise HTTPException(400, validation_result.reason)
-    
+
     # Create pre-operation snapshot
     snapshot_id = await sandbox.create_snapshot(
         f"Pre-operation: {operation.operation_id}",
         "pre-operation"
     )
-    
+
     try:
         # Execute with monitoring
         result = await sandbox.execute_operation(operation.dict())
@@ -514,11 +531,11 @@ class SandboxEventHandler:
     async def on_operation_start(self, event):
         # Log operation start, update external systems
         await self.metrics_collector.record_operation_start(event)
-    
+
     async def on_safety_violation(self, event):
         # Alert security systems, escalate if needed
         await self.security_system.handle_violation(event)
-    
+
     async def on_rollback_required(self, event):
         # Notify administrators, trigger recovery procedures
         await self.notification_system.send_alert(event)
@@ -563,35 +580,35 @@ spec:
       labels:
         app: sandbox-core
     spec:
-      runtimeClassName: kata-fc  # Use Kata Containers for isolation
+      runtimeClassName: kata-fc # Use Kata Containers for isolation
       containers:
-      - name: sandbox-core
-        image: sandbox-core:latest
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "250m"
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 1000
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop: ["ALL"]
-        volumeMounts:
-        - name: sandbox-storage
-          mountPath: /app/data
-        - name: config
-          mountPath: /app/config
+        - name: sandbox-core
+          image: sandbox-core:latest
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: sandbox-storage
+              mountPath: /app/data
+            - name: config
+              mountPath: /app/config
       volumes:
-      - name: sandbox-storage
-        persistentVolumeClaim:
-          claimName: sandbox-pvc
-      - name: config
-        configMap:
-          name: sandbox-config
+        - name: sandbox-storage
+          persistentVolumeClaim:
+            claimName: sandbox-pvc
+        - name: config
+          configMap:
+            name: sandbox-config
 ```
 
 ## 11. Monitoring and Observability
@@ -607,13 +624,13 @@ class SandboxMetrics:
         self.safety_violations = Counter('sandbox_safety_violations_total')
         self.snapshot_size = Histogram('sandbox_snapshot_size_bytes')
         self.rollback_duration = Histogram('sandbox_rollback_duration_seconds')
-        
+
     async def record_operation(self, operation_type, duration, success):
         self.operation_counter.labels(
             type=operation_type,
             status='success' if success else 'failure'
         ).inc()
-        
+
         self.operation_duration.labels(
             type=operation_type
         ).observe(duration)
@@ -634,7 +651,7 @@ async def readiness_check():
     # Check critical components
     checks = await run_health_checks()
     is_ready = all(check["healthy"] for check in checks.values())
-    
+
     return {
         "status": "ready" if is_ready else "not_ready",
         "checks": checks,
@@ -664,7 +681,10 @@ async def readiness_check():
 
 ## Conclusion
 
-The Sandbox Rollback Safety Architecture provides a comprehensive, production-ready foundation for secure code execution environments. By integrating research-based isolation techniques with practical implementation patterns, the system delivers:
+The Sandbox Rollback Safety Architecture provides a comprehensive,
+production-ready foundation for secure code execution environments. By
+integrating research-based isolation techniques with practical implementation
+patterns, the system delivers:
 
 - **Multi-layered Security**: Defense-in-depth with comprehensive validation
 - **Reliable Recovery**: Point-in-time rollback with integrity guarantees
@@ -672,7 +692,9 @@ The Sandbox Rollback Safety Architecture provides a comprehensive, production-re
 - **Scalable Design**: Horizontal and vertical scaling capabilities
 - **Integration Flexibility**: Support for multiple deployment patterns
 
-The architecture is designed to evolve with emerging security threats and isolation technologies while maintaining compatibility with existing systems and workflows.
+The architecture is designed to evolve with emerging security threats and
+isolation technologies while maintaining compatibility with existing systems and
+workflows.
 
 ---
 

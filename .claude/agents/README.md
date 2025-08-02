@@ -1,6 +1,8 @@
 # Claude Code Agents Directory Structure
 
-This directory contains sub-agent definitions organized by type and purpose. Each agent has specific capabilities, tool restrictions, and naming conventions that trigger automatic delegation.
+This directory contains sub-agent definitions organized by type and purpose.
+Each agent has specific capabilities, tool restrictions, and naming conventions
+that trigger automatic delegation.
 
 ## Directory Structure
 
@@ -58,6 +60,7 @@ Agent files follow this naming pattern:
 `[type]-[specialization]-[capability].agent.yaml`
 
 Examples:
+
 - `dev-backend-api.agent.yaml`
 - `test-unit-jest.agent.yaml`
 - `arch-cloud-aws.agent.yaml`
@@ -66,17 +69,21 @@ Examples:
 ## Automatic Delegation Triggers
 
 Claude Code automatically delegates to agents based on:
+
 1. **Keywords in user request**: "test", "deploy", "document", "review"
 2. **File patterns**: `*.test.js` → testing agent, `*.tf` → infrastructure agent
 3. **Task complexity**: Multi-step tasks spawn coordinator agents
-4. **Domain detection**: Database queries → data agent, API endpoints → backend agent
+4. **Domain detection**: Database queries → data agent, API endpoints → backend
+   agent
 
 ## Tool Restrictions
 
 Each agent type has specific tool access:
+
 - **Development agents**: Full file system access, code execution
 - **Testing agents**: Test runners, coverage tools, limited write access
 - **Architecture agents**: Read-only access, diagram generation
 - **Documentation agents**: Markdown tools, read access, limited write to docs/
-- **DevOps agents**: Infrastructure tools, deployment scripts, environment access
+- **DevOps agents**: Infrastructure tools, deployment scripts, environment
+  access
 - **Analysis agents**: Read-only access, static analysis tools

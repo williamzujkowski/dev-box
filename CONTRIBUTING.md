@@ -1,18 +1,23 @@
 # Contributing Guidelines
 
-Thank you for your interest in contributing to this project\! We value the contributions of each community member and want to make the process as smooth as possible.
+Thank you for your interest in contributing to this project\! We value the
+contributions of each community member and want to make the process as smooth as
+possible.
 
 ## Code of Conduct
 
-By participating in this project, you agree to abide by our Code of Conduct. Please read it before contributing.
+By participating in this project, you agree to abide by our Code of Conduct.
+Please read it before contributing.
 
 ## How to Contribute
 
 ### Reporting Bugs
 
-- Before submitting a bug report, please check that it has not already been reported
+- Before submitting a bug report, please check that it has not already been
+  reported
 - Use the bug report template when creating an issue
-- Include as much detail as possible: steps to reproduce, expected behavior, actual behavior, and environment details
+- Include as much detail as possible: steps to reproduce, expected behavior,
+  actual behavior, and environment details
 
 ### Suggesting Features
 

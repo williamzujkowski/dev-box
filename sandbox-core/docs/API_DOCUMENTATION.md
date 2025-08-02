@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Sandbox Lifecycle system provides a comprehensive API for managing isolated execution environments with full rollback capabilities. This document details all public APIs, usage patterns, and integration examples.
+The Sandbox Lifecycle system provides a comprehensive API for managing isolated
+execution environments with full rollback capabilities. This document details
+all public APIs, usage patterns, and integration examples.
 
 ## Core Components
 
@@ -113,15 +115,18 @@ rollback_manager.cleanup_old_points(days=7)
 ### Sandbox Lifecycle Methods
 
 #### create_sandbox(name: str, config: dict) -> str
+
 Creates a new sandbox with specified configuration.
 
 **Parameters:**
+
 - `name`: Unique sandbox identifier
 - `config`: Sandbox configuration including isolation type and limits
 
 **Returns:** Sandbox ID
 
 **Example:**
+
 ```python
 sandbox_id = sandbox.create_sandbox("test-env", {
     "isolation_type": "container",
@@ -130,10 +135,12 @@ sandbox_id = sandbox.create_sandbox("test-env", {
 })
 ```
 
-#### execute(sandbox_id: str, command: str, **kwargs) -> ExecutionResult
+#### execute(sandbox_id: str, command: str, \*\*kwargs) -> ExecutionResult
+
 Executes a command within the sandbox.
 
 **Parameters:**
+
 - `sandbox_id`: Target sandbox
 - `command`: Command to execute
 - `timeout`: Execution timeout (optional)
@@ -142,18 +149,22 @@ Executes a command within the sandbox.
 **Returns:** ExecutionResult with stdout, stderr, exit_code
 
 #### create_snapshot(sandbox_id: str, name: str) -> str
+
 Creates a point-in-time snapshot.
 
 **Parameters:**
+
 - `sandbox_id`: Target sandbox
 - `name`: Snapshot identifier
 
 **Returns:** Snapshot ID
 
 #### rollback(sandbox_id: str, snapshot_id: str) -> bool
+
 Rolls back to a previous snapshot.
 
 **Parameters:**
+
 - `sandbox_id`: Target sandbox
 - `snapshot_id`: Target snapshot
 
@@ -162,23 +173,28 @@ Rolls back to a previous snapshot.
 ### Safety and Validation
 
 #### validate_command(command: str) -> RiskAssessment
+
 Assesses command safety before execution.
 
 **Risk Levels:**
+
 - `LOW`: Safe operations
 - `MEDIUM`: Potentially risky, requires monitoring
 - `HIGH`: Dangerous, requires approval
 - `CRITICAL`: Blocked by default
 
 #### check_resource_limits(usage: ResourceUsage) -> bool
+
 Validates resource usage against limits.
 
 ### Monitoring and Health
 
 #### get_health_status(sandbox_id: str) -> HealthStatus
+
 Returns current health metrics.
 
 **Health Status:**
+
 - `status`: HEALTHY, DEGRADED, UNHEALTHY
 - `metrics`: CPU, memory, disk, network usage
 - `alerts`: Active alerts
@@ -232,15 +248,15 @@ async def run_tests_safely(pr_number: int):
         "isolation_type": "vm",
         "clone_from": "base-test-image"
     })
-    
+
     try:
         # Run test suite
         result = await sandbox.execute(sandbox_id, "pytest -v")
-        
+
         if result.exit_code != 0:
             # Save failed state for debugging
             sandbox.create_snapshot(sandbox_id, f"failed-pr-{pr_number}")
-            
+
         return result
     finally:
         # Always cleanup
@@ -257,17 +273,17 @@ async def deploy_with_canary(version: str):
         "isolation_type": "container",
         "resource_limits": {"cpu": "0.5", "memory": "1G"}
     })
-    
+
     # Deploy and test
     sandbox.execute(canary_id, f"deploy-app --version {version}")
-    
+
     # Monitor health
     health = sandbox.get_health_status(canary_id)
     if health.status != "HEALTHY":
         # Automatic rollback
         sandbox.rollback(canary_id, "last-stable")
         raise DeploymentError("Canary failed health checks")
-    
+
     # Stage 2: Full deployment
     for instance in production_instances:
         snapshot = sandbox.create_snapshot(instance, "pre-deploy")
@@ -285,7 +301,7 @@ async def deploy_with_canary(version: str):
 ```python
 from sandbox_core.exceptions import (
     SandboxError,
-    SecurityError, 
+    SecurityError,
     ResourceLimitError,
     RollbackError,
     StateCorruptionError
@@ -312,7 +328,7 @@ except RollbackError as e:
 sandbox:
   default_isolation: container
   state_directory: /var/lib/sandbox
-  
+
 safety:
   validation:
     enabled: true
@@ -320,17 +336,17 @@ safety:
     patterns:
       - "rm -rf /"
       - ":(){ :|:& };:"
-      
+
   limits:
     cpu: "4"
     memory: "8G"
     disk: "20G"
-    
+
 rollback:
   auto_snapshot: true
   retention_days: 7
   compression: true
-  
+
 monitoring:
   enabled: true
   interval_seconds: 10
@@ -355,7 +371,7 @@ sandbox = SandboxCore(config={
 
 ```python
 sandbox = SandboxCore(config={
-    "isolation_type": "container", 
+    "isolation_type": "container",
     "orchestrator": "kubernetes",
     "namespace": "sandbox-environments"
 })
@@ -385,7 +401,7 @@ sandbox = SandboxCore(config={
 ## Performance Considerations
 
 - Container sandboxes: ~2-5 second startup
-- VM sandboxes: ~60-120 second startup  
+- VM sandboxes: ~60-120 second startup
 - Snapshot creation: ~1-10 seconds (depends on state size)
 - Rollback: ~5-30 seconds (depends on change delta)
 
@@ -402,6 +418,7 @@ The sandbox system implements defense-in-depth:
 ## Support
 
 For issues, feature requests, or contributions:
+
 - GitHub: https://github.com/yourusername/sandbox-core
 - Documentation: https://sandbox-core.readthedocs.io
 - Security: security@sandbox-core.io

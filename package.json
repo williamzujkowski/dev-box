@@ -1,0 +1,32 @@
+{
+  "name": "dev-box",
+  "version": "1.0.0",
+  "description": "Development sandbox environment with comprehensive testing",
+  "scripts": {
+    "lint": "npm run lint:js && npm run lint:py",
+    "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:py": "ruff check --fix .",
+    "format": "npm run format:js && npm run format:py && npm run format:shell",
+    "format:js": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml,css,scss,html}\"",
+    "format:py": "black . && ruff format .",
+    "format:shell": "shfmt -w -s -i 2 **/*.sh",
+    "style:check": "npm run lint && npm run format:check",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yaml,yml,css,scss,html}\" && black --check . && ruff format --check .",
+    "pre-commit": "pre-commit run --all-files",
+    "prepare": "echo 'Run: pip install pre-commit && pre-commit install to setup hooks'"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.0.0"
+  },
+  "keywords": [
+    "development",
+    "sandbox",
+    "testing",
+    "vagrant",
+    "docker"
+  ],
+  "author": "Dev Box Team",
+  "license": "MIT"
+}

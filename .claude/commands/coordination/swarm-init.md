@@ -10,9 +10,11 @@ npx claude-flow swarm init [options]
 
 ## Options
 
-- `--topology, -t <type>` - Swarm topology: mesh, hierarchical, ring, star (default: hierarchical)
+- `--topology, -t <type>` - Swarm topology: mesh, hierarchical, ring, star
+  (default: hierarchical)
 - `--max-agents, -m <number>` - Maximum number of agents (default: 8)
-- `--strategy, -s <type>` - Execution strategy: balanced, parallel, sequential (default: parallel)
+- `--strategy, -s <type>` - Execution strategy: balanced, parallel, sequential
+  (default: parallel)
 - `--auto-spawn` - Automatically spawn agents based on task complexity
 - `--memory` - Enable cross-session memory persistence
 - `--github` - Enable GitHub integration features

@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrant configuration for Ubuntu 24.04 testing VM
+Vagrant.configure("2") do |config|
+  # Base box - Ubuntu 24.04 LTS (Noble Numbat)
+  config.vm.box = "bento/ubuntu-24.04"
+  config.vm.box_version = ">= 202404.23.0"
+  config.vm.box_check_update = true
+
+  # VM Configuration
+  config.vm.hostname = "ubuntu-test-vm"
+  
+  # Network Configuration
+  config.vm.network "private_network", type: "dhcp"
+  config.vm.network "forwarded_port", guest: 22, host: 2222, id: "ssh"
+  config.vm.network "forwarded_port", guest: 80, host: 8080, id: "http"
+  config.vm.network "forwarded_port", guest: 443, host: 8443, id: "https"
+  
+  # Shared Folders
+  config.vm.synced_folder ".", "/vagrant", disabled: false
+  config.vm.synced_folder "./tests", "/home/vagrant/tests", create: true
+  config.vm.synced_folder "./scripts", "/home/vagrant/scripts", create: true
+  
+  # Provider-specific configuration
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Ubuntu-24.04-Test-VM"
+    vb.gui = false
+    vb.memory = "2048"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--vram", "128"]
+    vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+    vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+  end
+  
+  # Provisioning Scripts
+  config.vm.provision "shell", path: "scripts/provisioning/base-setup.sh"
+  config.vm.provision "shell", path: "scripts/provisioning/guest-additions.sh"
+  config.vm.provision "shell", path: "scripts/provisioning/development-tools.sh"
+  
+  # Final validation
+  config.vm.provision "shell", inline: <<-SHELL
+    echo "=== VM Provisioning Complete ==="
+    echo "Hostname: $(hostname)"
+    echo "OS Version: $(lsb_release -d)"
+    echo "Kernel: $(uname -r)"
+    echo "Memory: $(free -h | grep '^Mem' | awk '{print $2}')"
+    echo "Disk Space: $(df -h / | tail -1 | awk '{print $4}' | tr -d '\\n') available"
+    echo "VirtualBox Guest Additions: $(lsmod | grep vboxguest | wc -l > 0 && echo 'Installed' || echo 'Not Found')"
+    echo "=== VM Ready for Testing ==="
+  SHELL
+end

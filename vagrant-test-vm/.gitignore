@@ -1,0 +1,61 @@
+# Vagrant specific files
+.vagrant/
+*.log
+*-console.log
+
+# VirtualBox specific files
+*.vbox
+*.vbox-prev
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Log files
+logs/
+*.log.*
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test results
+test-results/
+test-reports/
+*.junit.xml
+
+# Backup files
+*.bak
+*.backup
+
+# Coverage reports
+coverage/
+.nyc_output/
+*.lcov
+
+# Node.js (if testing Node apps in VM)
+node_modules/
+npm-debug.log*
+
+# Python (if testing Python apps in VM)
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Environment files (keep .env.example)
+.env
+.env.local
+
+# Generated documentation
+docs/build/
+site/

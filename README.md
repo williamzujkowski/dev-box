@@ -1,60 +1,66 @@
-# .github Template Repository
+# dev-box
 
-A standardized, comprehensive, and best-practice set of GitHub repository configuration files and workflows to accelerate new project setup.
+Isolated Ubuntu 24.04 development environments with Vagrant, VirtualBox, and
+Libvirt/KVM support.
 
-## What This Template Provides
+## 📖 Documentation
 
-- **GitHub Actions Workflows** for CI/CD, security scanning, and dependency management
-- **Issue Templates** for bug reports and feature requests
-- **Pull Request Template** to ensure quality contributions
-- **Community Health Files** including Code of Conduct, Contributing Guidelines, and Security Policy
-- **Dependabot Configuration** for automated dependency updates
-- **Repository Configuration Files** and recommended settings
+For comprehensive documentation, installation guides, and tutorials, visit our
+dedicated documentation site:
 
-## How to Use This Template
+**🌐 [dev-box Documentation](docs/dev-box-site/)**
 
-1. Click the "Use this template" button on the GitHub repository
-2. Name your new repository and create it
-3. Review and customize the included files to fit your specific project needs
-4. Update placeholders in files (especially in SECURITY.md)
-5. Uncomment relevant sections in configuration files where noted
-6. Delete or modify files that do not apply to your project
+The documentation site includes:
 
-## Included Components
+- 🚀 **Getting Started** - Installation and setup guides
+- 📖 **User Guides** - Daily workflows and best practices
+- 🔧 **API Reference** - CLI commands and configuration
+- 🔍 **Troubleshooting** - Common issues and solutions
 
-### GitHub Actions Workflows
+## Quick Start
 
-- `ci.yml`: Basic CI workflow with linting and testing placeholders
-- `codeql-analysis.yml`: Security scanning using GitHub CodeQL
-- `dependency-review.yml`: Reviews dependencies for security issues on PRs
+```bash
+# Clone the repository
+git clone https://github.com/dev-box/dev-box.git
+cd dev-box
 
-### Issue & PR Templates
+# Start your first VM
+vagrant up
 
-- Bug report template
-- Feature request template
-- PR template with checklist
+# SSH into the environment
+vagrant ssh
 
-### Community Health Files
+# Create a snapshot
+vagrant snapshot push
+```
 
-- `CODE_OF_CONDUCT.md`: Contributor Covenant Code of Conduct
-- `CONTRIBUTING.md`: Guidelines for contributing to the project
-- `SECURITY.md`: Security policy and vulnerability reporting process
+## Key Features
 
-### Configuration Files
+- **🏗️ Isolated Environments** - Clean Ubuntu 24.04 development environments
+- **📦 Vagrant & Libvirt** - Built on proven virtualization technologies
+- **🔒 Safety First** - Snapshots, rollback capabilities, and resource
+  monitoring
+- **💻 Developer Friendly** - Pre-configured tools and automated provisioning
 
-- `dependabot.yml`: Automated dependency updates (initially for GitHub Actions)
+## Documentation Structure
 
-## Customization Guide
+This repository maintains documentation in the following locations:
 
-- Review all files and update project-specific information
-- For workflows, add language/framework-specific build and test commands
-- Update issue templates with project-specific categories/labels
-- Configure Dependabot for your project package ecosystems
+- **`docs/dev-box-site/`** - Main documentation site (Eleventy-based)
+- **`CLAUDE.md`** - Claude Code integration and workflow configuration
+- **`manifest.md`** - Project structure and file organization
 
-## License
+## Development Workflow
 
-This template is available under the MIT License.
+For development workflow documentation including Claude Code integration, see
+[CLAUDE.md](CLAUDE.md).
 
 ## Contributing
 
-Contributions to improve this template are welcome! Please see the CONTRIBUTING.md file for guidelines.
+Contributions are welcome! Please see the
+[documentation site](docs/dev-box-site/) for contributing guidelines and
+development setup instructions.
+
+## License
+
+MIT License - see the [documentation site](docs/dev-box-site/) for details.
