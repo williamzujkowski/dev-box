@@ -5,6 +5,9 @@
 [![CI Status](https://github.com/williamzujkowski/dev-box/workflows/Security%20Scanning/badge.svg)](https://github.com/williamzujkowski/dev-box/actions)
 [![Dependabot Status](https://img.shields.io/badge/Dependabot-enabled-brightgreen.svg)](https://github.com/williamzujkowski/dev-box/network/updates)
 [![Multi-Arch](https://img.shields.io/badge/arch-amd64%20%7C%20arm64-blue)](https://github.com/williamzujkowski/dev-box/packages)
+[![Security Scan](https://github.com/williamzujkowski/dev-box/workflows/Artifact%20Security%20Scan/badge.svg)](https://github.com/williamzujkowski/dev-box/actions)
+[![Accessibility](https://img.shields.io/badge/WCAG-2.1%20AA-green)](https://github.com/williamzujkowski/dev-box/actions/workflows/lighthouse.yml)
+[![GitHub Pages](https://img.shields.io/badge/docs-live-success)](https://williamzujkowski.github.io/dev-box/)
 
 Isolated Ubuntu 24.04 development environments with Vagrant, VirtualBox, and
 Libvirt/KVM support.

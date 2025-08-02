@@ -3,75 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Dev Box - Development Environment and Tools">
-    <title>Dev Box - Development Environment</title>
+    <meta name="description" content="Dev Box - A comprehensive development environment setup with automated workflows, testing capabilities, and pre-configured tools for streamlined development.">
+    <title>Dev Box - Development Environment and Tools</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <header>
-        <nav>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <header role="banner">
+        <nav role="navigation" aria-label="Main navigation">
             <div class="container">
-                <h1 class="logo">Dev Box</h1>
-                <ul class="nav-links">
-                    <li><a href="#overview">Overview</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#getting-started">Getting Started</a></li>
-                    <li><a href="#docs">Documentation</a></li>
+                <h1 class="logo" id="site-title">Dev Box</h1>
+                <ul class="nav-links" role="menubar">
+                    <li role="none"><a href="#overview" role="menuitem" aria-describedby="site-title">Overview</a></li>
+                    <li role="none"><a href="#features" role="menuitem" aria-describedby="site-title">Features</a></li>
+                    <li role="none"><a href="#getting-started" role="menuitem" aria-describedby="site-title">Getting Started</a></li>
+                    <li role="none"><a href="#docs" role="menuitem" aria-describedby="site-title">Documentation</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
+    <main id="main-content" role="main">
+        <section class="hero" aria-labelledby="hero-heading">
             <div class="container">
-                <h2>Development Environment & Tools</h2>
+                <h2 id="hero-heading">Development Environment &amp; Tools</h2>
                 <p>A comprehensive development environment setup with automated workflows and testing capabilities.</p>
-                <a href="#getting-started" class="cta-button">Get Started</a>
+                <a href="#getting-started" class="cta-button" aria-describedby="hero-heading">Get Started</a>
             </div>
         </section>
 
-        <section id="overview" class="section">
+        <section id="overview" class="section" aria-labelledby="overview-heading">
             <div class="container">
-                <h3>Overview</h3>
-                <p>Dev Box provides a streamlined development environment with pre-configured tools, automated testing, and deployment workflows.</p>
+                <h2 id="overview-heading">Overview</h2>
+                <p>Dev Box provides a streamlined development environment with pre-configured tools, automated testing, and deployment workflows designed to improve developer productivity and code quality.</p>
             </div>
         </section>
 
-        <section id="features" class="section">
+        <section id="features" class="section" aria-labelledby="features-heading">
             <div class="container">
-                <h3>Features</h3>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h4>Automated Testing</h4>
-                        <p>Comprehensive test suites with CI/CD integration</p>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Development Tools</h4>
-                        <p>Pre-configured development environment with essential tools</p>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Performance Monitoring</h4>
-                        <p>Built-in performance tracking and optimization tools</p>
-                    </div>
+                <h2 id="features-heading">Features</h2>
+                <div class="features-grid" role="list" aria-label="Product features">
+                    <article class="feature-card" role="listitem">
+                        <h3>Automated Testing</h3>
+                        <p>Comprehensive test suites with CI/CD integration for reliable code deployment and quality assurance.</p>
+                    </article>
+                    <article class="feature-card" role="listitem">
+                        <h3>Development Tools</h3>
+                        <p>Pre-configured development environment with essential tools for efficient coding and debugging.</p>
+                    </article>
+                    <article class="feature-card" role="listitem">
+                        <h3>Performance Monitoring</h3>
+                        <p>Built-in performance tracking and optimization tools to ensure optimal application performance.</p>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <section id="getting-started" class="section">
+        <section id="getting-started" class="section" aria-labelledby="getting-started-heading">
             <div class="container">
-                <h3>Getting Started</h3>
-                <ol>
-                    <li>Clone the repository</li>
-                    <li>Install dependencies</li>
-                    <li>Configure your environment</li>
-                    <li>Run the setup scripts</li>
+                <h2 id="getting-started-heading">Getting Started</h2>
+                <p>Follow these steps to set up your development environment:</p>
+                <ol aria-label="Setup instructions">
+                    <li>Clone the repository to your local machine</li>
+                    <li>Install all required dependencies using package manager</li>
+                    <li>Configure your development environment settings</li>
+                    <li>Run the automated setup scripts to complete installation</li>
                 </ol>
+            </div>
+        </section>
+
+        <section id="docs" class="section" aria-labelledby="docs-heading">
+            <div class="container">
+                <h2 id="docs-heading">Documentation</h2>
+                <p>Comprehensive documentation is available to help you get the most out of Dev Box. Visit our documentation site for detailed guides, API references, and troubleshooting tips.</p>
+                <nav aria-label="Documentation links">
+                    <ul>
+                        <li><a href="#" aria-label="User guide documentation">User Guide</a></li>
+                        <li><a href="#" aria-label="API reference documentation">API Reference</a></li>
+                        <li><a href="#" aria-label="Troubleshooting documentation">Troubleshooting</a></li>
+                    </ul>
+                </nav>
             </div>
         </section>
     </main>
 
-    <footer>
+    <footer role="contentinfo" aria-label="Site footer">
         <div class="container">
             <p>&copy; 2025 Dev Box. All rights reserved.</p>
         </div>

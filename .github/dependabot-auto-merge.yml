@@ -1,0 +1,79 @@
+# Dependabot Auto-Merge Configuration
+# This file documents the auto-merge strategy for dependency updates
+
+auto_merge_rules:
+  # Security updates - Auto-merge after CI passes (highest priority)
+  security_updates:
+    conditions:
+      - update_type: "security"
+      - ci_status: "passing"
+      - review_required: false
+    merge_method: "squash"
+    delete_branch: true
+    
+  # Patch-level updates for development tools - Safe to auto-merge
+  dev_tools_patches:
+    dependencies:
+      - "black"
+      - "ruff" 
+      - "prettier"
+      - "eslint*"
+      - "@commitlint/*"
+      - "husky"
+      - "lint-staged"
+    conditions:
+      - update_type: "patch"
+      - ci_status: "passing"
+      - dependency_type: "dev"
+    merge_method: "squash"
+    delete_branch: true
+    
+  # Testing framework patches - Auto-merge after tests pass
+  testing_patches:
+    dependencies:
+      - "pytest*"
+      - "coverage"
+      - "faker"
+      - "factory-boy"
+    conditions:
+      - update_type: "patch"
+      - ci_status: "passing"
+      - test_coverage: ">= 80%"
+    merge_method: "squash"
+    delete_branch: true
+    
+  # GitHub Actions minor/patch updates - Auto-merge after security check
+  actions_updates:
+    dependencies:
+      - "actions/*"
+      - "github/*"
+    conditions:
+      - update_type: ["minor", "patch"]
+      - ci_status: "passing"
+      - security_scan: "passing"
+    merge_method: "squash"
+    delete_branch: true
+
+# Manual review required for:
+manual_review_required:
+  - update_type: "major"
+  - dependencies: ["cryptography", "requests", "httpx"] # Critical security libs
+  - new_dependencies: true
+  - breaking_changes: true
+  
+# Labels for different update types
+labels:
+  security: ["security", "auto-merge", "high-priority"]
+  dev_tools: ["dev-tools", "auto-merge", "low-risk"]
+  testing: ["testing", "auto-merge", "quality"]
+  actions: ["github-actions", "auto-merge", "ci-cd"]
+  production: ["production", "manual-review", "critical"]
+  
+# Schedule priorities
+schedule_priorities:
+  security: "immediate"
+  production: "weekly"
+  dev_tools: "monthly"
+  testing: "monthly"
+  actions: "weekly"
+  docs: "weekly"

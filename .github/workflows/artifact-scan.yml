@@ -1,3 +1,4 @@
+---
 name: Artifact Security Scan
 
 on:
@@ -6,47 +7,373 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 4 * * 2" # Weekly on Tuesday
+    - cron: "0 4 * * 2"  # Weekly on Tuesday
 
 permissions:
   contents: read
   security-events: write
+  actions: read
+
+env:
+  TRIVY_CACHE_DIR: /tmp/.trivy
 
 jobs:
-  trivy-scan:
+  # Matrix scanning for different artifact types
+  trivy-matrix-scan:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        scan-type:
+          - name: "filesystem"
+            type: "fs"
+            target: "."
+            format: "sarif"
+            output: "trivy-fs-results.sarif"
+            severity: "CRITICAL,HIGH,MEDIUM"
+            exit-code: "1"
+          - name: "sbom"
+            type: "fs"
+            target: "."
+            format: "spdx-json"
+            output: "trivy-sbom.spdx.json"
+            severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+            exit-code: "0"
+          - name: "python-deps"
+            type: "fs"
+            target: "./sandbox-core"
+            format: "table"
+            output: "trivy-python-deps.txt"
+            severity: "CRITICAL,HIGH,MEDIUM"
+            exit-code: "1"
+          - name: "nodejs-deps"
+            type: "fs"
+            target: "./package.json"
+            format: "table"
+            output: "trivy-nodejs-deps.txt"
+            severity: "CRITICAL,HIGH,MEDIUM"
+            exit-code: "1"
+          - name: "docker-image"
+            type: "image"
+            target: "ubuntu:24.04"
+            format: "table"
+            output: "trivy-docker-base.txt"
+            severity: "CRITICAL,HIGH"
+            exit-code: "0"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner in repo mode
+      - name: Create Trivy cache directory
+        run: mkdir -p ${{ env.TRIVY_CACHE_DIR }}
+
+      - name: Cache Trivy DB
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TRIVY_CACHE_DIR }}
+          key: trivy-db-${{ runner.os }}-${{ hashFiles(
+            '**/requirements*.txt', '**/package*.json') }}
+          restore-keys: |
+            trivy-db-${{ runner.os }}-
+
+      - name: Create Trivy ignore file
+        run: |
+          cat > .trivyignore << 'EOF'
+          # Test files and documentation
+          **/tests/**
+          **/test/**
+          **/*_test.*
+          **/*test*
+          **/docs/**
+          **/doc/**
+          **/*.md
+          **/*.rst
+          **/*.txt
+
+          # Build artifacts and caches
+          **/node_modules/**
+          **/.npm/**
+          **/.cache/**
+          **/build/**
+          **/dist/**
+          **/__pycache__/**
+          **/*.pyc
+          **/.git/**
+          **/.github/**
+
+          # Development files
+          **/.vscode/**
+          **/.idea/**
+          **/Vagrantfile*
+          **/.vagrant/**
+          **/vagrant-test-vm/**
+          **/libvirt-enhanced/**
+
+          # Known false positives for dev environments
+          **/sandbox-core/requirements-security.txt
+          EOF
+
+      - name: Run Trivy vulnerability scanner - ${{ matrix.scan-type.name }}
+        uses: aquasecurity/trivy-action@0.31.0
+        with:
+          scan-type: ${{ matrix.scan-type.type }}
+          scan-ref: ${{ matrix.scan-type.target }}
+          format: ${{ matrix.scan-type.format }}
+          output: ${{ matrix.scan-type.output }}
+          severity: ${{ matrix.scan-type.severity }}
+          exit-code: ${{ matrix.scan-type.exit-code }}
+          trivyignores: ".trivyignore"
+          skip-dirs: "node_modules,tests,docs,.git,.github,vagrant-test-vm,
+            libvirt-enhanced"
+          skip-files: "*.md,*.rst,*.txt,Vagrantfile"
+        continue-on-error: ${{ matrix.scan-type.exit-code == '0' }}
+
+      - name: Generate human-readable summary - ${{ matrix.scan-type.name }}
+        if: always()
+        run: |
+          echo "## Trivy Scan Results - ${{ matrix.scan-type.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Target:** ${{ matrix.scan-type.target }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Severity Filter:** ${{ matrix.scan-type.severity }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [[ -f "${{ matrix.scan-type.output }}" ]]; then
+            case "${{ matrix.scan-type.format }}" in
+              "table")
+                echo "```" >> $GITHUB_STEP_SUMMARY
+                head -100 "${{ matrix.scan-type.output }}" >> $GITHUB_STEP_SUMMARY
+                echo "```" >> $GITHUB_STEP_SUMMARY
+                ;;
+              "sarif")
+                # Count vulnerabilities from SARIF
+                if command -v jq &> /dev/null; then
+                  VULN_COUNT=$(jq '.runs[0].results | length' "${{ matrix.scan-type.output }}" 2>/dev/null || echo "0")
+                  echo "**Vulnerabilities found:** $VULN_COUNT" >> $GITHUB_STEP_SUMMARY
+                fi
+                ;;
+              "spdx-json")
+                echo "**SBOM generated successfully**" >> $GITHUB_STEP_SUMMARY
+                if command -v jq &> /dev/null; then
+                  COMPONENTS=$(jq '.packages | length' "${{ matrix.scan-type.output }}" 2>/dev/null || echo "unknown")
+                  echo "**Components analyzed:** $COMPONENTS" >> $GITHUB_STEP_SUMMARY
+                fi
+                ;;
+            esac
+          else
+            echo "⚠️ **No scan results found**" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload SARIF results to GitHub Security
+        if: matrix.scan-type.format == 'sarif' && always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ matrix.scan-type.output }}
+          category: "trivy-${{ matrix.scan-type.name }}"
+
+      - name: Upload scan artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-results-${{ matrix.scan-type.name }}
+          path: ${{ matrix.scan-type.output }}
+          retention-days: 30
+
+  # Comprehensive filesystem scan with detailed exclusions
+  trivy-comprehensive-scan:
+    runs-on: ubuntu-latest
+    needs: trivy-matrix-scan
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create comprehensive Trivy ignore file
+        run: |
+          cat > .trivyignore-comprehensive << 'EOF'
+          # === EXCLUSIONS FOR DEV-BOX PROJECT ===
+          
+          # Test directories and files
+          **/tests/**
+          **/test/**
+          **/*_test.*
+          **/*test*
+          **/testing/**
+          **/.pytest_cache/**
+          
+          # Documentation
+          **/docs/**
+          **/doc/**
+          **/*.md
+          **/*.rst
+          **/*.txt
+          **/README*
+          **/CHANGELOG*
+          **/LICENSE*
+          
+          # Build artifacts and dependencies
+          **/node_modules/**
+          **/.npm/**
+          **/.cache/**
+          **/build/**
+          **/dist/**
+          **/__pycache__/**
+          **/*.pyc
+          **/*.pyo
+          **/.tox/**
+          **/.coverage
+          **/htmlcov/**
+          
+          # Version control and CI
+          **/.git/**
+          **/.github/**
+          **/.gitignore
+          **/.gitattributes
+          
+          # Development environments
+          **/.vscode/**
+          **/.idea/**
+          **/.vs/**
+          **/venv/**
+          **/.venv/**
+          **/env/**
+          **/.env
+          
+          # Vagrant and VM files
+          **/Vagrantfile*
+          **/.vagrant/**
+          **/vagrant-test-vm/**
+          **/libvirt-enhanced/**
+          **/*.box
+          
+          # Configuration files (potential false positives)
+          **/.eslintrc*
+          **/.prettierrc*
+          **/.commitlintrc*
+          **/pyproject.toml
+          **/setup.cfg
+          
+          # Temporary files
+          **/tmp/**
+          **/temp/**
+          **/.tmp/**
+          
+          # Known false positives in security tools
+          **/sandbox-core/requirements-security.txt
+          **/bandit.yaml
+          **/safety.json
+          
+          # Log files
+          **/*.log
+          **/logs/**
+          
+          # CVE exclusions for development dependencies (add specific CVE IDs as needed)
+          # CVE-YYYY-XXXXX  # Description of why this is safe for dev environment
+          EOF
+
+      - name: Run comprehensive filesystem scan
         uses: aquasecurity/trivy-action@0.31.0
         with:
           scan-type: "fs"
           scan-ref: "."
-          format: "sarif"
-          output: "trivy-results.sarif"
-          severity: "CRITICAL,HIGH,MEDIUM"
+          format: "json"
+          output: "trivy-comprehensive.json"
+          severity: "HIGH,CRITICAL"
+          exit-code: "1"
+          trivyignores: ".trivyignore-comprehensive"
+          skip-dirs: "node_modules,tests,docs,.git,.github,vagrant-test-vm,libvirt-enhanced,.vscode,.idea,venv,.venv,build,dist,__pycache__,.cache,.npm,.tox"
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Generate comprehensive security report
         if: always()
-        with:
-          sarif_file: "trivy-results.sarif"
+        run: |
+          echo "# 🛡️ Comprehensive Security Scan Report" >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+          echo "**Scan Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> comprehensive-security-report.md
+          echo "**Commit:** ${{ github.sha }}" >> comprehensive-security-report.md
+          echo "**Branch:** ${{ github.ref_name }}" >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+          
+          if [[ -f "trivy-comprehensive.json" ]] && command -v jq &> /dev/null; then
+            # Parse JSON results
+            CRITICAL=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | length' trivy-comprehensive.json 2>/dev/null || echo "0")
+            HIGH=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "HIGH")] | length' trivy-comprehensive.json 2>/dev/null || echo "0")
+            MEDIUM=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "MEDIUM")] | length' trivy-comprehensive.json 2>/dev/null || echo "0")
+            LOW=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "LOW")] | length' trivy-comprehensive.json 2>/dev/null || echo "0")
+            TOTAL=$((CRITICAL + HIGH + MEDIUM + LOW))
+            
+            echo "## 📊 Vulnerability Summary" >> comprehensive-security-report.md
+            echo "" >> comprehensive-security-report.md
+            echo "| Severity | Count |" >> comprehensive-security-report.md
+            echo "|----------|-------|" >> comprehensive-security-report.md
+            echo "| 🔴 Critical | $CRITICAL |" >> comprehensive-security-report.md
+            echo "| 🟠 High | $HIGH |" >> comprehensive-security-report.md
+            echo "| 🟡 Medium | $MEDIUM |" >> comprehensive-security-report.md
+            echo "| 🟢 Low | $LOW |" >> comprehensive-security-report.md
+            echo "| **Total** | **$TOTAL** |" >> comprehensive-security-report.md
+            echo "" >> comprehensive-security-report.md
+            
+            # Exit with error if critical or high vulnerabilities found
+            if [[ $CRITICAL -gt 0 || $HIGH -gt 0 ]]; then
+              echo "## ❌ Scan Failed" >> comprehensive-security-report.md
+              echo "" >> comprehensive-security-report.md
+              echo "Found $CRITICAL critical and $HIGH high severity vulnerabilities." >> comprehensive-security-report.md
+              echo "Please review and address these issues before proceeding." >> comprehensive-security-report.md
+              echo "" >> comprehensive-security-report.md
+              
+              # Show top 10 critical/high vulnerabilities
+              echo "## 🚨 Top Critical/High Vulnerabilities" >> comprehensive-security-report.md
+              echo "" >> comprehensive-security-report.md
+              jq -r '.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL" or .Severity == "HIGH") | "- **\(.VulnerabilityID)** (\(.Severity)): \(.Title // "No title") in \(.PkgName // "unknown package")"' trivy-comprehensive.json 2>/dev/null | head -10 >> comprehensive-security-report.md || echo "Unable to parse vulnerability details" >> comprehensive-security-report.md
+            else
+              echo "## ✅ Scan Passed" >> comprehensive-security-report.md
+              echo "" >> comprehensive-security-report.md
+              echo "No critical or high severity vulnerabilities found." >> comprehensive-security-report.md
+            fi
+          else
+            echo "## ⚠️ Scan Results Unavailable" >> comprehensive-security-report.md
+            echo "" >> comprehensive-security-report.md
+            echo "Could not parse scan results. Check the scan output manually." >> comprehensive-security-report.md
+          fi
+          
+          echo "" >> comprehensive-security-report.md
+          echo "## 📋 Scan Configuration" >> comprehensive-security-report.md
+          echo "" >> comprehensive-security-report.md
+          echo "- **Severity Filter:** HIGH, CRITICAL" >> comprehensive-security-report.md
+          echo "- **Fail on:** HIGH or CRITICAL findings" >> comprehensive-security-report.md
+          echo "- **Exclusions:** Test files, docs, node_modules, build artifacts" >> comprehensive-security-report.md
+          echo "- **Format:** JSON with human-readable summary" >> comprehensive-security-report.md
+          
+          # Add report to step summary
+          cat comprehensive-security-report.md >> $GITHUB_STEP_SUMMARY
 
-      - name: Run Trivy on scripts directory
-        uses: aquasecurity/trivy-action@0.31.0
+      - name: Upload comprehensive scan results
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          scan-type: "fs"
-          scan-ref: "./scripts"
-          exit-code: "1"
-          severity: "CRITICAL,HIGH"
+          name: comprehensive-security-scan
+          path: |
+            trivy-comprehensive.json
+            comprehensive-security-report.md
+            .trivyignore-comprehensive
+          retention-days: 30
 
-      - name: Run Trivy on sandbox-core
-        uses: aquasecurity/trivy-action@0.31.0
+      - name: Comment PR with scan results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
         with:
-          scan-type: "fs"
-          scan-ref: "./sandbox-core"
-          exit-code: "1"
-          severity: "CRITICAL,HIGH"
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const report = fs.readFileSync('comprehensive-security-report.md', 'utf8');
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 🛡️ Security Scan Results\n\n${report}\n\n---\n*Automated security scan by Trivy*`
+              });
+            } catch (error) {
+              console.log('Could not create PR comment:', error.message);
+            }

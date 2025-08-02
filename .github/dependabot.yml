@@ -1,56 +1,236 @@
+---
 version: 2
 updates:
-  # Python dependencies
+  # Python Core Dependencies - Production packages
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "04:00"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 4
+    labels:
+      - "dependencies"
+      - "python"
+      - "automerge"
+    assignees:
+      - "dev-box-team"
     groups:
+      # High-priority security packages - immediate updates
+      python-security-critical:
+        patterns:
+          - "cryptography"
+          - "certifi"
+          - "urllib3"
+          - "requests"
+          - "httpx"
+          - "pyjwt"
+          - "bcrypt"
+          - "passlib"
+          - "pycryptodome"
+        update-types:
+          - "security"
+
+      # Security scanning tools - weekly updates
+      python-security-tools:
+        patterns:
+          - "bandit"
+          - "safety"
+          - "semgrep"
+          - "flake8-security"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Core production dependencies - weekly updates
+      python-production:
+        patterns:
+          - "psutil"
+          - "pyyaml"
+          - "click"
+          - "rich"
+          - "cerberus"
+          - "marshmallow"
+          - "jsonschema"
+          - "python-dotenv"
+          - "tabulate"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Development and formatting tools - monthly updates
       python-dev-tools:
         patterns:
           - "black"
           - "ruff"
-          - "mypy"
-          - "pytest*"
+          - "flake8"
+          - "isort"
           - "pre-commit"
-      python-security:
-        patterns:
-          - "bandit"
-          - "safety"
-      python-core:
-        patterns:
-          - "pydantic"
-          - "click"
-          - "rich"
+        update-types:
+          - "minor"
+          - "patch"
 
-  # JavaScript dependencies
+      # Testing framework and tools - monthly updates
+      python-testing:
+        patterns:
+          - "pytest*"
+          - "coverage"
+          - "faker"
+          - "factory-boy"
+          - "freezegun"
+          - "responses"
+          - "requests-mock"
+          - "unittest-mock"
+          - "testcontainers"
+          - "pexpect"
+          - "ptyprocess"
+          - "pyfakefs"
+          - "locust"
+          - "model-bakery"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Type checking and static analysis - monthly updates
+      python-type-checking:
+        patterns:
+          - "mypy"
+          - "pylint"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Container and virtualization - weekly updates
+      python-containers:
+        patterns:
+          - "docker"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Python Security Dependencies - Immediate security updates
+  - package-ecosystem: "pip"
+    directory: "/sandbox-core"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "security"
+      - "auto-merge"
+    allow:
+      - dependency-type: "direct"
+        update-type: "security"
+    groups:
+      security-immediate:
+        patterns:
+          - "*"
+        update-types:
+          - "security"
+
+  # JavaScript Development Tools
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
       day: "monday"
       time: "04:00"
     open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "dev-tools"
     groups:
-      frontend-tools:
+      # Linting and formatting tools - auto-merge patch updates
+      js-code-quality:
         patterns:
           - "eslint*"
           - "prettier"
-          - "@commitlint/*"
-      build-tools:
+          - "eslint-config-prettier"
+        update-types:
+          - "patch"
+
+      # Git workflow tools - auto-merge patch updates
+      js-git-tools:
         patterns:
           - "husky"
           - "lint-staged"
+          - "@commitlint/*"
+          - "commitizen"
           - "conventional-changelog*"
+        update-types:
+          - "patch"
 
-  # GitHub Actions
+  # Documentation Site Dependencies
+  - package-ecosystem: "npm"
+    directory: "/docs/dev-box-site"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "04:00"
+    open-pull-requests-limit: 2
+    labels:
+      - "dependencies"
+      - "documentation"
+      - "eleventy"
+    groups:
+      docs-build-tools:
+        patterns:
+          - "@11ty/*"
+          - "eleventy"
+          - "lighthouse"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions - Security and CI/CD workflows
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
+      day: "wednesday"
       time: "04:00"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "ci-cd"
+    groups:
+      # Security scanning actions - immediate updates
+      actions-security:
+        patterns:
+          - "github/codeql-action"
+          - "ossf/scorecard-action"
+          - "securecodewarrior/github-action-add-sarif"
+          - "anchore/scan-action"
+          - "aquasecurity/trivy-action"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+
+      # CI/CD workflow actions - weekly updates
+      actions-ci-cd:
+        patterns:
+          - "actions/checkout"
+          - "actions/setup-python"
+          - "actions/setup-node"
+          - "actions/cache"
+          - "actions/upload-artifact"
+          - "actions/download-artifact"
+          - "docker/build-push-action"
+          - "docker/setup-buildx-action"
+        update-types:
+          - "major"
+          - "minor"
+          - "patch"
+
+      # Documentation and reporting actions
+      actions-docs:
+        patterns:
+          - "actions/deploy-pages"
+          - "actions/configure-pages"
+          - "treosh/lighthouse-ci-action"
+        update-types:
+          - "minor"
+          - "patch"
