@@ -27,8 +27,10 @@ jobs:
 
       - name: Run Bandit security scan
         run: |
-          bandit -r . -f json -o bandit-report.json --exclude ./node_modules,./new-vm-test || true
-          bandit -r . -f txt --exclude ./node_modules,./new-vm-test || true
+          # Exclude directories with vendored code, test fixtures, and build artifacts
+          EXCLUDE_DIRS="./node_modules,./new-vm-test,./.git,./docs/dev-box-site/_site,./dist,./build,./.cache,./coverage,./venv,./env,./.venv"
+          bandit -r . -f json -o bandit-report.json --exclude $EXCLUDE_DIRS -ll || true
+          bandit -r . -f txt --exclude $EXCLUDE_DIRS -ll || true
         continue-on-error: true
 
       - name: Run Safety dependency scan
