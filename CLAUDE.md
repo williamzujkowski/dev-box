@@ -1,1289 +1,1260 @@
-# Claude Code Configuration - SPARC Development Environment (Batchtools Optimized)
+# CLAUDE.md
 
-## 🚨 CRITICAL: CONCURRENT EXECUTION FOR ALL ACTIONS
-
-**ABSOLUTE RULE**: ALL operations MUST be concurrent/parallel in a single
-message:
-
-### 🔴 MANDATORY CONCURRENT PATTERNS:
-
-1. **TodoWrite**: ALWAYS batch ALL todos in ONE call (5-10+ todos minimum)
-2. **Task tool**: ALWAYS spawn ALL agents in ONE message with full instructions
-3. **File operations**: ALWAYS batch ALL reads/writes/edits in ONE message
-4. **Bash commands**: ALWAYS batch ALL terminal operations in ONE message
-5. **Memory operations**: ALWAYS batch ALL memory store/retrieve in ONE message
-
-### ⚡ GOLDEN RULE: "1 MESSAGE = ALL RELATED OPERATIONS"
-
-**Examples of CORRECT concurrent execution:**
-
-```javascript
-// ✅ CORRECT: Everything in ONE message
-[Single Message]:
-  - TodoWrite { todos: [10+ todos with all statuses/priorities] }
-  - Task("Agent 1 with full instructions and hooks")
-  - Task("Agent 2 with full instructions and hooks")
-  - Task("Agent 3 with full instructions and hooks")
-  - Read("file1.js")
-  - Read("file2.js")
-  - Write("output1.js", content)
-  - Write("output2.js", content)
-  - Bash("npm install")
-  - Bash("npm test")
-  - Bash("npm run build")
-```
-
-**Examples of WRONG sequential execution:**
-
-```javascript
-// ❌ WRONG: Multiple messages (NEVER DO THIS)
-Message 1: TodoWrite { todos: [single todo] }
-Message 2: Task("Agent 1")
-Message 3: Task("Agent 2")
-Message 4: Read("file1.js")
-Message 5: Write("output1.js")
-Message 6: Bash("npm install")
-// This is 6x slower and breaks coordination!
-```
-
-### 🎯 CONCURRENT EXECUTION CHECKLIST:
-
-Before sending ANY message, ask yourself:
-
-- ✅ Are ALL related TodoWrite operations batched together?
-- ✅ Are ALL Task spawning operations in ONE message?
-- ✅ Are ALL file operations (Read/Write/Edit) batched together?
-- ✅ Are ALL bash commands grouped in ONE message?
-- ✅ Are ALL memory operations concurrent?
-
-If ANY answer is "No", you MUST combine operations into a single message!
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-This project uses the SPARC (Specification, Pseudocode, Architecture,
-Refinement, Completion) methodology for systematic Test-Driven Development with
-AI assistance through Claude-Flow orchestration.
+**dev-box** is a KVM/libvirt-based agent isolation system for safely testing CLI coding agents (like Claude Code, GitHub Copilot, etc.) with hardware-level isolation while providing controlled internet access.
 
-**🚀 Batchtools Optimization Enabled**: This configuration includes optimized
-prompts and parallel processing capabilities for improved performance and
-efficiency.
+**Branch:** `kvm_switch` (greenfield implementation)
+**Status:** Phase 1 in progress - foundation components being implemented
+**Approach:** Test-Driven Development (TDD) with 80%+ coverage
+**Timeline:** 8 weeks to production-ready
 
-## SPARC Development Commands
+### Primary Use Case
 
-### Core SPARC Commands
+Enable CLI agents to execute in isolated KVM VMs with:
+- **Hardware isolation** (KVM virtualization - cannot escape)
+- **Controlled network access** (NAT-filtered: DNS, HTTP/S, SSH for git)
+- **Fast iteration** (<5s snapshot-based reset cycles)
+- **Real-world functionality** (agents can call APIs, install packages, use git)
+- **Comprehensive monitoring** (Prometheus metrics, structured audit logs)
 
-- `npx claude-flow sparc modes`: List all available SPARC development modes
-- `npx claude-flow sparc run <mode> "<task>"`: Execute specific SPARC mode for a
-  task
-- `npx claude-flow sparc tdd "<feature>"`: Run complete TDD workflow using SPARC
-  methodology
-- `npx claude-flow sparc info <mode>`: Get detailed information about a specific
-  mode
+### Key Architectural Decision: Network Access by Default
 
-### Batchtools Commands (Optimized)
+**IMPORTANT:** The default network mode is **NAT-filtered** (not isolated) because CLI agents require internet access to function.
 
-- `npx claude-flow sparc batch <modes> "<task>"`: Execute multiple SPARC modes
-  in parallel
-- `npx claude-flow sparc pipeline "<task>"`: Execute full SPARC pipeline with
-  parallel processing
-- `npx claude-flow sparc concurrent <mode> "<tasks-file>"`: Process multiple
-  tasks concurrently
+**What's Allowed:**
+- ✅ DNS (UDP 53)
+- ✅ HTTP/HTTPS (TCP 80, 443) - for APIs, package managers
+- ✅ SSH (TCP 22) - for git operations
+- ✅ Git protocol (TCP 9418)
 
-### Standard Build Commands
+**What's Blocked:**
+- ❌ Unsolicited incoming connections
+- ❌ Arbitrary outgoing ports
+- ❌ VM-to-host communication (except control channels)
+- ❌ VM-to-VM communication
 
-- `npm run build`: Build the project
-- `npm run test`: Run the test suite
-- `npm run lint`: Run linter and format checks
-- `npm run typecheck`: Run TypeScript type checking
+**Security:** Despite network access, VMs cannot escape due to KVM hardware isolation, network filtering, and 4 additional security layers.
 
-## SPARC Methodology Workflow (Batchtools Enhanced)
-
-### 1. Specification Phase (Parallel Analysis)
-
-```bash
-# Create detailed specifications with concurrent requirements analysis
-npx claude-flow sparc run spec-pseudocode "Define user authentication requirements" --parallel
-```
-
-**Batchtools Optimization**: Simultaneously analyze multiple requirement
-sources, validate constraints in parallel, and generate comprehensive
-specifications.
-
-### 2. Pseudocode Phase (Concurrent Logic Design)
-
-```bash
-# Develop algorithmic logic with parallel pattern analysis
-npx claude-flow sparc run spec-pseudocode "Create authentication flow pseudocode" --batch-optimize
-```
-
-**Batchtools Optimization**: Process multiple algorithm patterns concurrently,
-validate logic flows in parallel, and optimize data structures simultaneously.
-
-### 3. Architecture Phase (Parallel Component Design)
-
-```bash
-# Design system architecture with concurrent component analysis
-npx claude-flow sparc run architect "Design authentication service architecture" --parallel
-```
-
-**Batchtools Optimization**: Generate multiple architectural alternatives
-simultaneously, validate integration points in parallel, and create
-comprehensive documentation concurrently.
-
-### 4. Refinement Phase (Parallel TDD Implementation)
-
-```bash
-# Execute Test-Driven Development with parallel test generation
-npx claude-flow sparc tdd "implement user authentication system" --batch-tdd
-```
-
-**Batchtools Optimization**: Generate multiple test scenarios simultaneously,
-implement and validate code in parallel, and optimize performance concurrently.
-
-### 5. Completion Phase (Concurrent Integration)
-
-```bash
-# Integration with parallel validation and documentation
-npx claude-flow sparc run integration "integrate authentication with user management" --parallel
-```
-
-**Batchtools Optimization**: Run integration tests in parallel, generate
-documentation concurrently, and validate requirements simultaneously.
-
-## Batchtools Integration Features
-
-### Parallel Processing Capabilities
-
-- **Concurrent File Operations**: Read, analyze, and modify multiple files
-  simultaneously
-- **Parallel Code Analysis**: Analyze dependencies, patterns, and architecture
-  concurrently
-- **Batch Test Generation**: Create comprehensive test suites in parallel
-- **Concurrent Documentation**: Generate multiple documentation formats
-  simultaneously
-
-### Performance Optimizations
-
-- **Smart Batching**: Group related operations for optimal performance
-- **Pipeline Processing**: Chain dependent operations with parallel stages
-- **Resource Management**: Efficient utilization of system resources
-- **Error Resilience**: Robust error handling with parallel recovery
-
-## Performance Benchmarks
-
-### Batchtools Performance Improvements
-
-- **File Operations**: Up to 300% faster with parallel processing
-- **Code Analysis**: 250% improvement with concurrent pattern recognition
-- **Test Generation**: 400% faster with parallel test creation
-- **Documentation**: 200% improvement with concurrent content generation
-- **Memory Operations**: 180% faster with batched read/write operations
-
-## Code Style and Best Practices (Batchtools Enhanced)
-
-### SPARC Development Principles with Batchtools
-
-- **Modular Design**: Keep files under 500 lines, optimize with parallel
-  analysis
-- **Environment Safety**: Never hardcode secrets, validate with concurrent
-  checks
-- **Test-First**: Always write tests before implementation using parallel
-  generation
-- **Clean Architecture**: Separate concerns with concurrent validation
-- **Parallel Documentation**: Maintain clear, up-to-date documentation with
-  concurrent updates
-
-### Batchtools Best Practices
-
-- **Parallel Operations**: Use batchtools for independent tasks
-- **Concurrent Validation**: Validate multiple aspects simultaneously
-- **Batch Processing**: Group similar operations for efficiency
-- **Pipeline Optimization**: Chain operations with parallel stages
-- **Resource Management**: Monitor and optimize resource usage
-
-## Important Notes (Enhanced)
-
-- Always run tests before committing with parallel execution
-  (`npm run test --parallel`)
-- Use SPARC memory system with concurrent operations to maintain context across
-  sessions
-- Follow the Red-Green-Refactor cycle with parallel test generation during TDD
-  phases
-- Document architectural decisions with concurrent validation in memory
-- Regular security reviews with parallel analysis for authentication or data
-  handling code
-- Claude Code slash commands provide quick access to batchtools-optimized SPARC
-  modes
-- Monitor system resources during parallel operations for optimal performance
-
-## Available Agents (54 Total)
-
-### 🚀 Concurrent Agent Usage
-
-**CRITICAL**: Always spawn multiple agents concurrently using the Task tool in a
-single message:
-
-```javascript
-// ✅ CORRECT: Concurrent agent deployment
-[Single Message]:
-  - Task("Agent 1", "full instructions", "agent-type-1")
-  - Task("Agent 2", "full instructions", "agent-type-2")
-  - Task("Agent 3", "full instructions", "agent-type-3")
-  - Task("Agent 4", "full instructions", "agent-type-4")
-  - Task("Agent 5", "full instructions", "agent-type-5")
-```
-
-### 📋 Agent Categories & Concurrent Patterns
-
-#### **Core Development Agents**
-
-- `coder` - Implementation specialist
-- `reviewer` - Code quality assurance
-- `tester` - Test creation and validation
-- `planner` - Strategic planning
-- `researcher` - Information gathering
-
-**Concurrent Usage:**
-
-```bash
-# Deploy full development swarm
-Task("Research requirements", "...", "researcher")
-Task("Plan architecture", "...", "planner")
-Task("Implement features", "...", "coder")
-Task("Create tests", "...", "tester")
-Task("Review code", "...", "reviewer")
-```
-
-#### **Swarm Coordination Agents**
-
-- `hierarchical-coordinator` - Queen-led coordination
-- `mesh-coordinator` - Peer-to-peer networks
-- `adaptive-coordinator` - Dynamic topology
-- `collective-intelligence-coordinator` - Hive-mind intelligence
-- `swarm-memory-manager` - Distributed memory
-
-**Concurrent Swarm Deployment:**
-
-```bash
-# Deploy multi-topology coordination
-Task("Hierarchical coordination", "...", "hierarchical-coordinator")
-Task("Mesh network backup", "...", "mesh-coordinator")
-Task("Adaptive optimization", "...", "adaptive-coordinator")
-```
-
-#### **Consensus & Distributed Systems**
-
-- `byzantine-coordinator` - Byzantine fault tolerance
-- `raft-manager` - Leader election protocols
-- `gossip-coordinator` - Epidemic dissemination
-- `consensus-builder` - Decision-making algorithms
-- `crdt-synchronizer` - Conflict-free replication
-- `quorum-manager` - Dynamic quorum management
-- `security-manager` - Cryptographic security
-
-#### **Performance & Optimization**
-
-- `perf-analyzer` - Bottleneck identification
-- `performance-benchmarker` - Performance testing
-- `task-orchestrator` - Workflow optimization
-- `memory-coordinator` - Memory management
-- `smart-agent` - Intelligent coordination
-
-#### **GitHub & Repository Management**
-
-- `github-modes` - Comprehensive GitHub integration
-- `pr-manager` - Pull request management
-- `code-review-swarm` - Multi-agent code review
-- `issue-tracker` - Issue management
-- `release-manager` - Release coordination
-- `workflow-automation` - CI/CD automation
-- `project-board-sync` - Project tracking
-- `repo-architect` - Repository optimization
-- `multi-repo-swarm` - Cross-repository coordination
-
-#### **SPARC Methodology Agents**
-
-- `sparc-coord` - SPARC orchestration
-- `sparc-coder` - TDD implementation
-- `specification` - Requirements analysis
-- `pseudocode` - Algorithm design
-- `architecture` - System design
-- `refinement` - Iterative improvement
-
-#### **Specialized Development**
-
-- `backend-dev` - API development
-- `mobile-dev` - React Native development
-- `ml-developer` - Machine learning
-- `cicd-engineer` - CI/CD pipelines
-- `api-docs` - OpenAPI documentation
-- `system-architect` - High-level design
-- `code-analyzer` - Code quality analysis
-- `base-template-generator` - Boilerplate creation
-
-#### **Testing & Validation**
-
-- `tdd-london-swarm` - Mock-driven TDD
-- `production-validator` - Real implementation validation
-
-#### **Migration & Planning**
-
-- `migration-planner` - System migrations
-- `swarm-init` - Topology initialization
-
-### 🎯 Concurrent Agent Patterns
-
-#### **Full-Stack Development Swarm (8 agents)**
-
-```bash
-Task("System architecture", "...", "system-architect")
-Task("Backend APIs", "...", "backend-dev")
-Task("Frontend mobile", "...", "mobile-dev")
-Task("Database design", "...", "coder")
-Task("API documentation", "...", "api-docs")
-Task("CI/CD pipeline", "...", "cicd-engineer")
-Task("Performance testing", "...", "performance-benchmarker")
-Task("Production validation", "...", "production-validator")
-```
-
-#### **Distributed System Swarm (6 agents)**
-
-```bash
-Task("Byzantine consensus", "...", "byzantine-coordinator")
-Task("Raft coordination", "...", "raft-manager")
-Task("Gossip protocols", "...", "gossip-coordinator")
-Task("CRDT synchronization", "...", "crdt-synchronizer")
-Task("Security management", "...", "security-manager")
-Task("Performance monitoring", "...", "perf-analyzer")
-```
-
-#### **GitHub Workflow Swarm (5 agents)**
-
-```bash
-Task("PR management", "...", "pr-manager")
-Task("Code review", "...", "code-review-swarm")
-Task("Issue tracking", "...", "issue-tracker")
-Task("Release coordination", "...", "release-manager")
-Task("Workflow automation", "...", "workflow-automation")
-```
-
-#### **SPARC TDD Swarm (7 agents)**
-
-```bash
-Task("Requirements spec", "...", "specification")
-Task("Algorithm design", "...", "pseudocode")
-Task("System architecture", "...", "architecture")
-Task("TDD implementation", "...", "sparc-coder")
-Task("London school tests", "...", "tdd-london-swarm")
-Task("Iterative refinement", "...", "refinement")
-Task("Production validation", "...", "production-validator")
-```
-
-### ⚡ Performance Optimization
-
-**Agent Selection Strategy:**
-
-- **High Priority**: Use 3-5 agents max for critical path
-- **Medium Priority**: Use 5-8 agents for complex features
-- **Large Projects**: Use 8+ agents with proper coordination
-
-**Memory Management:**
-
-- Use `memory-coordinator` for cross-agent state
-- Implement `swarm-memory-manager` for distributed coordination
-- Apply `collective-intelligence-coordinator` for decision-making
-
-## dev-box Integration
-
-This Claude Code configuration is specifically optimized for the dev-box
-development environment platform. For project-specific documentation, see:
-
-- **📖 [dev-box Documentation Site](docs/dev-box-site/)** - Comprehensive
-  project documentation
-- **🚀 [Getting Started Guide](docs/dev-box-site/src/getting-started/)** -
-  Installation and setup
-- **📖 [User Guides](docs/dev-box-site/src/guides/)** - Vagrant workflows and
-  best practices
-- **🔧 [API Reference](docs/dev-box-site/src/api/)** - CLI commands and
-  configuration
-- **🔍 [Troubleshooting](docs/dev-box-site/src/troubleshooting/)** - Common
-  issues and solutions
-
-For more information about SPARC methodology and batchtools optimization, see:
-
-- SPARC Guide: https://github.com/ruvnet/claude-code-flow/docs/sparc.md
-- Batchtools Documentation:
-  https://github.com/ruvnet/claude-code-flow/docs/batchtools.md
-
-# important-instruction-reminders
-
-Message 3: Task("Agent 2") Message 4: Read("file1.js") Message 5:
-Write("output1.js") Message 6: Bash("npm install") // This is 6x slower and
-breaks coordination!
-
-```
-
-### 🎯 CONCURRENT EXECUTION CHECKLIST:
-
-Before sending ANY message, ask yourself:
-
-- ✅ Are ALL related TodoWrite operations batched together?
-- ✅ Are ALL Task spawning operations in ONE message?
-- ✅ Are ALL file operations (Read/Write/Edit) batched together?
-- ✅ Are ALL bash commands grouped in ONE message?
-- ✅ Are ALL memory operations concurrent?
-
-If ANY answer is "No", you MUST combine operations into a single message!
-
-## 🚀 CRITICAL: Claude Code Does ALL Real Work
-
-### 🎯 CLAUDE CODE IS THE ONLY EXECUTOR
-
-**ABSOLUTE RULE**: Claude Code performs ALL actual work:
-
-### ✅ Claude Code ALWAYS Handles:
-
-- 🔧 **ALL file operations** (Read, Write, Edit, MultiEdit, Glob, Grep)
-- 💻 **ALL code generation** and programming tasks
-- 🖥️ **ALL bash commands** and system operations
-- 🏗️ **ALL actual implementation** work
-- 🔍 **ALL project navigation** and code analysis
-- 📝 **ALL TodoWrite** and task management
-- 🔄 **ALL git operations** (commit, push, merge)
-- 📦 **ALL package management** (npm, pip, etc.)
-- 🧪 **ALL testing** and validation
-- 🔧 **ALL debugging** and troubleshooting
-
-### 🧠 Claude Flow MCP Tools ONLY Handle:
-
-- 🎯 **Coordination only** - Planning Claude Code's actions
-- 💾 **Memory management** - Storing decisions and context
-- 🤖 **Neural features** - Learning from Claude Code's work
-- 📊 **Performance tracking** - Monitoring Claude Code's efficiency
-- 🐝 **Swarm orchestration** - Coordinating multiple Claude Code instances
-- 🔗 **GitHub integration** - Advanced repository coordination
-
-### 🚨 CRITICAL SEPARATION OF CONCERNS:
-
-**❌ MCP Tools NEVER:**
-
-- Write files or create content
-- Execute bash commands
-- Generate code
-- Perform file operations
-- Handle TodoWrite operations
-- Execute system commands
-- Do actual implementation work
-
-**✅ MCP Tools ONLY:**
-
-- Coordinate and plan
-- Store memory and context
-- Track performance
-- Orchestrate workflows
-- Provide intelligence insights
-
-### ⚠️ Key Principle:
-
-**MCP tools coordinate, Claude Code executes.** Think of MCP tools as the "brain" that plans and coordinates, while Claude Code is the "hands" that do all the actual work.
-
-### 🔄 WORKFLOW EXECUTION PATTERN:
-
-**✅ CORRECT Workflow:**
-
-1. **MCP**: `mcp__claude-flow__swarm_init` (coordination setup)
-2. **MCP**: `mcp__claude-flow__agent_spawn` (planning agents)
-3. **MCP**: `mcp__claude-flow__task_orchestrate` (task coordination)
-4. **Claude Code**: `Task` tool to spawn agents with coordination instructions
-5. **Claude Code**: `TodoWrite` with ALL todos batched (5-10+ in ONE call)
-6. **Claude Code**: `Read`, `Write`, `Edit`, `Bash` (actual work)
-7. **MCP**: `mcp__claude-flow__memory_usage` (store results)
-
-**❌ WRONG Workflow:**
-
-1. **MCP**: `mcp__claude-flow__terminal_execute` (DON'T DO THIS)
-2. **MCP**: File creation via MCP (DON'T DO THIS)
-3. **MCP**: Code generation via MCP (DON'T DO THIS)
-4. **Claude Code**: Sequential Task calls (DON'T DO THIS)
-5. **Claude Code**: Individual TodoWrite calls (DON'T DO THIS)
-
-### 🚨 REMEMBER:
-
-- **MCP tools** = Coordination, planning, memory, intelligence
-- **Claude Code** = All actual execution, coding, file operations
-
-## 🚀 CRITICAL: Parallel Execution & Batch Operations
-
-### 🚨 MANDATORY RULE #1: BATCH EVERYTHING
-
-**When using swarms, you MUST use BatchTool for ALL operations:**
-
-1. **NEVER** send multiple messages for related operations
-2. **ALWAYS** combine multiple tool calls in ONE message
-3. **PARALLEL** execution is MANDATORY, not optional
-
-### ⚡ THE GOLDEN RULE OF SWARMS
-
-```
-
-If you need to do X operations, they should be in 1 message, not X messages
-
-````
-
-### 🚨 MANDATORY TODO AND TASK BATCHING
-
-**CRITICAL RULE FOR TODOS AND TASKS:**
-
-1. **TodoWrite** MUST ALWAYS include ALL todos in ONE call (5-10+ todos)
-2. **Task** tool calls MUST be batched - spawn multiple agents in ONE message
-3. **NEVER** update todos one by one - this breaks parallel coordination
-4. **NEVER** spawn agents sequentially - ALL agents spawn together
-
-### 📦 BATCH TOOL EXAMPLES
-
-**✅ CORRECT - Everything in ONE Message:**
-
-```javascript
-[Single Message with BatchTool]:
-  // MCP coordination setup
-  mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 6 }
-  mcp__claude-flow__agent_spawn { type: "researcher" }
-  mcp__claude-flow__agent_spawn { type: "coder" }
-  mcp__claude-flow__agent_spawn { type: "code-analyzer" }
-  mcp__claude-flow__agent_spawn { type: "tester" }
-  mcp__claude-flow__agent_spawn { type: "task-orchestrator" }
-
-  // Claude Code execution - ALL in parallel
-  Task("You are researcher agent. MUST coordinate via hooks...")
-  Task("You are coder agent. MUST coordinate via hooks...")
-  Task("You are code-analyzer agent. MUST coordinate via hooks...")
-  Task("You are tester agent. MUST coordinate via hooks...")
-  TodoWrite { todos: [5-10 todos with all priorities and statuses] }
-
-  // File operations in parallel
-  Bash "mkdir -p app/{src,tests,docs}"
-  Write "app/package.json"
-  Write "app/README.md"
-  Write "app/src/index.js"
-````
-
-**❌ WRONG - Multiple Messages (NEVER DO THIS):**
-
-```javascript
-Message 1: mcp__claude-flow__swarm_init
-Message 2: Task("researcher agent")
-Message 3: Task("coder agent")
-Message 4: TodoWrite({ todo: "single todo" })
-Message 5: Bash "mkdir src"
-Message 6: Write "package.json"
-// This is 6x slower and breaks parallel coordination!
-```
-
-### 🎯 BATCH OPERATIONS BY TYPE
-
-**Todo and Task Operations (Single Message):**
-
-- **TodoWrite** → ALWAYS include 5-10+ todos in ONE call
-- **Task agents** → Spawn ALL agents with full instructions in ONE message
-- **Agent coordination** → ALL Task calls must include coordination hooks
-- **Status updates** → Update ALL todo statuses together
-- **NEVER** split todos or Task calls across messages!
-
-**File Operations (Single Message):**
-
-- Read 10 files? → One message with 10 Read calls
-- Write 5 files? → One message with 5 Write calls
-- Edit 1 file many times? → One MultiEdit call
-
-**Swarm Operations (Single Message):**
-
-- Need 8 agents? → One message with swarm_init + 8 agent_spawn calls
-- Multiple memories? → One message with all memory_usage calls
-- Task + monitoring? → One message with task_orchestrate + swarm_monitor
-
-**Command Operations (Single Message):**
-
-- Multiple directories? → One message with all mkdir commands
-- Install + test + lint? → One message with all npm commands
-- Git operations? → One message with all git commands
-
-## 🚀 Quick Setup (Stdio MCP - Recommended)
-
-### 1. Add MCP Server (Stdio - No Port Needed)
-
-```bash
-# Add Claude Flow MCP server to Claude Code using stdio
-claude mcp add claude-flow npx claude-flow@alpha mcp start
-```
-
-### 2. Use MCP Tools for Coordination in Claude Code
-
-Once configured, Claude Flow MCP tools enhance Claude Code's coordination:
-
-**Initialize a swarm:**
-
-- Use the `mcp__claude-flow__swarm_init` tool to set up coordination topology
-- Choose: mesh, hierarchical, ring, or star
-- This creates a coordination framework for Claude Code's work
-
-**Spawn agents:**
-
-- Use `mcp__claude-flow__agent_spawn` tool to create specialized coordinators
-- Agent types represent different thinking patterns, not actual coders
-- They help Claude Code approach problems from different angles
-
-**Orchestrate tasks:**
-
-- Use `mcp__claude-flow__task_orchestrate` tool to coordinate complex workflows
-- This breaks down tasks for Claude Code to execute systematically
-- The agents don't write code - they coordinate Claude Code's actions
-
-## Available MCP Tools for Coordination
-
-### Coordination Tools:
-
-- `mcp__claude-flow__swarm_init` - Set up coordination topology for Claude Code
-- `mcp__claude-flow__agent_spawn` - Create cognitive patterns to guide Claude
-  Code
-- `mcp__claude-flow__task_orchestrate` - Break down and coordinate complex tasks
-
-### Monitoring Tools:
-
-- `mcp__claude-flow__swarm_status` - Monitor coordination effectiveness
-- `mcp__claude-flow__agent_list` - View active cognitive patterns
-- `mcp__claude-flow__agent_metrics` - Track coordination performance
-- `mcp__claude-flow__task_status` - Check workflow progress
-- `mcp__claude-flow__task_results` - Review coordination outcomes
-
-### Memory & Neural Tools:
-
-- `mcp__claude-flow__memory_usage` - Persistent memory across sessions
-- `mcp__claude-flow__neural_status` - Neural pattern effectiveness
-- `mcp__claude-flow__neural_train` - Improve coordination patterns
-- `mcp__claude-flow__neural_patterns` - Analyze thinking approaches
-
-### GitHub Integration Tools (NEW!):
-
-- `mcp__claude-flow__github_swarm` - Create specialized GitHub management swarms
-- `mcp__claude-flow__repo_analyze` - Deep repository analysis with AI
-- `mcp__claude-flow__pr_enhance` - AI-powered pull request improvements
-- `mcp__claude-flow__issue_triage` - Intelligent issue classification
-- `mcp__claude-flow__code_review` - Automated code review with swarms
-
-### System Tools:
-
-- `mcp__claude-flow__benchmark_run` - Measure coordination efficiency
-- `mcp__claude-flow__features_detect` - Available capabilities
-- `mcp__claude-flow__swarm_monitor` - Real-time coordination tracking
-
-## Workflow Examples (Coordination-Focused)
-
-### Research Coordination Example
-
-**Context:** Claude Code needs to research a complex topic systematically
-
-**Step 1:** Set up research coordination
-
-- Tool: `mcp__claude-flow__swarm_init`
-- Parameters: `{"topology": "mesh", "maxAgents": 5, "strategy": "balanced"}`
-- Result: Creates a mesh topology for comprehensive exploration
-
-**Step 2:** Define research perspectives
-
-- Tool: `mcp__claude-flow__agent_spawn`
-- Parameters: `{"type": "researcher", "name": "Literature Review"}`
-- Tool: `mcp__claude-flow__agent_spawn`
-- Parameters: `{"type": "code-analyzer", "name": "Data Analysis"}`
-- Result: Different cognitive patterns for Claude Code to use
-
-**Step 3:** Coordinate research execution
-
-- Tool: `mcp__claude-flow__task_orchestrate`
-- Parameters:
-  `{"task": "Research neural architecture search papers", "strategy": "adaptive"}`
-- Result: Claude Code systematically searches, reads, and analyzes papers
-
-**What Actually Happens:**
-
-1. The swarm sets up a coordination framework
-2. Each agent MUST use Claude Flow hooks for coordination:
-   - `npx claude-flow@alpha hooks pre-task` before starting
-   - `npx claude-flow@alpha hooks post-edit` after each file operation
-   - `npx claude-flow@alpha hooks notify` to share decisions
-3. Claude Code uses its native Read, WebSearch, and Task tools
-4. The swarm coordinates through shared memory and hooks
-5. Results are synthesized by Claude Code with full coordination history
-
-### Development Coordination Example
-
-**Context:** Claude Code needs to build a complex system with multiple
-components
-
-**Step 1:** Set up development coordination
-
-- Tool: `mcp__claude-flow__swarm_init`
-- Parameters:
-  `{"topology": "hierarchical", "maxAgents": 8, "strategy": "specialized"}`
-- Result: Hierarchical structure for organized development
-
-**Step 2:** Define development perspectives
-
-- Tool: `mcp__claude-flow__agent_spawn`
-- Parameters: `{"type": "system-architect", "name": "System Design"}`
-- Result: Architectural thinking pattern for Claude Code
-
-**Step 3:** Coordinate implementation
-
-- Tool: `mcp__claude-flow__task_orchestrate`
-- Parameters:
-  `{"task": "Implement user authentication with JWT", "strategy": "parallel"}`
-- Result: Claude Code implements features using its native tools
-
-**What Actually Happens:**
-
-1. The swarm creates a development coordination plan
-2. Each agent coordinates using mandatory hooks:
-   - Pre-task hooks for context loading
-   - Post-edit hooks for progress tracking
-   - Memory storage for cross-agent coordination
-3. Claude Code uses Write, Edit, Bash tools for implementation
-4. Agents share progress through Claude Flow memory
-5. All code is written by Claude Code with full coordination
-
-### GitHub Repository Management Example (NEW!)
-
-**Context:** Claude Code needs to manage a complex GitHub repository
-
-**Step 1:** Initialize GitHub swarm
-
-- Tool: `mcp__claude-flow__github_swarm`
-- Parameters:
-  `{"repository": "owner/repo", "agents": 5, "focus": "maintenance"}`
-- Result: Specialized swarm for repository management
-
-**Step 2:** Analyze repository health
-
-- Tool: `mcp__claude-flow__repo_analyze`
-- Parameters: `{"deep": true, "include": ["issues", "prs", "code"]}`
-- Result: Comprehensive repository analysis
-
-**Step 3:** Enhance pull requests
-
-- Tool: `mcp__claude-flow__pr_enhance`
-- Parameters: `{"pr_number": 123, "add_tests": true, "improve_docs": true}`
-- Result: AI-powered PR improvements
-
-## Best Practices for Coordination
-
-### ✅ DO:
-
-- Use MCP tools to coordinate Claude Code's approach to complex tasks
-- Let the swarm break down problems into manageable pieces
-- Use memory tools to maintain context across sessions
-- Monitor coordination effectiveness with status tools
-- Train neural patterns for better coordination over time
-- Leverage GitHub tools for repository management
-
-### ❌ DON'T:
-
-- Expect agents to write code (Claude Code does all implementation)
-- Use MCP tools for file operations (use Claude Code's native tools)
-- Try to make agents execute bash commands (Claude Code handles this)
-- Confuse coordination with execution (MCP coordinates, Claude executes)
-
-## Memory and Persistence
-
-The swarm provides persistent memory that helps Claude Code:
-
-- Remember project context across sessions
-- Track decisions and rationale
-- Maintain consistency in large projects
-- Learn from previous coordination patterns
-- Store GitHub workflow preferences
-
-## Performance Benefits
-
-When using Claude Flow coordination with Claude Code:
-
-- **84.8% SWE-Bench solve rate** - Better problem-solving through coordination
-- **32.3% token reduction** - Efficient task breakdown reduces redundancy
-- **2.8-4.4x speed improvement** - Parallel coordination strategies
-- **27+ neural models** - Diverse cognitive approaches
-- **GitHub automation** - Streamlined repository management
-
-## Claude Code Hooks Integration
-
-Claude Flow includes powerful hooks that automate coordination:
-
-### Pre-Operation Hooks
-
-- **Auto-assign agents** before file edits based on file type
-- **Validate commands** before execution for safety
-- **Prepare resources** automatically for complex operations
-- **Optimize topology** based on task complexity analysis
-- **Cache searches** for improved performance
-- **GitHub context** loading for repository operations
-
-### Post-Operation Hooks
-
-- **Auto-format code** using language-specific formatters
-- **Train neural patterns** from successful operations
-- **Update memory** with operation context
-- **Analyze performance** and identify bottlenecks
-- **Track token usage** for efficiency metrics
-- **Sync GitHub** state for consistency
-
-### Session Management
-
-- **Generate summaries** at session end
-- **Persist state** across Claude Code sessions
-- **Track metrics** for continuous improvement
-- **Restore previous** session context automatically
-- **Export workflows** for reuse
-
-### Advanced Features (v2.0.0!)
-
-- **🚀 Automatic Topology Selection** - Optimal swarm structure for each task
-- **⚡ Parallel Execution** - 2.8-4.4x speed improvements
-- **🧠 Neural Training** - Continuous learning from operations
-- **📊 Bottleneck Analysis** - Real-time performance optimization
-- **🤖 Smart Auto-Spawning** - Zero manual agent management
-- **🛡️ Self-Healing Workflows** - Automatic error recovery
-- **💾 Cross-Session Memory** - Persistent learning & context
-- **🔗 GitHub Integration** - Repository-aware swarms
-
-### Configuration
-
-Hooks are pre-configured in `.claude/settings.json`. Key features:
-
-- Automatic agent assignment for different file types
-- Code formatting on save
-- Neural pattern learning from edits
-- Session state persistence
-- Performance tracking and optimization
-- Intelligent caching and token reduction
-- GitHub workflow automation
-
-See `.claude/commands/` for detailed documentation on all features.
-
-## Integration Tips
-
-1. **Start Simple**: Begin with basic swarm init and single agent
-2. **Scale Gradually**: Add more agents as task complexity increases
-3. **Use Memory**: Store important decisions and context
-4. **Monitor Progress**: Regular status checks ensure effective coordination
-5. **Train Patterns**: Let neural agents learn from successful coordinations
-6. **Enable Hooks**: Use the pre-configured hooks for automation
-7. **GitHub First**: Use GitHub tools for repository management
-
-## 🧠 SWARM ORCHESTRATION PATTERN
-
-### You are the SWARM ORCHESTRATOR. **IMMEDIATELY SPAWN AGENTS IN PARALLEL** to execute tasks
-
-### 🚨 CRITICAL INSTRUCTION: You are the SWARM ORCHESTRATOR
-
-**MANDATORY**: When using swarms, you MUST:
-
-1. **SPAWN ALL AGENTS IN ONE BATCH** - Use multiple tool calls in a SINGLE
-   message
-2. **EXECUTE TASKS IN PARALLEL** - Never wait for one task before starting
-   another
-3. **USE BATCHTOOL FOR EVERYTHING** - Multiple operations = Single message with
-   multiple tools
-4. **ALL AGENTS MUST USE COORDINATION TOOLS** - Every spawned agent MUST use
-   claude-flow hooks and memory
-
-### 🎯 AGENT COUNT CONFIGURATION
-
-**CRITICAL: Dynamic Agent Count Rules**
-
-1. **Check CLI Arguments First**: If user runs
-   `npx claude-flow@alpha --agents 5`, use 5 agents
-2. **Auto-Decide if No Args**: Without CLI args, analyze task complexity:
-   - Simple tasks (1-3 components): 3-4 agents
-   - Medium tasks (4-6 components): 5-7 agents
-   - Complex tasks (7+ components): 8-12 agents
-3. **Agent Type Distribution**: Balance agent types based on task:
-   - Always include 1 task-orchestrator
-   - For code-heavy tasks: more coders
-   - For design tasks: more system-architects/code-analyzers
-   - For quality tasks: more testers/reviewers
-
-**Example Auto-Decision Logic:**
-
-```javascript
-// If CLI args provided: npx claude-flow@alpha --agents 6
-maxAgents = CLI_ARGS.agents || determineAgentCount(task);
-
-function determineAgentCount(task) {
-  // Analyze task complexity
-  if (task.includes(["API", "database", "auth", "tests"])) return 8;
-  if (task.includes(["frontend", "backend"])) return 6;
-  if (task.includes(["simple", "script"])) return 3;
-  return 5; // default
-}
-```
-
-## 📋 MANDATORY AGENT COORDINATION PROTOCOL
-
-### 🔴 CRITICAL: Every Agent MUST Follow This Protocol
-
-When you spawn an agent using the Task tool, that agent MUST:
-
-**1️⃣ BEFORE Starting Work:**
-
-```bash
-# Check previous work and load context
-npx claude-flow@alpha hooks pre-task --description "[agent task]" --auto-spawn-agents false
-npx claude-flow@alpha hooks session-restore --session-id "swarm-[id]" --load-memory true
-```
-
-**2️⃣ DURING Work (After EVERY Major Step):**
-
-```bash
-# Store progress in memory after each file operation
-npx claude-flow@alpha hooks post-edit --file "[filepath]" --memory-key "swarm/[agent]/[step]"
-
-# Store decisions and findings
-npx claude-flow@alpha hooks notify --message "[what was done]" --telemetry true
-
-# Check coordination with other agents
-npx claude-flow@alpha hooks pre-search --query "[what to check]" --cache-results true
-```
-
-**3️⃣ AFTER Completing Work:**
-
-```bash
-# Save all results and learnings
-npx claude-flow@alpha hooks post-task --task-id "[task]" --analyze-performance true
-npx claude-flow@alpha hooks session-end --export-metrics true --generate-summary true
-```
-
-### 🎯 AGENT PROMPT TEMPLATE
-
-When spawning agents, ALWAYS include these coordination instructions:
-
-```
-You are the [Agent Type] agent in a coordinated swarm.
-
-MANDATORY COORDINATION:
-1. START: Run `npx claude-flow@alpha hooks pre-task --description "[your task]"`
-2. DURING: After EVERY file operation, run `npx claude-flow@alpha hooks post-edit --file "[file]" --memory-key "agent/[step]"`
-3. MEMORY: Store ALL decisions using `npx claude-flow@alpha hooks notify --message "[decision]"`
-4. END: Run `npx claude-flow@alpha hooks post-task --task-id "[task]" --analyze-performance true`
-
-Your specific task: [detailed task description]
-
-REMEMBER: Coordinate with other agents by checking memory BEFORE making decisions!
-```
-
-### ⚡ PARALLEL EXECUTION IS MANDATORY
-
-**THIS IS WRONG ❌ (Sequential - NEVER DO THIS):**
-
-```
-Message 1: Initialize swarm
-Message 2: Spawn agent 1
-Message 3: Spawn agent 2
-Message 4: TodoWrite (single todo)
-Message 5: Create file 1
-Message 6: TodoWrite (another single todo)
-```
-
-**THIS IS CORRECT ✅ (Parallel - ALWAYS DO THIS):**
-
-```
-Message 1: [BatchTool]
-  // MCP coordination setup
-  - mcp__claude-flow__swarm_init
-  - mcp__claude-flow__agent_spawn (researcher)
-  - mcp__claude-flow__agent_spawn (coder)
-  - mcp__claude-flow__agent_spawn (code-analyzer)
-  - mcp__claude-flow__agent_spawn (tester)
-  - mcp__claude-flow__agent_spawn (task-orchestrator)
-
-Message 2: [BatchTool - Claude Code execution]
-  // Task agents with full coordination instructions
-  - Task("You are researcher agent. MANDATORY: Run hooks pre-task, post-edit, post-task. Task: Research API patterns")
-  - Task("You are coder agent. MANDATORY: Run hooks pre-task, post-edit, post-task. Task: Implement REST endpoints")
-  - Task("You are code-analyzer agent. MANDATORY: Run hooks pre-task, post-edit, post-task. Task: Analyze performance")
-  - Task("You are tester agent. MANDATORY: Run hooks pre-task, post-edit, post-task. Task: Write comprehensive tests")
-
-  // TodoWrite with ALL todos batched
-  - TodoWrite { todos: [
-      {id: "research", content: "Research API patterns", status: "in_progress", priority: "high"},
-      {id: "design", content: "Design database schema", status: "pending", priority: "high"},
-      {id: "implement", content: "Build REST endpoints", status: "pending", priority: "high"},
-      {id: "test", content: "Write unit tests", status: "pending", priority: "medium"},
-      {id: "docs", content: "Create API documentation", status: "pending", priority: "low"},
-      {id: "deploy", content: "Setup deployment", status: "pending", priority: "medium"}
-    ]}
-
-  // File operations in parallel
-  - Write "api/package.json"
-  - Write "api/server.js"
-  - Write "api/routes/users.js"
-  - Bash "mkdir -p api/{routes,models,tests}"
-```
-
-### 🎯 MANDATORY SWARM PATTERN
-
-When given ANY complex task with swarms:
-
-```
-STEP 1: IMMEDIATE PARALLEL SPAWN (Single Message!)
-[BatchTool]:
-  // IMPORTANT: Check CLI args for agent count, otherwise auto-decide based on task complexity
-  - mcp__claude-flow__swarm_init {
-      topology: "hierarchical",
-      maxAgents: CLI_ARGS.agents || AUTO_DECIDE(task_complexity), // Use CLI args or auto-decide
-      strategy: "parallel"
-    }
-
-  // Spawn agents based on maxAgents count and task requirements
-  // If CLI specifies 3 agents, spawn 3. If no args, auto-decide optimal count (3-12)
-  - mcp__claude-flow__agent_spawn { type: "system-architect", name: "System Designer" }
-  - mcp__claude-flow__agent_spawn { type: "coder", name: "API Developer" }
-  - mcp__claude-flow__agent_spawn { type: "coder", name: "Frontend Dev" }
-  - mcp__claude-flow__agent_spawn { type: "code-analyzer", name: "DB Designer" }
-  - mcp__claude-flow__agent_spawn { type: "tester", name: "QA Engineer" }
-  - mcp__claude-flow__agent_spawn { type: "researcher", name: "Tech Lead" }
-  - mcp__claude-flow__agent_spawn { type: "task-orchestrator", name: "PM" }
-  - TodoWrite { todos: [multiple todos at once] }
-
-STEP 2: PARALLEL TASK EXECUTION (Single Message!)
-[BatchTool]:
-  - mcp__claude-flow__task_orchestrate { task: "main task", strategy: "parallel" }
-  - mcp__claude-flow__memory_usage { action: "store", key: "init", value: {...} }
-  - Multiple Read operations
-  - Multiple Write operations
-  - Multiple Bash commands
-
-STEP 3: CONTINUE PARALLEL WORK (Never Sequential!)
-```
-
-### 📊 VISUAL TASK TRACKING FORMAT
-
-Use this format when displaying task progress:
-
-```
-📊 Progress Overview
-   ├── Total Tasks: X
-   ├── ✅ Completed: X (X%)
-   ├── 🔄 In Progress: X (X%)
-   ├── ⭕ Todo: X (X%)
-   └── ❌ Blocked: X (X%)
-
-📋 Todo (X)
-   └── 🔴 001: [Task description] [PRIORITY] ▶
-
-🔄 In progress (X)
-   ├── 🟡 002: [Task description] ↳ X deps ▶
-   └── 🔴 003: [Task description] [PRIORITY] ▶
-
-✅ Completed (X)
-   ├── ✅ 004: [Task description]
-   └── ... (more completed tasks)
-
-Priority indicators: 🔴 HIGH/CRITICAL, 🟡 MEDIUM, 🟢 LOW
-Dependencies: ↳ X deps | Actionable: ▶
-```
-
-### 🎯 REAL EXAMPLE: Full-Stack App Development
-
-**Task**: "Build a complete REST API with authentication, database, and tests"
-
-**🚨 MANDATORY APPROACH - Everything in Parallel:**
-
-```javascript
-// ✅ CORRECT: SINGLE MESSAGE with ALL operations
-[BatchTool - Message 1]:
-  // Initialize and spawn ALL agents at once
-  mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 8, strategy: "parallel" }
-  mcp__claude-flow__agent_spawn { type: "system-architect", name: "System Designer" }
-  mcp__claude-flow__agent_spawn { type: "coder", name: "API Developer" }
-  mcp__claude-flow__agent_spawn { type: "coder", name: "Auth Expert" }
-  mcp__claude-flow__agent_spawn { type: "code-analyzer", name: "DB Designer" }
-  mcp__claude-flow__agent_spawn { type: "tester", name: "Test Engineer" }
-  mcp__claude-flow__agent_spawn { type: "task-orchestrator", name: "Lead" }
-
-  // Update ALL todos at once - NEVER split todos!
-  TodoWrite { todos: [
-    { id: "design", content: "Design API architecture", status: "in_progress", priority: "high" },
-    { id: "auth", content: "Implement authentication", status: "pending", priority: "high" },
-    { id: "db", content: "Design database schema", status: "pending", priority: "high" },
-    { id: "api", content: "Build REST endpoints", status: "pending", priority: "high" },
-    { id: "tests", content: "Write comprehensive tests", status: "pending", priority: "medium" },
-    { id: "docs", content: "Document API endpoints", status: "pending", priority: "low" },
-    { id: "deploy", content: "Setup deployment pipeline", status: "pending", priority: "medium" },
-    { id: "monitor", content: "Add monitoring", status: "pending", priority: "medium" }
-  ]}
-
-  // Start orchestration
-  mcp__claude-flow__task_orchestrate { task: "Build REST API", strategy: "parallel" }
-
-  // Store initial memory
-  mcp__claude-flow__memory_usage { action: "store", key: "project/init", value: { started: Date.now() } }
-
-[BatchTool - Message 2]:
-  // Create ALL directories at once
-  Bash("mkdir -p test-app/{src,tests,docs,config}")
-  Bash("mkdir -p test-app/src/{models,routes,middleware,services}")
-  Bash("mkdir -p test-app/tests/{unit,integration}")
-
-  // Write ALL base files at once
-  Write("test-app/package.json", packageJsonContent)
-  Write("test-app/.env.example", envContent)
-  Write("test-app/README.md", readmeContent)
-  Write("test-app/src/server.js", serverContent)
-  Write("test-app/src/config/database.js", dbConfigContent)
-
-[BatchTool - Message 3]:
-  // Read multiple files for context
-  Read("test-app/package.json")
-  Read("test-app/src/server.js")
-  Read("test-app/.env.example")
-
-  // Run multiple commands
-  Bash("cd test-app && npm install")
-  Bash("cd test-app && npm run lint")
-  Bash("cd test-app && npm test")
-```
-
-### 🚫 NEVER DO THIS (Sequential = WRONG):
-
-```javascript
-// ❌ WRONG: Multiple messages, one operation each
-Message 1: mcp__claude-flow__swarm_init
-Message 2: mcp__claude-flow__agent_spawn (just one agent)
-Message 3: mcp__claude-flow__agent_spawn (another agent)
-Message 4: TodoWrite (single todo)
-Message 5: Write (single file)
-// This is 5x slower and wastes swarm coordination!
-```
-
-### 🔄 MEMORY COORDINATION PATTERN
-
-Every agent coordination step MUST use memory:
-
-```
-// After each major decision or implementation
-mcp__claude-flow__memory_usage
-  action: "store"
-  key: "swarm-{id}/agent-{name}/{step}"
-  value: {
-    timestamp: Date.now(),
-    decision: "what was decided",
-    implementation: "what was built",
-    nextSteps: ["step1", "step2"],
-    dependencies: ["dep1", "dep2"]
-  }
-
-// To retrieve coordination data
-mcp__claude-flow__memory_usage
-  action: "retrieve"
-  key: "swarm-{id}/agent-{name}/{step}"
-
-// To check all swarm progress
-mcp__claude-flow__memory_usage
-  action: "list"
-  pattern: "swarm-{id}/*"
-```
-
-### ⚡ PERFORMANCE TIPS
-
-1. **Batch Everything**: Never operate on single files when multiple are needed
-2. **Parallel First**: Always think "what can run simultaneously?"
-3. **Memory is Key**: Use memory for ALL cross-agent coordination
-4. **Monitor Progress**: Use mcp**claude-flow**swarm_monitor for real-time
-   tracking
-5. **Auto-Optimize**: Let hooks handle topology and agent selection
-
-### 🎨 VISUAL SWARM STATUS
-
-When showing swarm status, use this format:
-
-```
-🐝 Swarm Status: ACTIVE
-├── 🏗️ Topology: hierarchical
-├── 👥 Agents: 6/8 active
-├── ⚡ Mode: parallel execution
-├── 📊 Tasks: 12 total (4 complete, 6 in-progress, 2 pending)
-└── 🧠 Memory: 15 coordination points stored
-
-Agent Activity:
-├── 🟢 system-architect: Designing database schema...
-├── 🟢 coder-1: Implementing auth endpoints...
-├── 🟢 coder-2: Building user CRUD operations...
-├── 🟢 code-analyzer: Optimizing query performance...
-├── 🟡 tester: Waiting for auth completion...
-└── 🟢 task-orchestrator: Monitoring progress...
-```
-
-## 📝 CRITICAL: TODOWRITE AND TASK TOOL BATCHING
-
-### 🚨 MANDATORY BATCHING RULES FOR TODOS AND TASKS
-
-**TodoWrite Tool Requirements:**
-
-1. **ALWAYS** include 5-10+ todos in a SINGLE TodoWrite call
-2. **NEVER** call TodoWrite multiple times in sequence
-3. **BATCH** all todo updates together - status changes, new todos, completions
-4. **INCLUDE** all priority levels (high, medium, low) in one call
-
-**Task Tool Requirements:**
-
-1. **SPAWN** all agents using Task tool in ONE message
-2. **NEVER** spawn agents one by one across multiple messages
-3. **INCLUDE** full task descriptions and coordination instructions
-4. **BATCH** related Task calls together for parallel execution
-
-**Example of CORRECT TodoWrite usage:**
-
-```javascript
-// ✅ CORRECT - All todos in ONE call
-TodoWrite { todos: [
-  { id: "1", content: "Initialize system", status: "completed", priority: "high" },
-  { id: "2", content: "Analyze requirements", status: "in_progress", priority: "high" },
-  { id: "3", content: "Design architecture", status: "pending", priority: "high" },
-  { id: "4", content: "Implement core", status: "pending", priority: "high" },
-  { id: "5", content: "Build features", status: "pending", priority: "medium" },
-  { id: "6", content: "Write tests", status: "pending", priority: "medium" },
-  { id: "7", content: "Add monitoring", status: "pending", priority: "medium" },
-  { id: "8", content: "Documentation", status: "pending", priority: "low" },
-  { id: "9", content: "Performance tuning", status: "pending", priority: "low" },
-  { id: "10", content: "Deploy to production", status: "pending", priority: "high" }
-]}
-```
-
-**Example of WRONG TodoWrite usage:**
-
-```javascript
-// ❌ WRONG - Multiple TodoWrite calls
-Message 1: TodoWrite { todos: [{ id: "1", content: "Task 1", ... }] }
-Message 2: TodoWrite { todos: [{ id: "2", content: "Task 2", ... }] }
-Message 3: TodoWrite { todos: [{ id: "3", content: "Task 3", ... }] }
-// This breaks parallel coordination!
-```
-
-## Claude Flow v2.0.0 Features
-
-Claude Flow extends the base coordination with:
-
-- **🔗 GitHub Integration** - Deep repository management
-- **🎯 Project Templates** - Quick-start for common projects
-- **📊 Advanced Analytics** - Detailed performance insights
-- **🤖 Custom Agent Types** - Domain-specific coordinators
-- **🔄 Workflow Automation** - Reusable task sequences
-- **🛡️ Enhanced Security** - Safer command execution
-
-## Support
-
-- Documentation: https://github.com/ruvnet/claude-flow
-- Issues: https://github.com/ruvnet/claude-flow/issues
-- Examples: https://github.com/ruvnet/claude-flow/tree/main/examples
+For untrusted code: Use `NetworkMode.ISOLATED` explicitly.
 
 ---
 
-Remember: **Claude Flow coordinates, Claude Code creates!** Start with
-`mcp__claude-flow__swarm_init` to enhance your development workflow.
+## Documentation Structure
+
+### Essential Reading Order
+
+1. **[README_PROJECT_PLANS.md](README_PROJECT_PLANS.md)** (3 min) - Master overview
+2. **[GETTING_STARTED.md](GETTING_STARTED.md)** (10 min) - Quick start guide
+3. **[ARCHITECTURE.md](ARCHITECTURE.md)** (30 min) - Complete system design
+4. **[TDD_IMPLEMENTATION_PLAN.md](TDD_IMPLEMENTATION_PLAN.md)** (20 min) - Test strategy
+5. **[IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md)** (reference) - Day-by-day tasks
+
+### Specialized Guides
+
+- **[NETWORK_CONFIG_GUIDE.md](NETWORK_CONFIG_GUIDE.md)** - Network setup and security
+- **[NETWORK_UPDATE_SUMMARY.md](NETWORK_UPDATE_SUMMARY.md)** - Quick network changes summary
+- **[CHANGES_FROM_ORIGINAL_PLAN.md](CHANGES_FROM_ORIGINAL_PLAN.md)** - Design change log
+
+### For AI Assistants
+
+When asked to implement features:
+1. **Check ARCHITECTURE.md** for component design
+2. **Check TDD_IMPLEMENTATION_PLAN.md** for test examples
+3. **Check IMPLEMENTATION_GUIDE.md** for daily tasks
+4. **Follow TDD**: Write tests first, then implement
+
+---
+
+## Architecture Overview (High-Level)
+
+### System Layers
+
+```
+┌─────────────────────────────────────┐
+│  Control Plane (Host)               │
+│  ├─ Agent Router (API/CLI)          │
+│  ├─ VM Pool (pre-warmed VMs)        │
+│  ├─ Lifecycle Manager (snapshots)   │
+│  ├─ Metrics (Prometheus)            │
+│  └─ Audit Logger (structured logs)  │
+├─────────────────────────────────────┤
+│  KVM/libvirt (hardware isolation)   │
+├─────────────────────────────────────┤
+│  Agent VM (NAT-filtered network)    │
+│  ├─ 5 security layers               │
+│  ├─ virtio-vsock (control channel)  │
+│  ├─ virtio-9p (filesystem sharing)  │
+│  ├─ qemu-guest-agent (monitoring)   │
+│  └─ Agent execution environment     │
+└─────────────────────────────────────┘
+```
+
+### Core Components
+
+**See ARCHITECTURE.md section 1 for detailed specifications**
+
+1. **Agent Management Layer**
+   - `AgentRouter`: Entry point for agent execution requests
+   - `VMPoolManager`: Pre-warmed VM pool (acquire <100ms)
+   - `LifecycleManager`: VM creation, snapshots, destruction
+
+2. **Observability Layer**
+   - `MetricsCollector`: Prometheus metrics
+   - `AuditLogger`: Structured JSON logs
+   - `AnomalyDetector`: Behavioral analysis
+
+3. **Libvirt Management**
+   - `LibvirtConnection`: Thread-safe connection wrapper
+   - `VM`: High-level domain abstraction
+   - `VMTemplate`: Dynamic XML generation
+
+4. **Communication Channels**
+   - `VsockProtocol`: Host-guest control messages
+   - `FilesystemShare`: virtio-9p code injection/extraction
+   - Guest agent: Runs inside VM, listens on vsock
+
+### Technology Stack
+
+- **Language:** Python 3.12+ (async/await, strict type hints)
+- **Virtualization:** libvirt 9.0+ with QEMU/KVM 8.0+
+- **Testing:** pytest + pytest-asyncio + pytest-cov
+- **Type Checking:** mypy (strict mode)
+- **Linting:** ruff, black
+- **Security:** bandit, trivy
+- **Monitoring:** Prometheus + Grafana
+- **Logging:** structlog (with NIST Eastern Time timestamps)
+- **Timezone:** zoneinfo with America/New_York (NIST ET)
+
+---
+
+## Development Workflow
+
+### Test-Driven Development (TDD)
+
+**CRITICAL:** This project follows strict TDD. Always write tests FIRST.
+
+#### Red-Green-Refactor Cycle
+
+```bash
+# 1. RED: Write failing test
+cat > tests/unit/test_feature.py << 'EOF'
+def test_feature_works():
+    result = my_feature()
+    assert result == expected
+EOF
+
+pytest tests/unit/test_feature.py  # Should FAIL ❌
+
+# 2. GREEN: Write minimal code to pass
+cat > src/agent_vm/feature.py << 'EOF'
+def my_feature():
+    return expected
+EOF
+
+pytest tests/unit/test_feature.py  # Should PASS ✅
+
+# 3. REFACTOR: Improve code quality
+# Add type hints, docstrings, optimize
+# Tests should still pass ✅
+
+# 4. COMMIT: After each green test
+git add .
+git commit -m "feat: add feature
+
+- Implements X functionality
+- Tests: 1 passing
+- Coverage: 90%"
+```
+
+### Quality Gates (Must Pass Before Commit)
+
+```bash
+# Run all quality checks
+pytest tests/ -v --cov --cov-fail-under=80  # Tests + coverage
+mypy src/ --strict                           # Type checking
+ruff check src/                              # Linting
+black --check .                              # Formatting
+bandit -r src/                               # Security scan
+```
+
+### Project Structure
+
+```
+dev-box/
+├── src/agent_vm/              # Main package
+│   ├── core/                  # VM, connection, template, snapshot
+│   ├── network/               # Network configuration
+│   ├── storage/               # Disk and storage management
+│   ├── security/              # Security policies
+│   ├── monitoring/            # Metrics and logging
+│   ├── execution/             # Agent executor, VM pool
+│   └── communication/         # vsock, 9p, guest agent
+│
+├── tests/
+│   ├── unit/                  # Fast, isolated tests (70%)
+│   ├── integration/           # Component interaction tests (20%)
+│   └── e2e/                   # Full workflow tests (10%)
+│
+├── guest/                     # Code deployed to VMs
+│   └── agent.py              # Guest agent (runs inside VM)
+│
+├── docs/                      # Documentation
+└── pyproject.toml            # Project config
+```
+
+---
+
+## Common Development Tasks
+
+### Setting Up Development Environment
+
+```bash
+# 1. Verify KVM support
+egrep -c '(vmx|svm)' /proc/cpuinfo  # Must be > 0
+
+# 2. Install system dependencies
+sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients \
+    bridge-utils python3-libvirt
+
+# 3. Add user to libvirt group
+sudo usermod -a -G libvirt $USER
+newgrp libvirt
+
+# 4. Create Python virtual environment
+python3.12 -m venv venv
+source venv/bin/activate
+
+# 5. Install package in development mode
+pip install -e ".[dev]"
+
+# 6. Verify setup
+pytest --version
+mypy --version
+virsh -c qemu:///system list --all
+```
+
+### Setting Up Networks (Required Before Running VMs)
+
+```bash
+# Create NAT-filtered network (DEFAULT)
+cat > /tmp/agent-nat-filtered.xml << 'EOF'
+<network>
+  <name>agent-nat-filtered</name>
+  <forward mode='nat'>
+    <nat><port start='1024' end='65535'/></nat>
+  </forward>
+  <ip address='192.168.101.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.101.10' end='192.168.101.254'/>
+    </dhcp>
+  </ip>
+</network>
+EOF
+
+sudo virsh net-define /tmp/agent-nat-filtered.xml
+sudo virsh net-start agent-nat-filtered
+sudo virsh net-autostart agent-nat-filtered
+
+# Create network filter
+cat > /tmp/agent-network-filter.xml << 'EOF'
+<filter name='agent-network-filter' chain='root'>
+  <!-- Allow DNS -->
+  <rule action='accept' direction='out'>
+    <udp dstportstart='53' dstportend='53'/>
+  </rule>
+  <!-- Allow HTTP/HTTPS -->
+  <rule action='accept' direction='out'>
+    <tcp dstportstart='80' dstportend='80'/>
+  </rule>
+  <rule action='accept' direction='out'>
+    <tcp dstportstart='443' dstportend='443'/>
+  </rule>
+  <!-- Allow SSH (git) -->
+  <rule action='accept' direction='out'>
+    <tcp dstportstart='22' dstportend='22'/>
+  </rule>
+  <!-- Allow responses only -->
+  <rule action='accept' direction='in'>
+    <all state='ESTABLISHED,RELATED'/>
+  </rule>
+  <!-- Block everything else -->
+  <rule action='drop' direction='in' priority='1000'>
+    <all state='NEW'/>
+  </rule>
+  <rule action='drop' direction='out' priority='1000'>
+    <all/>
+  </rule>
+</filter>
+EOF
+
+sudo virsh nwfilter-define /tmp/agent-network-filter.xml
+
+# Verify
+virsh net-list --all
+virsh nwfilter-list
+```
+
+### Running Tests
+
+```bash
+# All tests
+pytest tests/ -v
+
+# Unit tests only (fast)
+pytest tests/unit/ -v
+
+# Integration tests (requires KVM)
+pytest tests/integration/ -v
+
+# With coverage report
+pytest tests/ --cov --cov-report=html
+open htmlcov/index.html
+
+# Specific test file
+pytest tests/unit/test_connection.py -v
+
+# Specific test function
+pytest tests/unit/test_connection.py::TestLibvirtConnection::test_connection_opens -v
+
+# With debugging
+pytest tests/unit/test_connection.py --pdb
+```
+
+### Type Checking
+
+```bash
+# Check all code
+mypy src/
+
+# Check specific file
+mypy src/agent_vm/core/connection.py
+
+# Show error context
+mypy src/ --show-error-codes --show-error-context
+```
+
+### Linting and Formatting
+
+```bash
+# Run linter (auto-fix)
+ruff check src/ --fix
+
+# Format code
+black .
+
+# Check formatting without changes
+black --check .
+
+# Format specific file
+black src/agent_vm/core/connection.py
+```
+
+### Working with VMs (libvirt)
+
+```bash
+# List all VMs
+virsh list --all
+
+# Start VM
+virsh start <vm-name>
+
+# Stop VM
+virsh shutdown <vm-name>
+
+# Force stop VM
+virsh destroy <vm-name>
+
+# Delete VM
+virsh undefine <vm-name>
+
+# VM info
+virsh dominfo <vm-name>
+
+# VM snapshots
+virsh snapshot-list <vm-name>
+virsh snapshot-create <vm-name>
+virsh snapshot-revert <vm-name> <snapshot-name>
+
+# Network info
+virsh net-list --all
+virsh net-info agent-nat-filtered
+
+# Network filters
+virsh nwfilter-list
+virsh nwfilter-dumpxml agent-network-filter
+```
+
+---
+
+## Implementation Phases (8 Weeks)
+
+**Reference:** IMPLEMENTATION_GUIDE.md for detailed daily tasks
+
+### Phase 1: Foundation (Weeks 1-2) - IN PROGRESS
+
+**Objective:** Core libvirt abstractions and testing framework
+
+**Current Status:** Core components implemented, tests in progress
+
+**Key Tasks:**
+- Project setup (pyproject.toml, structure) ✅ COMPLETE
+- `LibvirtConnection` (context manager, error handling) ✅ COMPLETE
+- `VM` class (lifecycle, state management, async/await) ✅ COMPLETE
+- `VMTemplate` (XML generation, network modes, resource profiles) ✅ COMPLETE
+- `SnapshotManager` (create, restore, list, delete) ✅ COMPLETE
+- Unit tests (connection, vm, template, snapshot) ✅ COMPLETE
+- Integration test framework 🔄 IN PROGRESS
+
+**Deliverables:**
+- 20+ unit tests passing ✅
+- 3+ integration tests passing 🔄 IN PROGRESS
+- Can create/start/stop/snapshot real VMs 🔄 TESTING
+- Test coverage >80% 🔄 IN PROGRESS
+
+**Reference:** IMPLEMENTATION_GUIDE.md → Phase 1
+**Progress:** See PHASE1_TEST_REPORT.md and INTEGRATION_TEST_REPORT.md for detailed status
+
+### Phase 2: Communication (Week 3)
+
+**Objective:** Host-guest communication channels
+
+**Key Tasks:**
+- `FilesystemShare` (virtio-9p wrapper)
+- `VsockProtocol` (message framing, checksums)
+- Guest agent (runs inside VM, listens on vsock)
+
+**Deliverables:**
+- Can inject code into VM
+- Can extract results from VM
+- Control channel working
+
+### Phase 3: Execution (Week 4)
+
+**Objective:** Agent execution framework
+
+**Key Tasks:**
+- `AgentExecutor` (timeout, error handling)
+- `VMPoolManager` (pre-warmed pool, auto-refill)
+- Result extraction and parsing
+
+**Deliverables:**
+- Can execute agent code in VM
+- VM pool working (<100ms acquire)
+- Timeout enforcement
+
+### Phase 4: Monitoring (Week 5)
+
+**Objective:** Observability and safety
+
+**Key Tasks:**
+- `MetricsCollector` (Prometheus integration)
+- `AuditLogger` (structured logs)
+- `AnomalyDetector` (behavioral analysis)
+
+**Deliverables:**
+- Metrics exported
+- All events logged
+- Anomaly detection working
+
+### Phase 5: Integration (Weeks 6-7)
+
+**Objective:** E2E testing and validation
+
+**Key Tasks:**
+- Full workflow E2E tests
+- Performance benchmarks
+- Concurrent execution tests
+
+**Deliverables:**
+- E2E tests passing
+- Performance targets met
+- Production-ready
+
+### Phase 6: Polish (Week 8)
+
+**Objective:** Optimization and documentation
+
+**Key Tasks:**
+- Performance optimization
+- Security hardening
+- Documentation completion
+
+---
+
+## Code Patterns and Conventions
+
+### Type Hints (Strict mypy)
+
+```python
+from typing import Optional, List
+from pathlib import Path
+
+def create_vm(
+    name: str,
+    memory_mib: int = 2048,
+    disk_path: Optional[Path] = None
+) -> VM:
+    """
+    Create new VM.
+
+    Args:
+        name: VM name
+        memory_mib: Memory in MiB
+        disk_path: Optional disk path
+
+    Returns:
+        Created VM instance
+
+    Raises:
+        VMError: If creation fails
+    """
+    pass
+```
+
+### Async/Await (All I/O should be async)
+
+```python
+import asyncio
+
+class VM:
+    async def start(self) -> None:
+        """Start VM and wait for ready state"""
+        self._domain.create()
+        await self.wait_for_state(VMState.RUNNING)
+
+    async def wait_for_state(
+        self,
+        desired: VMState,
+        timeout: float = 30.0
+    ) -> None:
+        """Wait for VM to reach desired state"""
+        start = asyncio.get_event_loop().time()
+        while True:
+            if self.get_state() == desired:
+                return
+            if asyncio.get_event_loop().time() - start > timeout:
+                raise VMError(f"Timeout waiting for {desired}")
+            await asyncio.sleep(0.5)
+```
+
+### Error Handling (Specific exceptions)
+
+```python
+# Define specific exceptions
+class VMError(Exception):
+    """VM operation error"""
+    pass
+
+class SnapshotError(Exception):
+    """Snapshot operation error"""
+    pass
+
+# Use specific exceptions with context
+try:
+    vm.start()
+except libvirt.libvirtError as e:
+    logger.error("vm_start_failed", vm=vm.name, error=str(e))
+    raise VMError(f"Failed to start VM: {e}") from e
+```
+
+### Structured Logging
+
+```python
+import structlog
+
+logger = structlog.get_logger()
+
+class VM:
+    def __init__(self, domain):
+        self._domain = domain
+        self._logger = logger.bind(vm_name=self.name, vm_uuid=self.uuid)
+
+    def start(self):
+        self._logger.info("vm_starting")
+        try:
+            self._domain.create()
+            self._logger.info("vm_started")
+        except Exception as e:
+            self._logger.error("vm_start_failed", error=str(e))
+            raise
+```
+
+### Docstrings (Google style)
+
+```python
+def create_snapshot(self, vm: VM, name: str, description: str = "") -> Snapshot:
+    """
+    Create VM snapshot.
+
+    Args:
+        vm: VM to snapshot
+        name: Snapshot name
+        description: Optional description
+
+    Returns:
+        Created snapshot
+
+    Raises:
+        SnapshotError: If creation fails
+
+    Example:
+        >>> snapshot = manager.create_snapshot(vm, "clean-state")
+        >>> vm.do_something()
+        >>> manager.restore_snapshot(vm, snapshot)
+    """
+    pass
+```
+
+### Testing Patterns
+
+```python
+import pytest
+from unittest.mock import Mock, patch
+
+class TestVM:
+    """Test VM abstraction layer"""
+
+    def test_vm_start_creates_domain(self):
+        """Starting VM calls domain.create()"""
+        # Arrange
+        mock_domain = Mock()
+        mock_domain.isActive.return_value = False
+        vm = VM(mock_domain)
+
+        # Act
+        vm.start()
+
+        # Assert
+        mock_domain.create.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_vm_wait_for_state(self):
+        """VM waits for desired state"""
+        mock_domain = Mock()
+        mock_domain.state.side_effect = [[4, 0], [1, 1]]  # SHUTDOWN then RUNNING
+        vm = VM(mock_domain)
+
+        await vm.wait_for_state(VMState.RUNNING, timeout=5)
+
+        assert mock_domain.state.call_count == 2
+```
+
+### Datetime and Timezone Requirements
+
+**CRITICAL:** All datetime operations MUST use NIST Eastern Time (ET) for consistency and accuracy.
+
+#### Why NIST Eastern Time?
+
+1. **Accuracy:** NIST (National Institute of Standards and Technology) provides authoritative time
+2. **Consistency:** Single timezone eliminates ambiguity in logs, metrics, and audit trails
+3. **Regulatory:** Many compliance frameworks require time synchronization
+4. **Debugging:** Simplifies correlation of events across distributed components
+
+#### Implementation Guidelines
+
+```python
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+# CORRECT: Use NIST Eastern Time
+ET = ZoneInfo("America/New_York")
+
+def get_current_time() -> datetime:
+    """
+    Get current time in NIST Eastern Time.
+
+    Returns:
+        Current datetime in ET timezone
+
+    Example:
+        >>> now = get_current_time()
+        >>> print(now.tzinfo)  # America/New_York
+    """
+    return datetime.now(ET)
+
+# CORRECT: Log with ET timestamps
+logger.info(
+    "vm_started",
+    vm_name=vm.name,
+    timestamp=get_current_time().isoformat()
+)
+
+# CORRECT: Metrics with ET timestamps
+metrics.record(
+    "vm_boot_time",
+    duration=2.5,
+    timestamp=get_current_time()
+)
+
+# INCORRECT: Using UTC or local time
+# ❌ datetime.now()           # Local time (ambiguous)
+# ❌ datetime.utcnow()        # UTC (not required timezone)
+# ❌ datetime.now(timezone.utc)  # UTC (wrong timezone)
+```
+
+#### Required for All Time Operations
+
+- **Audit Logs:** All event timestamps in ET
+- **Metrics:** All Prometheus metric timestamps in ET
+- **VM Lifecycle:** Start, stop, snapshot times in ET
+- **Performance Benchmarks:** Timing measurements with ET timestamps
+- **API Responses:** Include ET timestamp in responses
+- **Database Records:** Store all timestamps in ET
+
+#### Testing Time-Dependent Code
+
+```python
+import pytest
+from unittest.mock import patch
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+ET = ZoneInfo("America/New_York")
+
+@pytest.fixture
+def frozen_time():
+    """Fixture to freeze time for tests"""
+    fixed_time = datetime(2025, 10, 20, 14, 30, 0, tzinfo=ET)
+    with patch('agent_vm.utils.time.get_current_time', return_value=fixed_time):
+        yield fixed_time
+
+def test_vm_start_timestamp(frozen_time):
+    """VM start time is recorded in ET"""
+    vm = VM(mock_domain)
+    vm.start()
+
+    assert vm.start_time == frozen_time
+    assert vm.start_time.tzinfo == ET
+```
+
+#### Configuration
+
+Add to all components that handle time:
+
+```python
+# src/agent_vm/utils/time.py
+"""
+Time utilities for agent-vm.
+
+All datetime operations use NIST Eastern Time (America/New_York) for consistency.
+"""
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+# NIST Eastern Time zone
+ET = ZoneInfo("America/New_York")
+
+def now() -> datetime:
+    """Get current time in Eastern Time"""
+    return datetime.now(ET)
+
+def timestamp_iso() -> str:
+    """Get current timestamp as ISO 8601 string in ET"""
+    return now().isoformat()
+
+def parse_et(dt_string: str) -> datetime:
+    """Parse ISO 8601 string to ET datetime"""
+    dt = datetime.fromisoformat(dt_string)
+    return dt.astimezone(ET)
+```
+
+#### Documentation Requirements
+
+When documenting any time-related functionality:
+- Explicitly state "Eastern Time (ET)" in docstrings
+- Include timezone in examples
+- Show ISO 8601 format examples with ET offset
+
+**Example:**
+```python
+def create_snapshot(self, vm: VM, name: str) -> Snapshot:
+    """
+    Create VM snapshot with ET timestamp.
+
+    Args:
+        vm: VM to snapshot
+        name: Snapshot name
+
+    Returns:
+        Snapshot with creation_time in Eastern Time
+
+    Example:
+        >>> snapshot = manager.create_snapshot(vm, "clean-state")
+        >>> print(snapshot.creation_time)
+        2025-10-20T14:30:00-04:00  # EDT offset
+        >>> print(snapshot.creation_time.tzinfo)
+        America/New_York
+    """
+    pass
+```
+
+---
+
+## Common Patterns and Usage
+
+### Creating and Using VMs
+
+```python
+from agent_vm.core.connection import LibvirtConnection
+from agent_vm.core.template import VMTemplate, ResourceProfile, NetworkMode
+from agent_vm.core.vm import VM, VMState
+
+# Connect to libvirt
+with LibvirtConnection() as conn:
+    # Create template (NAT-filtered by default)
+    template = VMTemplate(
+        name="claude-cli-vm",
+        resources=ResourceProfile(vcpu=2, memory_mib=2048)
+    )
+
+    # Define VM
+    domain = conn.connection.defineXML(template.generate_xml())
+    vm = VM(domain)
+
+    try:
+        # Start VM
+        vm.start()
+        await vm.wait_for_state(VMState.RUNNING, timeout=30)
+
+        # Use VM
+        # ...
+
+        # Stop VM
+        vm.stop(graceful=True)
+        await vm.wait_for_state(VMState.SHUTOFF, timeout=10)
+
+    finally:
+        # Cleanup
+        if domain.isActive():
+            domain.destroy()
+        domain.undefine()
+```
+
+### Using Network-Isolated Mode (High Security)
+
+```python
+# For testing untrusted code
+template = VMTemplate(
+    name="untrusted-vm",
+    network_mode=NetworkMode.ISOLATED  # No internet access
+)
+```
+
+### Snapshot Workflow
+
+```python
+from agent_vm.core.snapshot import SnapshotManager
+
+manager = SnapshotManager()
+
+# Create golden snapshot
+golden = manager.create_snapshot(vm, "golden-base", "Clean initial state")
+
+# Do risky operations
+vm.execute_agent_code(untrusted_code)
+
+# Restore to golden
+manager.restore_snapshot(vm, golden)
+
+# VM is back to clean state
+```
+
+### VM Pool Usage
+
+```python
+from agent_vm.execution.pool import VMPool
+
+# Create pool
+pool = VMPool(min_size=5, max_size=20)
+await pool.initialize()
+
+# Acquire VM (fast - from pre-warmed pool)
+vm = await pool.acquire(timeout=10)
+
+try:
+    # Use VM
+    result = await executor.execute(vm, agent_code)
+finally:
+    # Return to pool (resets to golden snapshot)
+    await pool.release(vm)
+```
+
+### Executing Agent Code
+
+```python
+from agent_vm.execution.executor import AgentExecutor
+
+executor = AgentExecutor()
+
+agent_code = """
+import requests
+response = requests.get('https://api.example.com/data')
+print(response.json())
+"""
+
+result = await executor.execute(
+    vm,
+    agent_code,
+    workspace=workspace_path,
+    timeout=300
+)
+
+print(f"Success: {result.success}")
+print(f"Exit code: {result.exit_code}")
+print(f"Output: {result.stdout}")
+if result.output:
+    print(f"Results: {result.output}")
+```
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+#### Tests Failing
+
+```bash
+# Run with verbose output
+pytest tests/ -vv -s
+
+# Run specific test with full traceback
+pytest tests/unit/test_connection.py::test_name -vv --tb=long
+
+# Debug with pdb
+pytest tests/ --pdb
+```
+
+#### Type Errors
+
+```bash
+# Show error codes
+mypy src/ --show-error-codes
+
+# Show error context
+mypy src/ --show-error-context
+
+# Check specific file
+mypy src/agent_vm/core/connection.py
+```
+
+#### Libvirt Connection Issues
+
+```bash
+# Check libvirt service
+sudo systemctl status libvirtd
+
+# Verify user permissions
+groups | grep libvirt  # Should include libvirt
+
+# Test connection
+virsh -c qemu:///system list --all
+
+# Check logs
+sudo journalctl -u libvirtd -f
+```
+
+#### VM Network Issues
+
+```bash
+# Verify networks exist
+virsh net-list --all
+
+# Check network filter
+virsh nwfilter-list
+virsh nwfilter-dumpxml agent-network-filter
+
+# Test inside VM
+ping -c 1 google.com  # Should work
+curl https://httpbin.org/get  # Should work
+curl http://example.com:8080  # Should fail (blocked)
+```
+
+#### KVM Module Issues
+
+```bash
+# Check KVM support
+egrep -c '(vmx|svm)' /proc/cpuinfo  # Must be > 0
+
+# Check KVM modules
+lsmod | grep kvm
+
+# Reload if needed (use provided script)
+./scripts/kvm-unload.sh
+```
+
+---
+
+## Performance Guidelines
+
+### Targets
+
+- **VM Boot:** <2 seconds (MVP), <500ms (optimized)
+- **Pool Acquire:** <100ms (pre-warmed)
+- **Snapshot Restore:** <1 second
+- **Test Suite:** Unit tests <30s, integration <2min
+
+### Optimization Tips
+
+1. **Use VM Pool:** Pre-warm VMs to eliminate boot time
+2. **Efficient Snapshots:** Use internal snapshots for speed
+3. **Async/Await:** All I/O should be async
+4. **Batch Operations:** Process multiple VMs in parallel
+5. **Resource Limits:** Use cgroups to prevent resource hogging
+
+---
+
+## Security Considerations
+
+### Defense-in-Depth Layers
+
+1. **KVM Hardware Isolation** (base layer)
+   - CPU virtualization (VT-x/AMD-V)
+   - Memory isolation (EPT/NPT)
+   - Cannot escape to host
+
+2. **Network Filtering** (whitelisting)
+   - Only necessary ports allowed
+   - No unsolicited incoming
+   - All traffic logged
+
+3. **seccomp** (syscall filtering)
+   - Blocks dangerous syscalls
+   - Reduces attack surface
+
+4. **Linux Namespaces**
+   - PID, network, mount, IPC isolation
+   - Process tree isolation
+
+5. **cgroups** (resource limits)
+   - CPU, memory, disk, network quotas
+   - Prevents resource exhaustion
+
+### Testing Untrusted Code
+
+```python
+# Use isolated mode for maximum security
+template = VMTemplate(
+    name="untrusted-vm",
+    network_mode=NetworkMode.ISOLATED,
+    resources=ResourceProfile(vcpu=1, memory_mib=1024)  # Minimal resources
+)
+
+# Monitor closely
+from agent_vm.monitoring.metrics import MetricsCollector
+collector = MetricsCollector()
+collector.enable_anomaly_detection(vm_id="untrusted-vm")
+
+# Short timeout
+result = await executor.execute(
+    vm,
+    untrusted_code,
+    timeout=60  # Short timeout
+)
+```
+
+---
+
+## Git Workflow
+
+### Branch Strategy
+
+- `main` - Stable releases
+- `kvm_switch` - Active development (current)
+- `feature/*` - Feature branches
+
+### Commit Message Format (Conventional Commits)
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:** feat, fix, docs, test, refactor, perf, chore
+
+**Examples:**
+```
+feat(core): add VM snapshot management
+
+- Create, restore, list, delete snapshots
+- Internal snapshots for speed
+- Metadata tracking
+
+Tests: 4 passing
+Coverage: 90%
+
+Implements: #123
+```
+
+```
+test(integration): add VM lifecycle integration test
+
+- Test create, start, stop, destroy
+- Verify state transitions
+- Auto-cleanup test VMs
+
+Tests: 1 passing (integration)
+```
+
+---
+
+## For AI Assistants: Implementation Guidelines
+
+When implementing features in this codebase:
+
+### 1. Always Start with Tests (TDD)
+
+```python
+# 1. Write the test FIRST
+def test_feature_behavior():
+    result = my_feature()
+    assert result == expected
+
+# 2. Run test (should fail)
+# 3. Implement minimal code to pass
+# 4. Refactor while keeping tests green
+```
+
+### 2. Check Existing Patterns
+
+- **See ARCHITECTURE.md** for component design
+- **See TDD_IMPLEMENTATION_PLAN.md** for test examples
+- **See existing code** in `src/agent_vm/` for patterns
+
+### 3. Follow Quality Standards
+
+- Type hints required (mypy strict)
+- Docstrings required (Google style)
+- Tests required (>80% coverage)
+- Security scan must pass (bandit)
+
+### 4. Use Structured Logging with ET Timestamps
+
+```python
+import structlog
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+logger = structlog.get_logger()
+ET = ZoneInfo("America/New_York")
+
+# Always include ET timestamp in logs
+logger.info(
+    "operation_started",
+    timestamp=datetime.now(ET).isoformat(),
+    param1=value1,
+    param2=value2
+)
+logger.error(
+    "operation_failed",
+    timestamp=datetime.now(ET).isoformat(),
+    error=str(e)
+)
+```
+
+### 5. Reference Line Numbers
+
+When discussing code:
+```
+The VM start logic is in src/agent_vm/core/vm.py:45
+The test for this is in tests/unit/test_vm.py:23
+```
+
+### 6. Provide Complete Context
+
+Include:
+- Which file you're modifying
+- Why the change is needed
+- What tests prove it works
+- Any architectural implications
+
+### 7. Default to NAT-Filtered Network
+
+Unless explicitly specified otherwise:
+```python
+# This is correct (default)
+template = VMTemplate(name="my-vm")
+
+# Only use isolated when needed
+template = VMTemplate(name="my-vm", network_mode=NetworkMode.ISOLATED)
+```
+
+---
+
+## Quick Reference
+
+### File Locations
+
+| Component | Location |
+|-----------|----------|
+| Libvirt connection | `src/agent_vm/core/connection.py` |
+| VM abstraction | `src/agent_vm/core/vm.py` |
+| VM templates | `src/agent_vm/core/template.py` |
+| Snapshots | `src/agent_vm/core/snapshot.py` |
+| Agent executor | `src/agent_vm/execution/executor.py` |
+| VM pool | `src/agent_vm/execution/pool.py` |
+| Metrics | `src/agent_vm/monitoring/metrics.py` |
+| Audit logs | `src/agent_vm/monitoring/audit.py` |
+| vsock protocol | `src/agent_vm/communication/vsock.py` |
+| Filesystem share | `src/agent_vm/communication/filesystem.py` |
+| Guest agent | `guest/agent.py` |
+
+### Documentation Quick Links
+
+| Topic | Document |
+|-------|----------|
+| Getting started | [GETTING_STARTED.md](GETTING_STARTED.md) |
+| System design | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Test strategy | [TDD_IMPLEMENTATION_PLAN.md](TDD_IMPLEMENTATION_PLAN.md) |
+| Daily tasks | [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) |
+| Network setup | [NETWORK_CONFIG_GUIDE.md](NETWORK_CONFIG_GUIDE.md) |
+| Network changes | [NETWORK_UPDATE_SUMMARY.md](NETWORK_UPDATE_SUMMARY.md) |
+| All docs | [README_PROJECT_PLANS.md](README_PROJECT_PLANS.md) |
+
+### Essential Commands
+
+```bash
+# Development
+pytest tests/ -v                    # Run tests
+mypy src/                           # Type check
+ruff check src/                     # Lint
+black .                             # Format
+
+# libvirt
+virsh list --all                    # List VMs
+virsh net-list                      # List networks
+virsh nwfilter-list                 # List filters
+
+# Project
+git checkout kvm_switch             # Switch to dev branch
+source venv/bin/activate            # Activate venv
+pip install -e ".[dev]"            # Install in dev mode
+```
+
+---
+
+## Summary for LLMs
+
+When working in this repository:
+
+1. ✅ **Write tests first** (TDD approach)
+2. ✅ **Use type hints** (mypy strict)
+3. ✅ **Use NIST Eastern Time** (all datetime operations must use ET)
+4. ✅ **Default to NAT-filtered network** (agents need internet)
+5. ✅ **Reference architecture docs** (ARCHITECTURE.md)
+6. ✅ **Follow existing patterns** (see src/agent_vm/)
+7. ✅ **Use async/await** (all I/O operations)
+8. ✅ **Log structured events** (structlog with ET timestamps)
+9. ✅ **Meet quality gates** (tests, types, lint, coverage)
+
+This is a greenfield project with complete planning, currently in Phase 1 implementation. Follow the IMPLEMENTATION_GUIDE.md for day-by-day tasks.
+
+The system balances **security** (KVM isolation + filtering) with **functionality** (agents can use internet). All network activity is monitored and logged.
+
+**Critical:** All timestamps must use `ZoneInfo("America/New_York")` for consistency across logs, metrics, and audit trails.

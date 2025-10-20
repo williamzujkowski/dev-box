@@ -1,6 +1,153 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-vm"
+version = "0.1.0"
+description = "KVM/libvirt-based agent isolation system for safely testing CLI coding agents"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "William Zujkowski"}
+]
+keywords = ["kvm", "libvirt", "agent", "isolation", "virtualization", "security"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Emulators",
+    "Topic :: Security",
+]
+
+dependencies = [
+    "libvirt-python>=9.0.0",
+    "structlog>=24.1.0",
+    "prometheus-client>=0.19.0",
+    "pydantic>=2.5.0",
+    "asyncio>=3.4.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-timeout>=2.2.0",
+    "pytest-mock>=3.12.0",
+    "mypy>=1.7.0",
+    "ruff>=0.1.0",
+    "black>=23.11.0",
+    "bandit>=1.7.5",
+    "types-libvirt-python>=9.0.0",
+    "tomli>=2.0.1",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["agent_vm*"]
+
+[tool.setuptools.package-data]
+agent_vm = ["py.typed"]
+
+[tool.pytest.ini_options]
+minversion = "7.4"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=agent_vm",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=80",
+]
+asyncio_mode = "auto"
+markers = [
+    "unit: Unit tests (fast, isolated)",
+    "integration: Integration tests (requires KVM)",
+    "e2e: End-to-end tests (full workflows)",
+    "slow: Slow tests",
+]
+timeout = 300
+timeout_method = "thread"
+
+[tool.coverage.run]
+source = ["src/agent_vm"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_unimported = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+check_untyped_defs = true
+strict_equality = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "libvirt"
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "S",   # flake8-bandit
+    "RUF", # ruff-specific rules
+]
+ignore = [
+    "S101",  # Use of assert detected (needed for pytest)
+    "S603",  # subprocess call - validate input separately
+    "S607",  # Starting a process with a partial path
+]
+
+[tool.ruff.per-file-ignores]
+"tests/**/*.py" = ["S101", "S105", "S106"]
+
 [tool.black]
-line-length = 88
-target-version = ['py39']
+line-length = 100
+target-version = ["py312"]
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -11,34 +158,11 @@ extend-exclude = '''
   | \.mypy_cache
   | \.tox
   | \.venv
-  | venv
-  | _build
-  | buck-out
   | build
   | dist
-  | node_modules
 )/
 '''
 
-[tool.ruff]
-line-length = 88
-target-version = "py39"
-
-[tool.ruff.lint]
-# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
-select = ["E4", "E7", "E9", "F", "W", "I", "N", "UP", "B", "A", "C4", "ICN", "PIE", "T20", "PYI", "Q", "RSE", "RET", "SLF", "SIM", "TCH", "ARG", "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", "NPY", "PERF", "RUF"]
-ignore = ["E501", "E203"]
-
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
-"tests/**/*.py" = ["PLR2004", "S101", "TID252"]
-
-[tool.ruff.lint.isort]
-known-first-party = ["sandbox"]
-force-single-line = true
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
+[tool.bandit]
+exclude_dirs = ["tests", "venv"]
+skips = ["B101"]  # assert_used (needed for pytest)
