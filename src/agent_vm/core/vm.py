@@ -13,7 +13,7 @@ Key Features:
 
 import asyncio
 from enum import Enum
-from typing import Optional, cast
+from typing import cast
 
 import libvirt
 import structlog

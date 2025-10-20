@@ -346,6 +346,35 @@ while True:
 
 
 # ============================================================================
+# Pool Fixtures
+# ============================================================================
+
+
+@pytest.fixture
+def pooled_vm_mock() -> Mock:
+    """Create mock VM for PooledVM.
+
+    Returns:
+        PooledVM instance with mock VM
+    """
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    from agent_vm.execution.pool import PooledVM
+    from agent_vm.core.vm import VM
+
+    mock_vm = Mock(spec=VM)
+    mock_vm.name = "test-pooled-vm"
+    mock_vm.uuid = "test-pooled-uuid"
+
+    nist_et = ZoneInfo("America/New_York")
+    return PooledVM(
+        vm=mock_vm,
+        created_at=datetime.now(nist_et),
+        golden_snapshot="test-golden"
+    )
+
+
+# ============================================================================
 # Mock Libvirt Module (for unit tests without libvirt)
 # ============================================================================
 
@@ -401,6 +430,9 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers",
         "requires_kvm: marks tests that require KVM/hardware virtualization",
+    )
+    config.addinivalue_line(
+        "markers", "performance: marks tests as performance benchmarks"
     )
 
 
