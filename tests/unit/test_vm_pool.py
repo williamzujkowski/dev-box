@@ -82,7 +82,7 @@ class TestVMPoolInitialization:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -106,7 +106,7 @@ class TestVMPoolInitialization:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -133,7 +133,7 @@ class TestVMPoolInitialization:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -170,7 +170,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -196,7 +196,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -222,7 +222,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -250,7 +250,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -276,7 +276,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -309,7 +309,7 @@ class TestVMPoolAcquisition:
         stale_pooled = PooledVM(
             vm=stale_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")) - timedelta(seconds=120),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         # Put stale VM into the queue
@@ -324,7 +324,7 @@ class TestVMPoolAcquisition:
         fresh_pooled = PooledVM(
             vm=fresh_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
         pool._create_fresh_vm = AsyncMock(return_value=fresh_pooled)
 
@@ -350,7 +350,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -375,7 +375,7 @@ class TestVMPoolAcquisition:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -415,7 +415,7 @@ class TestVMPoolAcquisition:
         stale_pooled = PooledVM(
             vm=stale_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")) - timedelta(seconds=120),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         # Put stale VM into the queue
@@ -429,7 +429,7 @@ class TestVMPoolAcquisition:
         fresh_pooled = PooledVM(
             vm=fresh_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
         pool._create_fresh_vm = AsyncMock(return_value=fresh_pooled)
 
@@ -456,7 +456,7 @@ class TestVMPoolRelease:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -484,7 +484,7 @@ class TestVMPoolRelease:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="golden-snapshot"
+            golden_snapshot="golden-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -511,7 +511,7 @@ class TestVMPoolRelease:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -545,7 +545,7 @@ class TestVMPoolRelease:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -574,7 +574,7 @@ class TestVMPoolRelease:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -605,7 +605,7 @@ class TestVMPoolMaintenance:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -618,13 +618,14 @@ class TestVMPoolMaintenance:
 
         # Mock asyncio.sleep to speed up the test
         original_sleep = asyncio.sleep
+
         async def fast_sleep(seconds):
             if seconds >= 10:  # Only speed up the maintenance sleep
                 await original_sleep(0.01)
             else:
                 await original_sleep(seconds)
 
-        with patch('asyncio.sleep', side_effect=fast_sleep):
+        with patch("asyncio.sleep", side_effect=fast_sleep):
             # Run maintenance in background and give it time to refill
             pool._shutdown_requested = False
             task = asyncio.create_task(pool._maintain_pool())
@@ -654,7 +655,7 @@ class TestVMPoolMaintenance:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -686,7 +687,7 @@ class TestVMPoolMaintenance:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -728,13 +729,14 @@ class TestVMPoolMaintenance:
 
         # Mock asyncio.sleep to speed up the test
         original_sleep = asyncio.sleep
+
         async def fast_sleep(seconds):
             if seconds >= 10:  # Only speed up the maintenance sleep
                 await original_sleep(0.01)
             else:
                 await original_sleep(seconds)
 
-        with patch('asyncio.sleep', side_effect=fast_sleep):
+        with patch("asyncio.sleep", side_effect=fast_sleep):
             # Should not raise exception - run in background
             pool._shutdown_requested = False
             task = asyncio.create_task(pool._maintain_pool())
@@ -783,7 +785,7 @@ class TestVMPoolConcurrency:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -811,7 +813,7 @@ class TestVMPoolConcurrency:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -843,7 +845,7 @@ class TestVMPoolConcurrency:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -880,7 +882,7 @@ class TestVMPoolShutdown:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -907,7 +909,7 @@ class TestVMPoolShutdown:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -935,7 +937,7 @@ class TestVMPoolShutdown:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -962,7 +964,7 @@ class TestVMPoolShutdown:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -992,7 +994,7 @@ class TestVMPoolIntegration:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -1031,7 +1033,7 @@ class TestVMPoolIntegration:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -1066,6 +1068,7 @@ class TestVMPoolIntegration:
 
         # First VM fails, second succeeds
         failure_count = 0
+
         async def create_with_failures(index: int | None = None):
             nonlocal failure_count
             failure_count += 1
@@ -1075,7 +1078,7 @@ class TestVMPoolIntegration:
             return PooledVM(
                 vm=mock_vm,
                 created_at=datetime.now(ZoneInfo("America/New_York")),
-                golden_snapshot="test-snapshot"
+                golden_snapshot="test-snapshot",
             )
 
         pool._create_fresh_vm = create_with_failures
@@ -1089,21 +1092,24 @@ class TestVMPoolIntegration:
             pass
 
         # Maintenance should retry
-        pool._create_fresh_vm = AsyncMock(return_value=PooledVM(
-            vm=Mock(name="test-vm"),
-            created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
-        ))
+        pool._create_fresh_vm = AsyncMock(
+            return_value=PooledVM(
+                vm=Mock(name="test-vm"),
+                created_at=datetime.now(ZoneInfo("America/New_York")),
+                golden_snapshot="test-snapshot",
+            )
+        )
 
         # Mock asyncio.sleep to speed up the test
         original_sleep = asyncio.sleep
+
         async def fast_sleep(seconds):
             if seconds >= 10:  # Only speed up the maintenance sleep
                 await original_sleep(0.01)
             else:
                 await original_sleep(seconds)
 
-        with patch('asyncio.sleep', side_effect=fast_sleep):
+        with patch("asyncio.sleep", side_effect=fast_sleep):
             # Run maintenance in background
             pool._shutdown_requested = False
             task = asyncio.create_task(pool._maintain_pool())
@@ -1159,7 +1165,7 @@ class TestVMPoolMetrics:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -1187,7 +1193,7 @@ class TestVMPoolMetrics:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -1215,7 +1221,7 @@ class TestVMPoolMetrics:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)
@@ -1243,7 +1249,7 @@ class TestVMPoolMetrics:
         mock_pooled_vm = PooledVM(
             vm=mock_vm,
             created_at=datetime.now(ZoneInfo("America/New_York")),
-            golden_snapshot="test-snapshot"
+            golden_snapshot="test-snapshot",
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=mock_pooled_vm)

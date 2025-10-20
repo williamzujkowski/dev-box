@@ -20,6 +20,7 @@ try:
 except ImportError:
     # Fallback if structlog not available in guest
     import logging
+
     structlog = None  # type: ignore
 
 # NIST ET timezone
@@ -28,6 +29,7 @@ ET = ZoneInfo("America/New_York")
 
 class AgentError(Exception):
     """Base exception for agent errors."""
+
     pass
 
 
@@ -39,9 +41,7 @@ def _get_logger() -> Any:
         logger = logging.getLogger(__name__)
         if not logger.handlers:
             handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            )
+            formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
             handler.setFormatter(formatter)
             logger.addHandler(handler)
             logger.setLevel(logging.INFO)
@@ -63,6 +63,7 @@ def create_vsock_listener(port: int) -> Any:
     Note:
         This is a placeholder. Real implementation would use socket.AF_VSOCK.
     """
+
     # This is a mock for testing - real implementation would use vsock
     class MockVsockListener:
         """Mock vsock listener for testing."""
@@ -93,11 +94,7 @@ class GuestAgent:
     Listens for commands on vsock, executes agent code, and reports results.
     """
 
-    def __init__(
-        self,
-        vsock_port: int = 9000,
-        workspace: Path = Path("/workspace")
-    ) -> None:
+    def __init__(self, vsock_port: int = 9000, workspace: Path = Path("/workspace")) -> None:
         """Initialize guest agent.
 
         Args:
@@ -119,9 +116,7 @@ class GuestAgent:
         # Initialize logger first before any operations that might log
         if structlog:
             self._logger = logger.bind(
-                agent="guest",
-                vsock_port=vsock_port,
-                workspace=str(workspace)
+                agent="guest", vsock_port=vsock_port, workspace=str(workspace)
             )
         else:
             self._logger = logger
@@ -173,9 +168,7 @@ class GuestAgent:
 
             # Create async server (binding to all interfaces inside VM is safe)
             self._server = await asyncio.start_server(
-                self._handle_client,
-                host="0.0.0.0",  # noqa: S104
-                port=self.vsock_port
+                self._handle_client, host="0.0.0.0", port=self.vsock_port  # noqa: S104
             )
 
             self._running = True
@@ -198,6 +191,7 @@ class GuestAgent:
 
         if self._server:
             self._server.close()
+            # Properly await the close operation
             await self._server.wait_closed()
             self._server = None
 
@@ -219,13 +213,13 @@ class GuestAgent:
                 return
 
             # Parse command
-            command = json.loads(data.decode('utf-8'))
+            command = json.loads(data.decode("utf-8"))
 
             # Handle command
             result = await self.handle_command(command)
 
             # Send result back
-            response_data = json.dumps(result).encode('utf-8')
+            response_data = json.dumps(result).encode("utf-8")
             writer.write(response_data)
             await writer.drain()
 
@@ -261,19 +255,14 @@ class GuestAgent:
 
         elif cmd_type == "status":
             state = "idle" if not self._running else ("ready" if self._running else "busy")
-            return {
-                "status": state,
-                "timestamp": datetime.now(ET).isoformat()
-            }
+            return {"status": state, "timestamp": datetime.now(ET).isoformat()}
 
         elif cmd_type == "stop":
             await self.stop()
             return {"status": "stopped"}
 
         else:
-            return {
-                "error": f"Unsupported command: {cmd_type}"
-            }
+            return {"error": f"Unsupported command: {cmd_type}"}
 
     async def _execute_code(self, code: str, timeout: float = 300) -> dict[str, Any]:
         """Execute agent code and capture output.
@@ -300,7 +289,7 @@ class GuestAgent:
 
         # Write code to file
         code_path = input_dir / "agent.py"
-        code_path.write_text(code, encoding='utf-8')
+        code_path.write_text(code, encoding="utf-8")
 
         self._log_info("executing_code", code_path=str(code_path))
 
@@ -311,26 +300,21 @@ class GuestAgent:
                 str(code_path),
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
-                cwd=str(work_dir)
+                cwd=str(work_dir),
             )
 
             try:
                 stdout_bytes, stderr_bytes = await asyncio.wait_for(
-                    proc.communicate(),
-                    timeout=timeout
+                    proc.communicate(), timeout=timeout
                 )
 
-                stdout = stdout_bytes.decode('utf-8', errors='replace')
-                stderr = stderr_bytes.decode('utf-8', errors='replace')
+                stdout = stdout_bytes.decode("utf-8", errors="replace")
+                stderr = stderr_bytes.decode("utf-8", errors="replace")
                 exit_code = proc.returncode or 0
 
                 self._log_info("code_executed", exit_code=exit_code)
 
-                return {
-                    "exit_code": exit_code,
-                    "stdout": stdout,
-                    "stderr": stderr
-                }
+                return {"exit_code": exit_code, "stdout": stdout, "stderr": stderr}
 
             except TimeoutError as timeout_err:
                 # Kill the process
@@ -342,14 +326,10 @@ class GuestAgent:
                     self._log_info("process_cleanup_skipped")
 
                 self._log_error("execution_timeout")
-                raise AgentError(
-                    f"Execution timed out after {timeout} seconds"
-                ) from timeout_err
+                raise AgentError(f"Execution timed out after {timeout} seconds") from timeout_err
 
         except TimeoutError as timeout_err:
-            raise AgentError(
-                f"Execution timed out after {timeout} seconds"
-            ) from timeout_err
+            raise AgentError(f"Execution timed out after {timeout} seconds") from timeout_err
 
     async def _write_results(self, result_data: dict[str, Any]) -> None:
         """Write execution results to output directory.
@@ -361,7 +341,7 @@ class GuestAgent:
         output_dir.mkdir(parents=True, exist_ok=True)
 
         results_file = output_dir / "results.json"
-        results_file.write_text(json.dumps(result_data), encoding='utf-8')
+        results_file.write_text(json.dumps(result_data), encoding="utf-8")
 
     async def _send_result(self, result_data: dict[str, Any]) -> None:
         """Send results back to host via vsock.
@@ -378,8 +358,8 @@ class GuestAgent:
             protocol = VsockProtocol(cid=2, port=self.vsock_port)
             message = VsockMessage(
                 command="result",
-                payload=json.dumps(result_data).encode('utf-8'),
-                checksum=""  # Will be calculated by framing
+                payload=json.dumps(result_data).encode("utf-8"),
+                checksum="",  # Will be calculated by framing
             )
             await protocol.send(message)
             self._log_info("result_sent", result=result_data)

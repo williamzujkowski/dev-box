@@ -63,3 +63,8 @@ Thumbs.db
 *.tmp
 *.bak
 *.log
+
+# Security reports
+bandit-report.json
+safety-report.json
+*-report.json

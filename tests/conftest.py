@@ -367,11 +367,7 @@ def pooled_vm_mock() -> Mock:
     mock_vm.uuid = "test-pooled-uuid"
 
     nist_et = ZoneInfo("America/New_York")
-    return PooledVM(
-        vm=mock_vm,
-        created_at=datetime.now(nist_et),
-        golden_snapshot="test-golden"
-    )
+    return PooledVM(vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="test-golden")
 
 
 # ============================================================================
@@ -431,9 +427,7 @@ def pytest_configure(config):
         "markers",
         "requires_kvm: marks tests that require KVM/hardware virtualization",
     )
-    config.addinivalue_line(
-        "markers", "performance: marks tests as performance benchmarks"
-    )
+    config.addinivalue_line("markers", "performance: marks tests as performance benchmarks")
 
 
 # ============================================================================

@@ -107,7 +107,7 @@ class VsockProtocol:
                 await sendall_result
             elif sendall_result is not None:
                 # If it's a Future/Task, await it
-                if hasattr(sendall_result, '__await__'):
+                if hasattr(sendall_result, "__await__"):
                     await sendall_result
 
             self._logger.info(
@@ -256,9 +256,7 @@ class VsockProtocol:
             # Validate lengths
             expected_len = 8 + cmd_len + payload_len + 64
             if len(data) < expected_len:
-                raise VsockError(
-                    f"Invalid frame: expected {expected_len} bytes, got {len(data)}"
-                )
+                raise VsockError(f"Invalid frame: expected {expected_len} bytes, got {len(data)}")
 
             # Extract components
             offset = 8
@@ -271,9 +269,7 @@ class VsockProtocol:
             checksum_received = data[offset : offset + 64].decode("utf-8")
 
             # Calculate expected checksum
-            checksum_expected = hashlib.sha256(
-                command.encode("utf-8") + payload
-            ).hexdigest()
+            checksum_expected = hashlib.sha256(command.encode("utf-8") + payload).hexdigest()
 
             # Validate checksum
             if checksum_received != checksum_expected:
@@ -281,9 +277,7 @@ class VsockProtocol:
                     f"Checksum mismatch: expected {checksum_expected}, got {checksum_received}"
                 )
 
-            return VsockMessage(
-                command=command, payload=payload, checksum=checksum_received
-            )
+            return VsockMessage(command=command, payload=payload, checksum=checksum_received)
 
         except struct.error as e:
             raise VsockError(f"Malformed frame header: {e}") from e

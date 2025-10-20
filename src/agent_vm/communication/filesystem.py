@@ -331,9 +331,7 @@ class FilesystemShare:
 
             for item in self.host_path.iterdir():
                 if item.is_dir():
-                    await asyncio.get_event_loop().run_in_executor(
-                        None, shutil.rmtree, item
-                    )
+                    await asyncio.get_event_loop().run_in_executor(None, shutil.rmtree, item)
                 else:
                     await asyncio.get_event_loop().run_in_executor(None, item.unlink)
 

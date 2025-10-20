@@ -79,11 +79,7 @@ class TestExecutionResult:
         from agent_vm.execution.executor import ExecutionResult
 
         result = ExecutionResult(
-            success=True,
-            exit_code=0,
-            stdout="Success output",
-            stderr="",
-            duration_seconds=1.5
+            success=True, exit_code=0, stdout="Success output", stderr="", duration_seconds=1.5
         )
 
         assert result.success is True
@@ -104,7 +100,7 @@ class TestExecutionResult:
             stdout="",
             stderr="",
             duration_seconds=2.0,
-            output=output_data
+            output=output_data,
         )
 
         assert result.output == output_data
@@ -115,21 +111,13 @@ class TestExecutionResult:
 
         # Success when exit_code is 0
         success_result = ExecutionResult(
-            success=True,
-            exit_code=0,
-            stdout="",
-            stderr="",
-            duration_seconds=1.0
+            success=True, exit_code=0, stdout="", stderr="", duration_seconds=1.0
         )
         assert success_result.success is True
 
         # Failure when exit_code is non-zero
         failure_result = ExecutionResult(
-            success=False,
-            exit_code=1,
-            stdout="",
-            stderr="Error occurred",
-            duration_seconds=1.0
+            success=False, exit_code=1, stdout="", stderr="Error occurred", duration_seconds=1.0
         )
         assert failure_result.success is False
 
@@ -149,8 +137,10 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('Hello from agent')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
             mock_fs = Mock()
@@ -159,11 +149,7 @@ class TestAgentExecutorExecute:
             mock_fs.cleanup = AsyncMock()
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "Hello from agent\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "Hello from agent\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -190,31 +176,24 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path, timeout=60)
 
@@ -233,31 +212,24 @@ class TestAgentExecutorExecute:
 
         agent_code = "import sys; sys.stderr.write('Error message'); sys.exit(1)"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 1,
-                "stdout": "",
-                "stderr": "Error message"
-            }
+            mock_exec.return_value = {"exit_code": 1, "stdout": "", "stderr": "Error message"}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -278,23 +250,20 @@ class TestAgentExecutorExecute:
         # Code that runs forever
         agent_code = "import time; time.sleep(1000)"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
@@ -318,8 +287,10 @@ class TestAgentExecutorExecute:
 
         output_data = {"status": "success", "data": [1, 2, 3]}
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
             mock_fs = Mock()
@@ -332,7 +303,7 @@ class TestAgentExecutorExecute:
             mock_exec.return_value = {
                 "exit_code": 0,
                 "stdout": '{"status": "success"}\n',
-                "stderr": ""
+                "stderr": "",
             }
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
@@ -354,33 +325,26 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('No output file')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
             # Implementation catches FilesystemError, not FileNotFoundError
             mock_fs.read_file.side_effect = FilesystemError("File not found")
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "No output file\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "No output file\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -400,31 +364,24 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -443,23 +400,20 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
@@ -484,34 +438,27 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
             # Simulate execution delay
             async def delayed_exec(*args, **kwargs):
                 await asyncio.sleep(0.1)
-                return {
-                    "exit_code": 0,
-                    "stdout": "test\n",
-                    "stderr": ""
-                }
+                return {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             mock_exec.side_effect = delayed_exec
 
@@ -533,24 +480,21 @@ class TestAgentExecutorExecute:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec, \
-             patch("agent_vm.execution.executor.datetime") as mock_datetime:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            patch("agent_vm.execution.executor.datetime") as mock_datetime,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
@@ -559,11 +503,7 @@ class TestAgentExecutorExecute:
             end_time = datetime(2024, 1, 1, 12, 0, 2, tzinfo=timezone.utc)
             mock_datetime.now.side_effect = [start_time, end_time]
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -587,32 +527,25 @@ class TestAgentExecutorLogging:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec, \
-             patch.object(executor._logger, "info") as mock_log_info:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            patch.object(executor._logger, "info") as mock_log_info,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -634,32 +567,25 @@ class TestAgentExecutorLogging:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec, \
-             patch.object(executor._logger, "info") as mock_log_info:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            patch.object(executor._logger, "info") as mock_log_info,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -680,24 +606,21 @@ class TestAgentExecutorLogging:
 
         agent_code = "import time; time.sleep(1000)"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec, \
-             patch.object(executor._logger, "error") as mock_log_error:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            patch.object(executor._logger, "error") as mock_log_error,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
@@ -708,7 +631,9 @@ class TestAgentExecutorLogging:
 
             # Verify timeout was logged
             mock_log_error.assert_called()
-            call_events = [call[0][0] if call[0] else None for call in mock_log_error.call_args_list]
+            call_events = [
+                call[0][0] if call[0] else None for call in mock_log_error.call_args_list
+            ]
             assert "execution_timeout" in call_events
 
     @pytest.mark.asyncio
@@ -723,32 +648,25 @@ class TestAgentExecutorLogging:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec, \
-             patch.object(executor._logger, "info") as mock_log_info:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            patch.object(executor._logger, "info") as mock_log_info,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -813,23 +731,20 @@ class TestAgentExecutorErrorHandling:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
@@ -855,18 +770,13 @@ class TestAgentExecutorErrorHandling:
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
@@ -970,8 +880,10 @@ print("Execution complete")
 
         output_data = {"status": "success", "message": "Integration test passed"}
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
             mock_fs = Mock()
@@ -984,7 +896,7 @@ print("Execution complete")
             mock_exec.return_value = {
                 "exit_code": 0,
                 "stdout": "Execution complete\n",
-                "stderr": ""
+                "stderr": "",
             }
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
@@ -1016,30 +928,27 @@ print("Execution complete")
 raise ValueError("Agent encountered an error")
 """
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
             mock_exec.return_value = {
                 "exit_code": 1,
                 "stdout": "",
-                "stderr": "Traceback (most recent call last):\n  ValueError: Agent encountered an error"
+                "stderr": "Traceback (most recent call last):\n  ValueError: Agent encountered an error",
             }
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
@@ -1066,8 +975,10 @@ raise ValueError("Agent encountered an error")
 
         agent_code = "print('Concurrent test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             def create_mock_fs(*args, **kwargs):
                 mock_fs = Mock()
@@ -1078,11 +989,7 @@ raise ValueError("Agent encountered an error")
 
             mock_fs_class.side_effect = create_mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "Concurrent test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "Concurrent test\n", "stderr": ""}
 
             # Execute concurrently
             tasks = [executor.execute(vm, agent_code, tmp_path) for vm in vms]
@@ -1104,8 +1011,10 @@ raise ValueError("Agent encountered an error")
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             def create_mock_fs(*args, **kwargs):
                 mock_fs = Mock()
@@ -1116,11 +1025,7 @@ raise ValueError("Agent encountered an error")
 
             mock_fs_class.side_effect = create_mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             # Test different timeouts
             timeouts = [10, 60, 300, 600]
@@ -1143,32 +1048,25 @@ class TestAgentExecutorEdgeCases:
 
         agent_code = "print('x' * 1000000)"  # 1MB output
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
             large_output = "x" * 1000000
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": large_output,
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": large_output, "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -1186,30 +1084,27 @@ class TestAgentExecutorEdgeCases:
 
         agent_code = "print('Test with emoji: 🚀 and Unicode: ñ')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
             mock_exec.return_value = {
                 "exit_code": 0,
                 "stdout": "Test with emoji: 🚀 and Unicode: ñ\n",
-                "stderr": ""
+                "stderr": "",
             }
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
@@ -1229,32 +1124,25 @@ class TestAgentExecutorEdgeCases:
 
         agent_code = "import sys; sys.stdout.buffer.write(b'\\x00\\x01\\x02')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
             # Binary output may be encoded or handled specially
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "\x00\x01\x02",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "\x00\x01\x02", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -1273,31 +1161,24 @@ class TestAgentExecutorEdgeCases:
         # Generate large code
         agent_code = "x = 1\n" * 10000  # 10k lines
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, tmp_path)
 
@@ -1324,31 +1205,24 @@ class TestAgentExecutorEdgeCases:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
-
 
             mock_fs.cleanup = AsyncMock()
 
-
             mock_fs_class.return_value = mock_fs
 
-            mock_exec.return_value = {
-                "exit_code": 0,
-                "stdout": "test\n",
-                "stderr": ""
-            }
+            mock_exec.return_value = {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             result = await executor.execute(mock_vm, agent_code, special_workspace)
 
@@ -1365,34 +1239,27 @@ class TestAgentExecutorEdgeCases:
 
         agent_code = "print('test')"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             # Create mock with proper async methods
 
-
             mock_fs = Mock()
-
 
             mock_fs.write_file = AsyncMock()
 
-
             mock_fs.read_file = AsyncMock(side_effect=FilesystemError("Not found"))
 
-
             mock_fs.cleanup = AsyncMock()
-
 
             mock_fs_class.return_value = mock_fs
 
             # Simulate execution that takes exactly timeout duration
             async def exact_timeout_exec(*args, **kwargs):
                 await asyncio.sleep(2.0)
-                return {
-                    "exit_code": 0,
-                    "stdout": "test\n",
-                    "stderr": ""
-                }
+                return {"exit_code": 0, "stdout": "test\n", "stderr": ""}
 
             mock_exec.side_effect = exact_timeout_exec
 

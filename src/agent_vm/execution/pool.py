@@ -98,9 +98,7 @@ class VMPool:
         self.ttl_seconds = ttl_seconds
 
         # Pool storage (asyncio.Queue for thread safety)
-        self._pool: asyncio.Queue[PooledVM] = asyncio.Queue(
-            maxsize=max_size
-        )
+        self._pool: asyncio.Queue[PooledVM] = asyncio.Queue(maxsize=max_size)
 
         # Lifecycle components
         self._connection: LibvirtConnection | None = None
@@ -145,14 +143,10 @@ class VMPool:
                 await self._pool.put(vm)
 
             self._initialized = True
-            self._logger.info(
-                "pool_initialized", pool_size=self._pool.qsize()
-            )
+            self._logger.info("pool_initialized", pool_size=self._pool.qsize())
 
             # Start maintenance task
-            self._maintenance_task = asyncio.create_task(
-                self._maintain_pool()
-            )
+            self._maintenance_task = asyncio.create_task(self._maintain_pool())
 
         except Exception as e:
             self._logger.error("pool_initialization_failed", error=str(e))
@@ -182,15 +176,11 @@ class VMPool:
 
         try:
             # Try to get VM from pool
-            pooled_vm = await asyncio.wait_for(
-                self._pool.get(), timeout=timeout
-            )
+            pooled_vm = await asyncio.wait_for(self._pool.get(), timeout=timeout)
 
             # Check if VM is stale (exceeded TTL)
             if self._is_stale(pooled_vm):
-                self._logger.info(
-                    "vm_stale_evicting", vm=pooled_vm.vm.name
-                )
+                self._logger.info("vm_stale_evicting", vm=pooled_vm.vm.name)
                 await self._destroy_vm(pooled_vm.vm)
 
                 # Create fresh VM
@@ -211,15 +201,11 @@ class VMPool:
 
         except TimeoutError:
             # Pool empty - create on-demand
-            self._logger.warning(
-                "pool_empty_creating_on_demand", timeout=timeout
-            )
+            self._logger.warning("pool_empty_creating_on_demand", timeout=timeout)
 
             try:
                 pooled_vm = await self._create_fresh_vm()
-                acquisition_time = (
-                    asyncio.get_event_loop().time() - start_time
-                )
+                acquisition_time = asyncio.get_event_loop().time() - start_time
                 self._logger.info(
                     "vm_created_on_demand",
                     vm=pooled_vm.vm.name,
@@ -227,9 +213,7 @@ class VMPool:
                 )
                 return pooled_vm.vm
             except Exception as create_err:
-                raise VMPoolError(
-                    f"Failed to create VM on-demand: {create_err}"
-                ) from create_err
+                raise VMPoolError(f"Failed to create VM on-demand: {create_err}") from create_err
 
     async def release(self, vm: VM) -> None:
         """Release VM back to pool.
@@ -267,9 +251,7 @@ class VMPool:
 
             # Try to return to pool
             if self._pool.full():
-                self._logger.info(
-                    "pool_full_destroying_vm", vm=vm.name
-                )
+                self._logger.info("pool_full_destroying_vm", vm=vm.name)
                 await self._destroy_vm(vm)
             else:
                 pooled_vm = PooledVM(
@@ -320,9 +302,7 @@ class VMPool:
         if self._connection:
             self._connection.close()
 
-        self._logger.info(
-            "pool_shutdown_complete", destroyed_vms=destroyed_count
-        )
+        self._logger.info("pool_shutdown_complete", destroyed_vms=destroyed_count)
 
     def size(self) -> int:
         """Get current pool size.
@@ -375,9 +355,7 @@ class VMPool:
             )
 
             # Define and create VM
-            domain = self._connection.connection.defineXML(
-                template.generate_xml()
-            )
+            domain = self._connection.connection.defineXML(template.generate_xml())
             vm = VM(domain)
 
             # Start VM
@@ -423,9 +401,7 @@ class VMPool:
             self._logger.info("vm_destroyed", vm=vm.name)
 
         except Exception as e:
-            self._logger.error(
-                "vm_destroy_failed", vm=vm.name, error=str(e)
-            )
+            self._logger.error("vm_destroy_failed", vm=vm.name, error=str(e))
 
     async def _reset_to_golden(self, vm: VM) -> None:
         """Reset VM to golden snapshot state.
@@ -450,9 +426,7 @@ class VMPool:
                 current_size = self._pool.qsize()
                 if current_size < self.min_size:
                     needed = self.min_size - current_size
-                    self._logger.info(
-                        "pool_refilling", current=current_size, needed=needed
-                    )
+                    self._logger.info("pool_refilling", current=current_size, needed=needed)
 
                     for _ in range(needed):
                         if self._pool.full():
@@ -461,9 +435,7 @@ class VMPool:
                             vm = await self._create_fresh_vm()
                             await self._pool.put(vm)
                         except Exception as e:
-                            self._logger.error(
-                                "pool_refill_failed", error=str(e)
-                            )
+                            self._logger.error("pool_refill_failed", error=str(e))
 
             except asyncio.CancelledError:
                 break

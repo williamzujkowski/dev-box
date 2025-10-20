@@ -50,9 +50,7 @@ class TestCompleteWorkflow:
         # Create PooledVM wrapper
         nist_et = ZoneInfo("America/New_York")
         pooled_vm = PooledVM(
-            vm=mock_vm,
-            created_at=datetime.now(nist_et),
-            golden_snapshot="golden-e2e"
+            vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="golden-e2e"
         )
 
         # Mock pool
@@ -75,8 +73,10 @@ class TestCompleteWorkflow:
             assert vm.name == "e2e-test-vm"
 
             # Step 2: Execute agent code
-            with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-                 patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+            with (
+                patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+                patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            ):
 
                 # Setup filesystem mock
                 mock_fs = Mock()
@@ -90,7 +90,7 @@ class TestCompleteWorkflow:
                 mock_exec.return_value = {
                     "exit_code": 0,
                     "stdout": "Agent completed successfully\n",
-                    "stderr": ""
+                    "stderr": "",
                 }
 
                 # Execute agent
@@ -151,6 +151,7 @@ class TestCompleteWorkflow:
 
         # Create mock VMs - counter for unique VMs
         vm_counter = 0
+
         def create_mock_pooled_vm(index: int | None = None) -> PooledVM:
             nonlocal vm_counter
             vm_counter += 1
@@ -158,9 +159,7 @@ class TestCompleteWorkflow:
             mock_vm.name = f"concurrent-vm-{vm_counter}"
             mock_vm.uuid = f"concurrent-uuid-{vm_counter}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot=f"golden-{vm_counter}"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot=f"golden-{vm_counter}"
             )
 
         # Setup pool with multiple VMs - use AsyncMock
@@ -179,8 +178,10 @@ class TestCompleteWorkflow:
             vm = await pool.acquire()
 
             try:
-                with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-                     patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+                with (
+                    patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+                    patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+                ):
 
                     # Setup mocks
                     mock_fs = Mock()
@@ -193,17 +194,13 @@ class TestCompleteWorkflow:
                     mock_exec.return_value = {
                         "exit_code": 0,
                         "stdout": f"Agent {agent_id} completed\n",
-                        "stderr": ""
+                        "stderr": "",
                     }
 
                     # Execute
                     result = await executor.execute(vm, sample_agent_code, workspace_with_structure)
 
-                    return {
-                        "agent_id": agent_id,
-                        "vm_name": vm.name,
-                        "result": result
-                    }
+                    return {"agent_id": agent_id, "vm_name": vm.name, "result": result}
             finally:
                 await pool.release(vm)
 
@@ -268,14 +265,21 @@ class TestCompleteWorkflow:
         mock_snapshot = Mock()
         mock_snapshot.getName.return_value = "golden-snapshot"
 
-        with patch.object(snapshot_manager, "create_snapshot", new_callable=AsyncMock, return_value=mock_snapshot) as mock_create, \
-             patch.object(snapshot_manager, "restore_snapshot", new_callable=AsyncMock) as mock_restore:
+        with (
+            patch.object(
+                snapshot_manager,
+                "create_snapshot",
+                new_callable=AsyncMock,
+                return_value=mock_snapshot,
+            ) as mock_create,
+            patch.object(
+                snapshot_manager, "restore_snapshot", new_callable=AsyncMock
+            ) as mock_restore,
+        ):
 
             # Step 1: Create golden snapshot
             golden = await snapshot_manager.create_snapshot(
-                vm,
-                "golden-snapshot",
-                "Clean state before execution"
+                vm, "golden-snapshot", "Clean state before execution"
             )
 
             assert golden == mock_snapshot
@@ -284,8 +288,10 @@ class TestCompleteWorkflow:
             # Step 2: Execute agent (simulates state modification)
             executor = AgentExecutor()
 
-            with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-                 patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+            with (
+                patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+                patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            ):
 
                 mock_fs = Mock()
                 mock_fs.write_file = AsyncMock()
@@ -297,7 +303,7 @@ class TestCompleteWorkflow:
                 mock_exec.return_value = {
                     "exit_code": 0,
                     "stdout": "Modified VM state\n",
-                    "stderr": ""
+                    "stderr": "",
                 }
 
                 result = await executor.execute(vm, sample_agent_code, workspace_with_structure)
@@ -338,6 +344,7 @@ class TestCompleteWorkflow:
 
         # Create mock VMs with proper created_at
         vm_counter = 0
+
         def create_vm(index: int | None = None):
             nonlocal vm_counter
             vm_counter += 1
@@ -345,9 +352,7 @@ class TestCompleteWorkflow:
             mock_vm.name = f"error-recovery-vm-{vm_counter}"
             mock_vm.uuid = f"error-recovery-uuid-{vm_counter}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot="golden-error-test"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="golden-error-test"
             )
 
         pool._create_fresh_vm = AsyncMock(side_effect=create_vm)
@@ -365,8 +370,10 @@ class TestCompleteWorkflow:
             assert vm is not None
 
             # Step 2: Execute failing agent
-            with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-                 patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+            with (
+                patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+                patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+            ):
 
                 from agent_vm.communication.filesystem import FilesystemError
 
@@ -380,7 +387,7 @@ class TestCompleteWorkflow:
                 mock_exec.return_value = {
                     "exit_code": 1,
                     "stdout": "",
-                    "stderr": "ValueError: Intentional test error\n"
+                    "stderr": "ValueError: Intentional test error\n",
                 }
 
                 result = await executor.execute(vm, failing_agent_code, workspace_with_structure)
@@ -401,22 +408,28 @@ class TestCompleteWorkflow:
             assert vm2 is not None
 
             # Step 7: Execute successful agent
-            with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class2, \
-                 patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec2:
+            with (
+                patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class2,
+                patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec2,
+            ):
 
                 mock_fs2 = Mock()
                 mock_fs2.write_file = AsyncMock()
-                mock_fs2.read_file = AsyncMock(return_value=json.dumps({"recovered": True}).encode())
+                mock_fs2.read_file = AsyncMock(
+                    return_value=json.dumps({"recovered": True}).encode()
+                )
                 mock_fs2.cleanup = AsyncMock()
                 mock_fs_class2.return_value = mock_fs2
 
                 mock_exec2.return_value = {
                     "exit_code": 0,
                     "stdout": "Recovered successfully\n",
-                    "stderr": ""
+                    "stderr": "",
                 }
 
-                result2 = await executor.execute(vm2, "print('recovered')", workspace_with_structure)
+                result2 = await executor.execute(
+                    vm2, "print('recovered')", workspace_with_structure
+                )
 
                 # Step 8: Verify recovery
                 assert result2.success is True
@@ -458,6 +471,7 @@ class TestConcurrentExecutionWorkflows:
 
         # Setup mock VMs
         vm_counter = 0
+
         def create_vm(index: int | None = None):
             nonlocal vm_counter
             vm_counter += 1
@@ -465,9 +479,7 @@ class TestConcurrentExecutionWorkflows:
             mock_vm.name = f"high-concurrency-vm-{vm_counter}"
             mock_vm.uuid = f"high-concurrency-uuid-{vm_counter}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot=f"golden-{vm_counter}"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot=f"golden-{vm_counter}"
             )
 
         pool._create_fresh_vm = AsyncMock(side_effect=create_vm)
@@ -483,8 +495,10 @@ class TestConcurrentExecutionWorkflows:
             vm = await pool.acquire()
 
             try:
-                with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-                     patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+                with (
+                    patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+                    patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+                ):
 
                     mock_fs = Mock()
                     mock_fs.write_file = AsyncMock()
@@ -497,11 +511,7 @@ class TestConcurrentExecutionWorkflows:
                     # Simulate small delay
                     async def delayed_exec(*args, **kwargs):
                         await asyncio.sleep(0.01)
-                        return {
-                            "exit_code": 0,
-                            "stdout": f"Agent {agent_id} done\n",
-                            "stderr": ""
-                        }
+                        return {"exit_code": 0, "stdout": f"Agent {agent_id} done\n", "stderr": ""}
 
                     mock_exec.side_effect = delayed_exec
 
@@ -553,6 +563,7 @@ class TestConcurrentExecutionWorkflows:
         pool = VMPool(min_size=3, max_size=10)
 
         vm_counter = 0
+
         def create_vm(index: int | None = None):
             nonlocal vm_counter
             vm_counter += 1
@@ -560,9 +571,7 @@ class TestConcurrentExecutionWorkflows:
             mock_vm.name = f"mixed-vm-{vm_counter}"
             mock_vm.uuid = f"mixed-uuid-{vm_counter}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot=f"golden-{vm_counter}"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot=f"golden-{vm_counter}"
             )
 
         pool._create_fresh_vm = AsyncMock(side_effect=create_vm)
@@ -578,8 +587,10 @@ class TestConcurrentExecutionWorkflows:
             vm = await pool.acquire()
 
             try:
-                with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-                     patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+                with (
+                    patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+                    patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+                ):
 
                     from agent_vm.communication.filesystem import FilesystemError
 
@@ -591,7 +602,7 @@ class TestConcurrentExecutionWorkflows:
                         mock_exec.return_value = {
                             "exit_code": 1,
                             "stdout": "",
-                            "stderr": f"Agent {agent_id} failed\n"
+                            "stderr": f"Agent {agent_id} failed\n",
                         }
                     else:
                         mock_fs.read_file = AsyncMock(
@@ -600,7 +611,7 @@ class TestConcurrentExecutionWorkflows:
                         mock_exec.return_value = {
                             "exit_code": 0,
                             "stdout": f"Agent {agent_id} succeeded\n",
-                            "stderr": ""
+                            "stderr": "",
                         }
 
                     mock_fs.cleanup = AsyncMock()
@@ -666,6 +677,7 @@ class TestResourceManagementWorkflows:
         pool = VMPool(min_size=3, max_size=10)
 
         vm_counter = 0
+
         def create_vm(index: int | None = None):
             nonlocal vm_counter
             vm_counter += 1
@@ -673,9 +685,7 @@ class TestResourceManagementWorkflows:
             mock_vm.name = f"refill-vm-{vm_counter}"
             mock_vm.uuid = f"refill-uuid-{vm_counter}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot=f"golden-{vm_counter}"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot=f"golden-{vm_counter}"
             )
 
         pool._create_fresh_vm = AsyncMock(side_effect=create_vm)
@@ -685,13 +695,14 @@ class TestResourceManagementWorkflows:
 
         # Mock asyncio.sleep to speed up maintenance
         original_sleep = asyncio.sleep
+
         async def fast_sleep(seconds):
             if seconds >= 10:
                 await original_sleep(0.01)
             else:
                 await original_sleep(seconds)
 
-        with patch('asyncio.sleep', side_effect=fast_sleep):
+        with patch("asyncio.sleep", side_effect=fast_sleep):
             await pool.initialize()
 
             # Should start at min_size
@@ -722,9 +733,7 @@ class TestResourceManagementWorkflows:
             await pool.shutdown()
 
     @pytest.mark.asyncio
-    async def test_stale_vm_eviction_workflow(
-        self, workspace_with_structure: Path
-    ) -> None:
+    async def test_stale_vm_eviction_workflow(self, workspace_with_structure: Path) -> None:
         """Verify stale VMs are evicted and replaced.
 
         Tests TTL-based eviction:
@@ -749,11 +758,7 @@ class TestResourceManagementWorkflows:
         stale_vm.uuid = "stale-uuid"
 
         old_time = datetime.now(nist_et) - timedelta(seconds=120)
-        stale_pooled = PooledVM(
-            vm=stale_vm,
-            created_at=old_time,
-            golden_snapshot="stale-golden"
-        )
+        stale_pooled = PooledVM(vm=stale_vm, created_at=old_time, golden_snapshot="stale-golden")
 
         # Put stale VM in queue manually
         await pool._pool.put(stale_pooled)
@@ -768,9 +773,7 @@ class TestResourceManagementWorkflows:
         fresh_vm.uuid = "fresh-uuid"
 
         fresh_pooled = PooledVM(
-            vm=fresh_vm,
-            created_at=datetime.now(nist_et),
-            golden_snapshot="fresh-golden"
+            vm=fresh_vm, created_at=datetime.now(nist_et), golden_snapshot="fresh-golden"
         )
         pool._create_fresh_vm = AsyncMock(return_value=fresh_pooled)
 
@@ -787,9 +790,7 @@ class TestResourceManagementWorkflows:
         pool._create_fresh_vm.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_graceful_shutdown_workflow(
-        self, workspace_with_structure: Path
-    ) -> None:
+    async def test_graceful_shutdown_workflow(self, workspace_with_structure: Path) -> None:
         """Verify graceful shutdown cleans up all resources.
 
         Tests shutdown workflow:
@@ -810,6 +811,7 @@ class TestResourceManagementWorkflows:
         pool = VMPool(min_size=3, max_size=10)
 
         vm_counter = 0
+
         def create_vm(index: int | None = None):
             nonlocal vm_counter
             vm_counter += 1
@@ -817,9 +819,7 @@ class TestResourceManagementWorkflows:
             mock_vm.name = f"shutdown-test-vm-{vm_counter}"
             mock_vm.uuid = f"shutdown-uuid-{vm_counter}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot="shutdown-golden"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="shutdown-golden"
             )
 
         pool._create_fresh_vm = AsyncMock(side_effect=create_vm)
@@ -879,9 +879,7 @@ class TestPerformanceWorkflows:
 
         mock_vm = Mock(spec=VM)
         pooled_vm = PooledVM(
-            vm=mock_vm,
-            created_at=datetime.now(nist_et),
-            golden_snapshot="perf-golden"
+            vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="perf-golden"
         )
 
         pool._create_fresh_vm = AsyncMock(return_value=pooled_vm)
@@ -982,8 +980,10 @@ class TestErrorHandlingWorkflows:
         mock_vm = Mock(spec=VM)
         mock_vm.name = "timeout-vm"
 
-        with patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class, \
-             patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec:
+        with (
+            patch("agent_vm.execution.executor.FilesystemShare") as mock_fs_class,
+            patch.object(executor, "_execute_in_vm", new_callable=AsyncMock) as mock_exec,
+        ):
 
             mock_fs = Mock()
             mock_fs.write_file = AsyncMock()
@@ -997,10 +997,7 @@ class TestErrorHandlingWorkflows:
             # Execute with short timeout
             with pytest.raises(ExecutionError, match="timeout|timed out"):
                 await executor.execute(
-                    mock_vm,
-                    timeout_agent_code,
-                    workspace_with_structure,
-                    timeout=1
+                    mock_vm, timeout_agent_code, workspace_with_structure, timeout=1
                 )
 
             # Verify cleanup happened despite timeout
@@ -1028,6 +1025,7 @@ class TestErrorHandlingWorkflows:
 
         # First attempts fail
         failure_count = 0
+
         async def failing_create(index: int | None = None):
             nonlocal failure_count
             failure_count += 1
@@ -1037,9 +1035,7 @@ class TestErrorHandlingWorkflows:
             mock_vm = Mock(spec=VM)
             mock_vm.name = f"recovered-vm-{failure_count}"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot="recovered-golden"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="recovered-golden"
             )
 
         pool._create_fresh_vm = failing_create
@@ -1057,22 +1053,21 @@ class TestErrorHandlingWorkflows:
             mock_vm = Mock(spec=VM)
             mock_vm.name = "success-vm"
             return PooledVM(
-                vm=mock_vm,
-                created_at=datetime.now(nist_et),
-                golden_snapshot="success-golden"
+                vm=mock_vm, created_at=datetime.now(nist_et), golden_snapshot="success-golden"
             )
 
         pool._create_fresh_vm = AsyncMock(side_effect=successful_create)
 
         # Mock fast maintenance
         original_sleep = asyncio.sleep
+
         async def fast_sleep(seconds):
             if seconds >= 10:
                 await original_sleep(0.01)
             else:
                 await original_sleep(seconds)
 
-        with patch('asyncio.sleep', side_effect=fast_sleep):
+        with patch("asyncio.sleep", side_effect=fast_sleep):
             # Run maintenance
             pool._shutdown_requested = False
             task = asyncio.create_task(pool._maintain_pool())

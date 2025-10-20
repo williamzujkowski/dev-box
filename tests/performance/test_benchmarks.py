@@ -166,19 +166,21 @@ class TestVMPoolPerformance:
         from zoneinfo import ZoneInfo
 
         # Mock the entire pool initialization to avoid real VM creation
-        with patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm, patch(
-            "agent_vm.execution.pool.SnapshotManager"
-        ) as mock_snapshot_mgr:
+        with (
+            patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm,
+            patch("agent_vm.execution.pool.SnapshotManager") as mock_snapshot_mgr,
+        ):
             # Create mock VMs wrapped in PooledVM
             mock_vms = []
             for i in range(5):
                 mock_vm = AsyncMock(name=f"pool-vm-{i}")
-                mock_vm.get_state = AsyncMock(return_value="running")
+                mock_vm.get_state = Mock(return_value="running")  # Sync method
+                mock_vm.stop = Mock()  # Sync method
                 mock_vm.name = f"pool-vm-{i}"
                 pooled = PooledVM(
                     vm=mock_vm,
                     created_at=datetime.now(ZoneInfo("America/New_York")),
-                    golden_snapshot=f"pool-vm-{i}-golden"
+                    golden_snapshot=f"pool-vm-{i}-golden",
                 )
                 mock_vms.append(pooled)
 
@@ -223,19 +225,21 @@ class TestVMPoolPerformance:
         from datetime import datetime
         from zoneinfo import ZoneInfo
 
-        with patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm, patch(
-            "agent_vm.execution.pool.SnapshotManager"
+        with (
+            patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm,
+            patch("agent_vm.execution.pool.SnapshotManager"),
         ):
             # Create multiple mock VMs wrapped in PooledVM
             mock_vms = []
             for i in range(5):
                 mock_vm = AsyncMock(name=f"pool-vm-{i}")
-                mock_vm.get_state = AsyncMock(return_value="running")
+                mock_vm.get_state = Mock(return_value="running")  # Sync method
+                mock_vm.stop = Mock()  # Sync method
                 mock_vm.name = f"pool-vm-{i}"
                 pooled = PooledVM(
                     vm=mock_vm,
                     created_at=datetime.now(ZoneInfo("America/New_York")),
-                    golden_snapshot=f"pool-vm-{i}-golden"
+                    golden_snapshot=f"pool-vm-{i}-golden",
                 )
                 mock_vms.append(pooled)
             mock_create_vm.side_effect = mock_vms
@@ -285,19 +289,21 @@ class TestVMPoolPerformance:
         from datetime import datetime
         from zoneinfo import ZoneInfo
 
-        with patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm, patch(
-            "agent_vm.execution.pool.SnapshotManager"
+        with (
+            patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm,
+            patch("agent_vm.execution.pool.SnapshotManager"),
         ):
             # Create mock VMs wrapped in PooledVM
             mock_vms = []
             for i in range(3):
                 mock_vm = AsyncMock(name=f"pool-vm-{i}")
-                mock_vm.get_state = AsyncMock(return_value="running")
+                mock_vm.get_state = Mock(return_value="running")  # Sync method
+                mock_vm.stop = Mock()  # Sync method
                 mock_vm.name = f"pool-vm-{i}"
                 pooled = PooledVM(
                     vm=mock_vm,
                     created_at=datetime.now(ZoneInfo("America/New_York")),
-                    golden_snapshot=f"pool-vm-{i}-golden"
+                    golden_snapshot=f"pool-vm-{i}-golden",
                 )
                 mock_vms.append(pooled)
             mock_create_vm.side_effect = mock_vms
@@ -565,7 +571,11 @@ class TestConcurrentExecutionPerformance:
                 duration = time.perf_counter() - start
 
                 scaling_data.append(
-                    {"num_agents": num_agents, "duration": duration, "throughput": num_agents / duration}
+                    {
+                        "num_agents": num_agents,
+                        "duration": duration,
+                        "throughput": num_agents / duration,
+                    }
                 )
 
             # Log scaling metrics
@@ -581,7 +591,9 @@ class TestConcurrentExecutionPerformance:
             assert scaling_data[2]["throughput"] >= scaling_data[1]["throughput"]
 
     @pytest.mark.asyncio
-    async def test_concurrent_with_failures(self, failing_agent_code: str, temp_workspace: Path) -> None:
+    async def test_concurrent_with_failures(
+        self, failing_agent_code: str, temp_workspace: Path
+    ) -> None:
         """Concurrent execution handles failures gracefully.
 
         Target: Failures don't slow down overall throughput significantly
@@ -624,7 +636,9 @@ class TestConcurrentExecutionPerformance:
             failure_count = len(results) - success_count
 
             # Assert failures don't block execution
-            assert duration < 30.0, f"Execution with failures took {duration:.3f}s, target is <30.0s"
+            assert (
+                duration < 30.0
+            ), f"Execution with failures took {duration:.3f}s, target is <30.0s"
 
             # Log performance metric
             logger = structlog.get_logger()
@@ -652,19 +666,21 @@ class TestResourceUtilizationPerformance:
         from datetime import datetime
         from zoneinfo import ZoneInfo
 
-        with patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm, patch(
-            "agent_vm.execution.pool.SnapshotManager"
+        with (
+            patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm,
+            patch("agent_vm.execution.pool.SnapshotManager"),
         ):
             # Create mock VMs wrapped in PooledVM
             mock_vms = []
             for i in range(3):
                 mock_vm = AsyncMock(name=f"pool-vm-{i}")
-                mock_vm.get_state = AsyncMock(return_value="running")
+                mock_vm.get_state = Mock(return_value="running")  # Sync method
+                mock_vm.stop = Mock()  # Sync method
                 mock_vm.name = f"pool-vm-{i}"
                 pooled = PooledVM(
                     vm=mock_vm,
                     created_at=datetime.now(ZoneInfo("America/New_York")),
-                    golden_snapshot=f"pool-vm-{i}-golden"
+                    golden_snapshot=f"pool-vm-{i}-golden",
                 )
                 mock_vms.append(pooled)
             mock_create_vm.side_effect = mock_vms
@@ -771,19 +787,22 @@ class TestEndToEndPerformance:
         from datetime import datetime
         from zoneinfo import ZoneInfo
 
-        with patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm, patch(
-            "agent_vm.execution.pool.SnapshotManager"
-        ), patch("agent_vm.execution.executor.AgentExecutor.execute") as mock_execute:
+        with (
+            patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm,
+            patch("agent_vm.execution.pool.SnapshotManager"),
+            patch("agent_vm.execution.executor.AgentExecutor.execute") as mock_execute,
+        ):
             # Configure mocks - create PooledVM objects
             mock_vms = []
             for i in range(3):
                 mock_vm = AsyncMock(name=f"workflow-vm-{i}")
-                mock_vm.get_state = AsyncMock(return_value="running")
+                mock_vm.get_state = Mock(return_value="running")  # Sync method
+                mock_vm.stop = Mock()  # Sync method
                 mock_vm.name = f"workflow-vm-{i}"
                 pooled = PooledVM(
                     vm=mock_vm,
                     created_at=datetime.now(ZoneInfo("America/New_York")),
-                    golden_snapshot=f"workflow-vm-{i}-golden"
+                    golden_snapshot=f"workflow-vm-{i}-golden",
                 )
                 mock_vms.append(pooled)
             mock_create_vm.side_effect = mock_vms

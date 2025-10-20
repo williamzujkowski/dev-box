@@ -58,9 +58,7 @@ class Anomaly:
     severity: AnomalySeverity
     message: str
     details: dict[str, Any] = field(default_factory=dict)
-    timestamp: datetime = field(
-        default_factory=lambda: datetime.now(ZoneInfo("America/New_York"))
-    )
+    timestamp: datetime = field(default_factory=lambda: datetime.now(ZoneInfo("America/New_York")))
 
     def __eq__(self, other: object) -> bool:
         """Anomalies are equal if type and details match (for deduplication)"""
@@ -100,7 +98,10 @@ class AnomalyDetector:
 
     # Known malicious patterns
     SUSPICIOUS_SYSCALLS: ClassVar[set[str]] = {
-        "ptrace", "kexec_load", "create_module", "delete_module"
+        "ptrace",
+        "kexec_load",
+        "create_module",
+        "delete_module",
     }
     KNOWN_MINING_POOLS: ClassVar[set[str]] = {
         "pool.minexmr.com",
@@ -319,9 +320,7 @@ class AnomalyDetector:
                 Anomaly(
                     type=AnomalyType.EXCESSIVE_CONNECTIONS,
                     severity=AnomalySeverity.MEDIUM,
-                    message=(
-                        f"Excessive network connections: {connections} per minute"
-                    ),
+                    message=(f"Excessive network connections: {connections} per minute"),
                     details={
                         "connections_per_min": current_metrics["network_connections_per_min"],
                         "threshold": self.EXCESSIVE_CONNECTIONS_THRESHOLD,
@@ -571,6 +570,7 @@ class AnomalyDetector:
         """
         # Log to AuditLogger
         from ..monitoring.audit import EventType
+
         self._audit_logger.log_event(
             event_type=EventType.ANOMALY_DETECTED,
             agent_id="system",

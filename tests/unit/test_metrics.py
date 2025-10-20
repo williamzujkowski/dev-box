@@ -76,11 +76,7 @@ class TestMetricsCollector:
         """Record VM CPU usage metric"""
         collector = MetricsCollector()
 
-        collector.record_vm_cpu_usage(
-            vm_id="test-vm-123",
-            agent_id="agent-abc",
-            cpu_percent=45.5
-        )
+        collector.record_vm_cpu_usage(vm_id="test-vm-123", agent_id="agent-abc", cpu_percent=45.5)
 
         # Verify metric was set (would check Prometheus registry in reality)
         # For now, just verify no exceptions
@@ -90,9 +86,7 @@ class TestMetricsCollector:
         collector = MetricsCollector()
 
         collector.record_vm_memory_usage(
-            vm_id="test-vm-123",
-            agent_id="agent-abc",
-            memory_bytes=1024 * 1024 * 1024  # 1GB
+            vm_id="test-vm-123", agent_id="agent-abc", memory_bytes=1024 * 1024 * 1024  # 1GB
         )
 
     def test_record_vm_disk_io(self):
@@ -100,17 +94,14 @@ class TestMetricsCollector:
         collector = MetricsCollector()
 
         collector.record_vm_disk_read(
-            vm_id="test-vm-123",
-            agent_id="agent-abc",
-            device="vda",
-            bytes_read=1024 * 1024  # 1MB
+            vm_id="test-vm-123", agent_id="agent-abc", device="vda", bytes_read=1024 * 1024  # 1MB
         )
 
         collector.record_vm_disk_write(
             vm_id="test-vm-123",
             agent_id="agent-abc",
             device="vda",
-            bytes_written=512 * 1024  # 512KB
+            bytes_written=512 * 1024,  # 512KB
         )
 
     def test_record_vm_network_io(self):
@@ -121,120 +112,83 @@ class TestMetricsCollector:
             vm_id="test-vm-123",
             agent_id="agent-abc",
             interface="eth0",
-            bytes_received=2048 * 1024  # 2MB
+            bytes_received=2048 * 1024,  # 2MB
         )
 
         collector.record_vm_network_tx(
             vm_id="test-vm-123",
             agent_id="agent-abc",
             interface="eth0",
-            bytes_transmitted=1024 * 1024  # 1MB
+            bytes_transmitted=1024 * 1024,  # 1MB
         )
 
     def test_record_vm_boot_duration(self):
         """Record VM boot duration"""
         collector = MetricsCollector()
 
-        collector.record_vm_boot_duration(
-            vm_id="test-vm-123",
-            duration_seconds=1.5
-        )
+        collector.record_vm_boot_duration(vm_id="test-vm-123", duration_seconds=1.5)
 
     def test_record_snapshot_restore_duration(self):
         """Record snapshot restore duration"""
         collector = MetricsCollector()
 
-        collector.record_snapshot_restore_duration(
-            vm_id="test-vm-123",
-            duration_seconds=0.8
-        )
+        collector.record_snapshot_restore_duration(vm_id="test-vm-123", duration_seconds=0.8)
 
     def test_record_pool_size(self):
         """Record VM pool size"""
         collector = MetricsCollector()
 
-        collector.record_pool_size(
-            pool_id="standard-pool",
-            size=10
-        )
+        collector.record_pool_size(pool_id="standard-pool", size=10)
 
     def test_record_pool_acquire_duration(self):
         """Record pool VM acquisition duration"""
         collector = MetricsCollector()
 
-        collector.record_pool_acquire_duration(
-            pool_id="standard-pool",
-            duration_seconds=0.05
-        )
+        collector.record_pool_acquire_duration(pool_id="standard-pool", duration_seconds=0.05)
 
     def test_record_execution_duration(self):
         """Record agent execution duration"""
         collector = MetricsCollector()
 
         collector.record_execution_duration(
-            agent_id="agent-abc",
-            status="success",
-            duration_seconds=30.5
+            agent_id="agent-abc", status="success", duration_seconds=30.5
         )
 
     def test_record_execution_total(self):
         """Record total agent executions"""
         collector = MetricsCollector()
 
-        collector.record_execution_total(
-            agent_id="agent-abc",
-            status="success"
-        )
+        collector.record_execution_total(agent_id="agent-abc", status="success")
 
-        collector.record_execution_total(
-            agent_id="agent-abc",
-            status="failure"
-        )
+        collector.record_execution_total(agent_id="agent-abc", status="failure")
 
     def test_record_execution_timeout(self):
         """Record agent execution timeout"""
         collector = MetricsCollector()
 
-        collector.record_execution_timeout(
-            agent_id="agent-abc"
-        )
+        collector.record_execution_timeout(agent_id="agent-abc")
 
     def test_record_resource_limit_violation(self):
         """Record resource limit violation"""
         collector = MetricsCollector()
 
-        collector.record_resource_limit_violation(
-            vm_id="test-vm-123",
-            resource_type="cpu"
-        )
+        collector.record_resource_limit_violation(vm_id="test-vm-123", resource_type="cpu")
 
-        collector.record_resource_limit_violation(
-            vm_id="test-vm-123",
-            resource_type="memory"
-        )
+        collector.record_resource_limit_violation(vm_id="test-vm-123", resource_type="memory")
 
     def test_record_network_connection_attempt(self):
         """Record network connection attempt"""
         collector = MetricsCollector()
 
-        collector.record_network_connection_attempt(
-            vm_id="test-vm-123",
-            allowed=True
-        )
+        collector.record_network_connection_attempt(vm_id="test-vm-123", allowed=True)
 
-        collector.record_network_connection_attempt(
-            vm_id="test-vm-123",
-            allowed=False
-        )
+        collector.record_network_connection_attempt(vm_id="test-vm-123", allowed=False)
 
     def test_record_syscall_violation(self):
         """Record syscall violation"""
         collector = MetricsCollector()
 
-        collector.record_syscall_violation(
-            vm_id="test-vm-123",
-            syscall="ptrace"
-        )
+        collector.record_syscall_violation(vm_id="test-vm-123", syscall="ptrace")
 
     def test_metrics_with_multiple_labels(self):
         """Metrics correctly handle multiple label combinations"""

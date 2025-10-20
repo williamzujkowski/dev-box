@@ -23,19 +23,13 @@ class TestFilesystemShareInit:
 
     def test_init_custom_mount_tag(self, tmp_path: Path) -> None:
         """FilesystemShare accepts custom mount tag"""
-        fs = FilesystemShare(
-            host_path=tmp_path,
-            mount_tag="custom_share"
-        )
+        fs = FilesystemShare(host_path=tmp_path, mount_tag="custom_share")
 
         assert fs.mount_tag == "custom_share"
 
     def test_init_custom_guest_mount_point(self, tmp_path: Path) -> None:
         """FilesystemShare accepts custom guest mount point"""
-        fs = FilesystemShare(
-            host_path=tmp_path,
-            guest_mount_point="/custom/mount"
-        )
+        fs = FilesystemShare(host_path=tmp_path, guest_mount_point="/custom/mount")
 
         assert fs.guest_mount_point == "/custom/mount"
 
@@ -84,7 +78,7 @@ class TestFilesystemShareMount:
         fs = FilesystemShare(host_path=tmp_path)
 
         # Simulate mount failure
-        with patch.object(fs, '_execute_mount', side_effect=OSError("Mount failed")):
+        with patch.object(fs, "_execute_mount", side_effect=OSError("Mount failed")):
             with pytest.raises(FilesystemError, match="Failed to mount"):
                 await fs.mount()
 
@@ -119,7 +113,7 @@ class TestFilesystemShareUnmount:
         await fs.mount()
 
         # Simulate unmount failure
-        with patch.object(fs, '_execute_unmount', side_effect=OSError("Unmount failed")):
+        with patch.object(fs, "_execute_unmount", side_effect=OSError("Unmount failed")):
             with pytest.raises(FilesystemError, match="Failed to unmount"):
                 await fs.unmount()
 
@@ -280,7 +274,9 @@ class TestFilesystemShareLogging:
     """Test structured logging"""
 
     @pytest.mark.asyncio
-    async def test_mount_logs_success(self, tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
+    async def test_mount_logs_success(
+        self, tmp_path: Path, caplog: pytest.LogCaptureFixture
+    ) -> None:
         """Mount logs success event"""
         fs = FilesystemShare(host_path=tmp_path)
 

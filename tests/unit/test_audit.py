@@ -63,9 +63,7 @@ class TestAuditLoggerInit:
 class TestLogEvent:
     """Test log_event method."""
 
-    def test_log_event_basic(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_event_basic(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_event creates structured log with all required fields."""
         audit_logger.log_event(
             event_type=EventType.VM_CREATED,
@@ -225,9 +223,7 @@ class TestEventTypes:
 class TestLogLevels:
     """Test different log levels."""
 
-    def test_log_with_info_level(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_with_info_level(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_event defaults to INFO level."""
         audit_logger.log_event(
             event_type=EventType.VM_CREATED,
@@ -254,9 +250,7 @@ class TestLogLevels:
         log = log_capture.entries[0]
         assert log["log_level"] == "warning"
 
-    def test_log_with_error_level(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_with_error_level(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_event accepts ERROR level."""
         audit_logger.log_event(
             event_type=EventType.AGENT_EXECUTION_FAILED,
@@ -290,9 +284,7 @@ class TestContextBinding:
 
     def test_bind_context(self, audit_logger: AuditLogger) -> None:
         """bind_context creates logger with bound context."""
-        bound_logger = audit_logger.bind_context(
-            session_id="session-123", environment="production"
-        )
+        bound_logger = audit_logger.bind_context(session_id="session-123", environment="production")
 
         assert bound_logger is not None
         # Bound logger should be different instance
@@ -342,9 +334,7 @@ class TestJSONSerialization:
 class TestErrorHandling:
     """Test error handling in logging."""
 
-    def test_log_event_with_none_details_raises(
-        self, audit_logger: AuditLogger
-    ) -> None:
+    def test_log_event_with_none_details_raises(self, audit_logger: AuditLogger) -> None:
         """log_event raises TypeError when details is None."""
         with pytest.raises(TypeError):
             audit_logger.log_event(
@@ -354,9 +344,7 @@ class TestErrorHandling:
                 details=None,  # type: ignore
             )
 
-    def test_log_event_with_empty_agent_id_raises(
-        self, audit_logger: AuditLogger
-    ) -> None:
+    def test_log_event_with_empty_agent_id_raises(self, audit_logger: AuditLogger) -> None:
         """log_event raises ValueError when agent_id is empty."""
         with pytest.raises(ValueError):
             audit_logger.log_event(
@@ -366,9 +354,7 @@ class TestErrorHandling:
                 details={},
             )
 
-    def test_log_event_with_empty_vm_id_raises(
-        self, audit_logger: AuditLogger
-    ) -> None:
+    def test_log_event_with_empty_vm_id_raises(self, audit_logger: AuditLogger) -> None:
         """log_event raises ValueError when vm_id is empty."""
         with pytest.raises(ValueError):
             audit_logger.log_event(
@@ -382,9 +368,7 @@ class TestErrorHandling:
 class TestConvenienceMethods:
     """Test convenience methods for common event types."""
 
-    def test_log_lifecycle_event(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_lifecycle_event(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_lifecycle_event logs VM lifecycle events."""
         audit_logger.log_lifecycle_event(
             event_type=EventType.VM_CREATED,
@@ -396,9 +380,7 @@ class TestConvenienceMethods:
         assert log["event_type"] == "vm_created"
         assert log["vm_id"] == "vm-456"
 
-    def test_log_execution_event(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_execution_event(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_execution_event logs agent execution events."""
         audit_logger.log_execution_event(
             event_type=EventType.AGENT_EXECUTION_STARTED,
@@ -412,9 +394,7 @@ class TestConvenienceMethods:
         assert log["agent_id"] == "agent-123"
         assert log["vm_id"] == "vm-456"
 
-    def test_log_security_event(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_security_event(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_security_event logs security events with WARNING level."""
         audit_logger.log_security_event(
             event_type=EventType.RESOURCE_LIMIT_EXCEEDED,
@@ -426,9 +406,7 @@ class TestConvenienceMethods:
         assert log["event_type"] == "resource_limit_exceeded"
         assert log["log_level"] == "warning"
 
-    def test_log_admin_event(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_log_admin_event(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """log_admin_event logs administrative events."""
         audit_logger.log_admin_event(
             event_type=EventType.CONFIGURATION_CHANGED,
@@ -444,9 +422,7 @@ class TestConvenienceMethods:
 class TestTimestampFormat:
     """Test timestamp format compliance."""
 
-    def test_timestamp_is_iso8601(
-        self, audit_logger: AuditLogger, log_capture: LogCapture
-    ) -> None:
+    def test_timestamp_is_iso8601(self, audit_logger: AuditLogger, log_capture: LogCapture) -> None:
         """Timestamp follows ISO 8601 format."""
         audit_logger.log_event(
             event_type=EventType.VM_CREATED,
@@ -508,12 +484,8 @@ class TestMultipleEvents:
 
         # Verify timestamps are in order
         for i in range(len(logs) - 1):
-            ts1 = datetime.fromisoformat(
-                logs[i]["timestamp"].replace("Z", "+00:00")
-            )
-            ts2 = datetime.fromisoformat(
-                logs[i + 1]["timestamp"].replace("Z", "+00:00")
-            )
+            ts1 = datetime.fromisoformat(logs[i]["timestamp"].replace("Z", "+00:00"))
+            ts2 = datetime.fromisoformat(logs[i + 1]["timestamp"].replace("Z", "+00:00"))
             assert ts1 <= ts2
 
 

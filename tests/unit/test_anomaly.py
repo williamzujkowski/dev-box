@@ -231,9 +231,7 @@ class TestRuleBasedDetection:
         """Detect excessive disk writes (>1GB per minute)"""
         detector = AnomalyDetector(vm_id="test-vm")
 
-        anomalies = detector.detect(
-            {"disk_write_bytes_per_min": 1.5 * 1024**3}  # 1.5GB
-        )
+        anomalies = detector.detect({"disk_write_bytes_per_min": 1.5 * 1024**3})  # 1.5GB
 
         assert len(anomalies) >= 1
         assert any(a.type == AnomalyType.EXCESSIVE_DISK_WRITES for a in anomalies)
@@ -264,9 +262,7 @@ class TestRuleBasedDetection:
         """Detect fork bomb pattern (>1000 processes in <5s)"""
         detector = AnomalyDetector(vm_id="test-vm")
 
-        anomalies = detector.detect(
-            {"total_processes": 1200, "process_spawn_duration": 4.0}
-        )
+        anomalies = detector.detect({"total_processes": 1200, "process_spawn_duration": 4.0})
 
         assert len(anomalies) >= 1
         assert any(a.type == AnomalyType.FORK_BOMB for a in anomalies)
@@ -387,9 +383,9 @@ class TestAlertDeduplication:
 
         # Mock time passage
         with patch("agent_vm.monitoring.anomaly.datetime") as mock_dt:
-            mock_dt.now.return_value = datetime.now(
-                ZoneInfo("America/New_York")
-            ) + timedelta(seconds=6)
+            mock_dt.now.return_value = datetime.now(ZoneInfo("America/New_York")) + timedelta(
+                seconds=6
+            )
             mock_dt.side_effect = lambda *args, **kw: datetime(*args, **kw)
 
             # Should generate new alert after window

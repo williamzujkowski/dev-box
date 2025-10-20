@@ -68,9 +68,7 @@ class AgentExecutor:
         Hello
     """
 
-    def __init__(
-        self, default_timeout: int = 300, max_timeout: int = 3600
-    ) -> None:
+    def __init__(self, default_timeout: int = 300, max_timeout: int = 3600) -> None:
         """Initialize AgentExecutor.
 
         Args:
@@ -85,9 +83,7 @@ class AgentExecutor:
         if max_timeout <= 0:
             raise ExecutionError("Timeout must be positive")
         if default_timeout > max_timeout:
-            raise ExecutionError(
-                "Default timeout cannot exceed max timeout"
-            )
+            raise ExecutionError("Default timeout cannot exceed max timeout")
 
         self.default_timeout = default_timeout
         self.max_timeout = max_timeout
@@ -134,9 +130,7 @@ class AgentExecutor:
         if timeout <= 0:
             raise ExecutionError("Timeout must be positive")
         if timeout > self.max_timeout:
-            raise ExecutionError(
-                f"Timeout {timeout}s exceeds maximum {self.max_timeout}s"
-            )
+            raise ExecutionError(f"Timeout {timeout}s exceeds maximum {self.max_timeout}s")
 
         start_time = datetime.now(ET)
         self._logger.info(
@@ -171,9 +165,7 @@ class AgentExecutor:
             # Extract results if available
             output_dict = None
             try:
-                results_content = await fs_share.read_file(
-                    "output/results.json"
-                )
+                results_content = await fs_share.read_file("output/results.json")
                 output_dict = json.loads(results_content.decode())
             except (FilesystemError, json.JSONDecodeError):
                 # Results file optional or malformed
@@ -207,13 +199,9 @@ class AgentExecutor:
             try:
                 await fs_share.cleanup()
             except Exception as cleanup_err:
-                self._logger.warning(
-                    "cleanup_failed", error=str(cleanup_err)
-                )
+                self._logger.warning("cleanup_failed", error=str(cleanup_err))
 
-    async def _execute_in_vm(
-        self, vm: VM, script_path: str
-    ) -> dict[str, Any]:
+    async def _execute_in_vm(self, vm: VM, script_path: str) -> dict[str, Any]:
         """Execute script in VM (placeholder for vsock communication).
 
         This is a simplified implementation that will be replaced with
@@ -226,8 +214,12 @@ class AgentExecutor:
         Returns:
             Dictionary with exit_code, stdout, stderr
         """
-        # TODO: Replace with actual vsock communication to guest agent
-        # For now, simulate execution
+        # TODO(Phase 6): Replace with actual vsock communication to guest agent
+        # This placeholder simulates execution. The full implementation requires:
+        # 1. VsockProtocol.send() to transmit execute command to guest agent
+        # 2. Guest agent to execute script_path and capture stdout/stderr
+        # 3. VsockProtocol.receive() to get execution results
+        # See: IMPLEMENTATION_GUIDE.md Phase 2 (Communication) for vsock integration
         await asyncio.sleep(0.1)  # Simulate execution delay
 
         return {

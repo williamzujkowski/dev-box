@@ -24,11 +24,7 @@ class TestVsockMessage:
         """
         from agent_vm.communication.vsock import VsockMessage
 
-        message = VsockMessage(
-            command="execute",
-            payload=b"test payload",
-            checksum="abc123"
-        )
+        message = VsockMessage(command="execute", payload=b"test payload", checksum="abc123")
 
         assert message.command == "execute"
         assert message.payload == b"test payload"
@@ -38,11 +34,7 @@ class TestVsockMessage:
         """VsockMessage handles empty payload."""
         from agent_vm.communication.vsock import VsockMessage
 
-        message = VsockMessage(
-            command="ping",
-            payload=b"",
-            checksum=""
-        )
+        message = VsockMessage(command="ping", payload=b"", checksum="")
 
         assert message.command == "ping"
         assert message.payload == b""
@@ -52,11 +44,7 @@ class TestVsockMessage:
         """VsockMessage is immutable (frozen dataclass)."""
         from agent_vm.communication.vsock import VsockMessage
 
-        message = VsockMessage(
-            command="test",
-            payload=b"data",
-            checksum="hash"
-        )
+        message = VsockMessage(command="test", payload=b"data", checksum="hash")
 
         # Should raise FrozenInstanceError
         with pytest.raises(Exception):  # dataclasses.FrozenInstanceError
@@ -126,9 +114,7 @@ class TestVsockMessageFraming:
 
         protocol = VsockProtocol(cid=3)
         message = VsockMessage(
-            command="execute",
-            payload=b"test data",
-            checksum=""  # Will be calculated
+            command="execute", payload=b"test data", checksum=""  # Will be calculated
         )
 
         framed = protocol._frame_message(message)
@@ -150,18 +136,12 @@ class TestVsockMessageFraming:
         command = "test"
         payload = b"data"
 
-        message = VsockMessage(
-            command=command,
-            payload=payload,
-            checksum=""
-        )
+        message = VsockMessage(command=command, payload=payload, checksum="")
 
         framed = protocol._frame_message(message)
 
         # Calculate expected checksum
-        expected_checksum = hashlib.sha256(
-            command.encode("utf-8") + payload
-        ).hexdigest()
+        expected_checksum = hashlib.sha256(command.encode("utf-8") + payload).hexdigest()
 
         # Extract checksum from frame (last 64 bytes are hex checksum)
         checksum_in_frame = framed[-64:].decode("utf-8")
@@ -172,11 +152,7 @@ class TestVsockMessageFraming:
         from agent_vm.communication.vsock import VsockProtocol, VsockMessage
 
         protocol = VsockProtocol(cid=3)
-        message = VsockMessage(
-            command="ping",
-            payload=b"",
-            checksum=""
-        )
+        message = VsockMessage(command="ping", payload=b"", checksum="")
 
         framed = protocol._frame_message(message)
 
@@ -246,9 +222,7 @@ class TestVsockMessageFraming:
         protocol = VsockProtocol(cid=3)
 
         original = VsockMessage(
-            command="execute",
-            payload=b"test data with special chars: \x00\xff",
-            checksum=""
+            command="execute", payload=b"test data with special chars: \x00\xff", checksum=""
         )
 
         # Frame then parse
@@ -283,11 +257,7 @@ class TestVsockCommunication:
             # Manually set socket
             protocol._socket = mock_sock
 
-            message = VsockMessage(
-                command="execute",
-                payload=b"test",
-                checksum=""
-            )
+            message = VsockMessage(command="execute", payload=b"test", checksum="")
 
             await protocol.send(message)
 
@@ -310,11 +280,7 @@ class TestVsockCommunication:
             mock_socket_class.return_value = mock_sock
             protocol._socket = mock_sock
 
-            message = VsockMessage(
-                command="test",
-                payload=b"data",
-                checksum=""
-            )
+            message = VsockMessage(command="test", payload=b"data", checksum="")
 
             with pytest.raises(VsockError, match="Failed to send|Connection lost"):
                 await protocol.send(message)
@@ -339,7 +305,7 @@ class TestVsockCommunication:
                 header,  # First recv gets header
                 command.encode("utf-8"),  # Second recv gets command
                 payload,  # Third recv gets payload
-                checksum.encode("utf-8")  # Fourth recv gets checksum
+                checksum.encode("utf-8"),  # Fourth recv gets checksum
             ]
             mock_socket_class.return_value = mock_sock
             protocol._socket = mock_sock
@@ -380,7 +346,9 @@ class TestVsockCommunication:
             mock_socket_class.return_value = mock_sock
             protocol._socket = mock_sock
 
-            with pytest.raises(VsockError, match="Incomplete|incomplete|Connection closed|Unexpected end"):
+            with pytest.raises(
+                VsockError, match="Incomplete|incomplete|Connection closed|Unexpected end"
+            ):
                 await protocol.receive()
 
 
@@ -404,11 +372,7 @@ class TestVsockLogging:
                 protocol = VsockProtocol(cid=3)
                 protocol._socket = mock_sock
 
-                message = VsockMessage(
-                    command="test",
-                    payload=b"data",
-                    checksum=""
-                )
+                message = VsockMessage(command="test", payload=b"data", checksum="")
 
                 await protocol.send(message)
 
@@ -436,7 +400,7 @@ class TestVsockLogging:
                 header,
                 command.encode("utf-8"),
                 payload,
-                checksum.encode("utf-8")
+                checksum.encode("utf-8"),
             ]
             mock_socket_class.return_value = mock_sock
 
@@ -471,11 +435,7 @@ class TestVsockLogging:
                 protocol = VsockProtocol(cid=3)
                 protocol._socket = mock_sock
 
-                message = VsockMessage(
-                    command="test",
-                    payload=b"data",
-                    checksum=""
-                )
+                message = VsockMessage(command="test", payload=b"data", checksum="")
 
                 try:
                     await protocol.send(message)
@@ -507,11 +467,7 @@ class TestVsockTimestamps:
             protocol._socket = mock_sock
 
             with patch("agent_vm.communication.vsock.logger") as mock_logger:
-                message = VsockMessage(
-                    command="test",
-                    payload=b"data",
-                    checksum=""
-                )
+                message = VsockMessage(command="test", payload=b"data", checksum="")
 
                 await protocol.send(message)
 

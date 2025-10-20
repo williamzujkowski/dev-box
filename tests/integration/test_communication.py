@@ -49,9 +49,7 @@ class TestFilesystemShareIntegration:
     """Integration tests for virtio-9p filesystem sharing"""
 
     @pytest.mark.skipif(not check_libvirt(), reason="Requires libvirt")
-    def test_filesystem_share_import(
-        self, real_libvirt_connection: libvirt.virConnect
-    ) -> None:
+    def test_filesystem_share_import(self, real_libvirt_connection: libvirt.virConnect) -> None:
         """
         Test that FilesystemShare can be imported.
 
@@ -261,9 +259,7 @@ class TestVsockCommunicationIntegration:
     """Integration tests for virtio-vsock communication"""
 
     @pytest.mark.skipif(not check_libvirt(), reason="Requires libvirt")
-    def test_vsock_protocol_import(
-        self, real_libvirt_connection: libvirt.virConnect
-    ) -> None:
+    def test_vsock_protocol_import(self, real_libvirt_connection: libvirt.virConnect) -> None:
         """
         Test that VsockProtocol can be imported.
 
@@ -408,8 +404,7 @@ class TestGuestAgentIntegration:
 
         if not guest_agent_path.exists():
             pytest.skip(
-                "Guest agent not implemented yet (guest/agent.py). "
-                "See Phase 2, Task 3.3"
+                "Guest agent not implemented yet (guest/agent.py). " "See Phase 2, Task 3.3"
             )
 
         # If file exists, verify it's valid Python

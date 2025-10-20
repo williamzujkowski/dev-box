@@ -102,6 +102,9 @@ class TestGuestAgentStartStop:
 
         with patch("asyncio.start_server") as mock_server:
             mock_server_instance = AsyncMock()
+            # close() is sync, wait_closed() is async
+            mock_server_instance.close = Mock()
+            mock_server_instance.wait_closed = AsyncMock()
             mock_server.return_value = mock_server_instance
 
             await agent.start()
@@ -147,17 +150,13 @@ class TestGuestAgentCommandHandling:
         agent = GuestAgent()
 
         # Mock command data
-        command_data = {
-            "command": "execute",
-            "code": "print('Hello from agent')",
-            "timeout": 300
-        }
+        command_data = {"command": "execute", "code": "print('Hello from agent')", "timeout": 300}
 
         with patch.object(agent, "_execute_code", new_callable=AsyncMock) as mock_execute:
             mock_execute.return_value = {
                 "exit_code": 0,
                 "stdout": "Hello from agent\n",
-                "stderr": ""
+                "stderr": "",
             }
 
             result = await agent.handle_command(command_data)
@@ -174,9 +173,7 @@ class TestGuestAgentCommandHandling:
 
         agent = GuestAgent()
 
-        command_data = {
-            "command": "status"
-        }
+        command_data = {"command": "status"}
 
         result = await agent.handle_command(command_data)
 
@@ -191,9 +188,7 @@ class TestGuestAgentCommandHandling:
 
         agent = GuestAgent()
 
-        command_data = {
-            "command": "stop"
-        }
+        command_data = {"command": "stop"}
 
         with patch.object(agent, "stop", new_callable=AsyncMock) as mock_stop:
             await agent.handle_command(command_data)
@@ -208,9 +203,7 @@ class TestGuestAgentCommandHandling:
 
         agent = GuestAgent()
 
-        command_data = {
-            "command": "unknown_command"
-        }
+        command_data = {"command": "unknown_command"}
 
         result = await agent.handle_command(command_data)
 
@@ -339,11 +332,7 @@ class TestGuestAgentResultReporting:
 
         agent = GuestAgent(workspace=tmp_path)
 
-        result_data = {
-            "exit_code": 0,
-            "stdout": "Success",
-            "stderr": ""
-        }
+        result_data = {"exit_code": 0, "stdout": "Success", "stderr": ""}
 
         await agent._write_results(result_data)
 
@@ -352,6 +341,7 @@ class TestGuestAgentResultReporting:
         assert results_file.exists()
 
         import json
+
         written_data = json.loads(results_file.read_text())
         assert written_data == result_data
 
@@ -362,11 +352,7 @@ class TestGuestAgentResultReporting:
 
         agent = GuestAgent()
 
-        result_data = {
-            "exit_code": 0,
-            "stdout": "Success",
-            "stderr": ""
-        }
+        result_data = {"exit_code": 0, "stdout": "Success", "stderr": ""}
 
         with patch("agent_vm.communication.vsock.VsockProtocol") as mock_protocol:
             mock_protocol_instance = AsyncMock()
@@ -392,7 +378,7 @@ class TestGuestAgentResultReporting:
             mock_protocol.return_value = mock_protocol_instance
 
             # Should log error but not crash
-            with patch.object(agent._logger, 'error') as mock_error:
+            with patch.object(agent._logger, "error") as mock_error:
                 await agent._send_result(result_data)
 
                 # Verify error was logged
@@ -409,8 +395,14 @@ class TestGuestAgentLogging:
 
         agent = GuestAgent()
 
-        with patch("asyncio.start_server", new_callable=AsyncMock):
-            with patch.object(agent._logger, 'info') as mock_info:
+        with patch("asyncio.start_server", new_callable=AsyncMock) as mock_server:
+            # Configure mock server to have correct method types
+            mock_server_instance = AsyncMock()
+            mock_server_instance.close = Mock()
+            mock_server_instance.wait_closed = AsyncMock()
+            mock_server.return_value = mock_server_instance
+
+            with patch.object(agent._logger, "info") as mock_info:
                 await agent.start()
 
                 # Verify startup logging
@@ -427,7 +419,7 @@ class TestGuestAgentLogging:
 
         command_data = {"command": "status"}
 
-        with patch.object(agent._logger, 'info') as mock_info:
+        with patch.object(agent._logger, "info") as mock_info:
             await agent.handle_command(command_data)
 
             # Verify command logging
@@ -442,7 +434,7 @@ class TestGuestAgentLogging:
 
         code = "print('test')"
 
-        with patch.object(agent._logger, 'info') as mock_info:
+        with patch.object(agent._logger, "info") as mock_info:
             await agent._execute_code(code, timeout=10)
 
             # Verify execution logging
@@ -456,7 +448,7 @@ class TestGuestAgentLogging:
         agent = GuestAgent()
 
         with patch("asyncio.start_server", side_effect=OSError("Port in use")):
-            with patch.object(agent._logger, 'error') as mock_error:
+            with patch.object(agent._logger, "error") as mock_error:
                 try:
                     await agent.start()
                 except AgentError:
@@ -486,7 +478,13 @@ class TestGuestAgentProperties:
 
         agent = GuestAgent()
 
-        with patch("asyncio.start_server", new_callable=AsyncMock):
+        with patch("asyncio.start_server", new_callable=AsyncMock) as mock_server:
+            # Configure mock server to have correct method types
+            mock_server_instance = AsyncMock()
+            mock_server_instance.close = Mock()
+            mock_server_instance.wait_closed = AsyncMock()
+            mock_server.return_value = mock_server_instance
+
             await agent.start()
 
             assert agent.is_running
@@ -498,7 +496,13 @@ class TestGuestAgentProperties:
 
         agent = GuestAgent()
 
-        with patch("asyncio.start_server", new_callable=AsyncMock):
+        with patch("asyncio.start_server", new_callable=AsyncMock) as mock_server:
+            # Configure mock server to have correct method types
+            mock_server_instance = AsyncMock()
+            mock_server_instance.close = Mock()
+            mock_server_instance.wait_closed = AsyncMock()
+            mock_server.return_value = mock_server_instance
+
             await agent.start()
             await agent.stop()
 
@@ -515,7 +519,13 @@ class TestGuestAgentIntegration:
 
         agent = GuestAgent(workspace=tmp_path)
 
-        with patch("asyncio.start_server", new_callable=AsyncMock):
+        with patch("asyncio.start_server", new_callable=AsyncMock) as mock_server:
+            # Configure mock server to have correct method types
+            mock_server_instance = AsyncMock()
+            mock_server_instance.close = Mock()
+            mock_server_instance.wait_closed = AsyncMock()
+            mock_server.return_value = mock_server_instance
+
             # Start agent
             await agent.start()
             assert agent.is_running
@@ -524,7 +534,7 @@ class TestGuestAgentIntegration:
             command_data = {
                 "command": "execute",
                 "code": "print('Integration test')",
-                "timeout": 10
+                "timeout": 10,
             }
 
             result = await agent.handle_command(command_data)
