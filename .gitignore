@@ -68,3 +68,6 @@ Thumbs.db
 bandit-report.json
 safety-report.json
 *-report.json
+
+# Generated documentation
+docs/api/
