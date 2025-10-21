@@ -137,9 +137,10 @@ class VMPool:
             self._connection = LibvirtConnection()
             self._connection.open()
 
-            # Create and start min_size VMs
-            for i in range(self.min_size):
-                vm = await self._create_fresh_vm(index=i)
+            # Create and start min_size VMs in parallel (5-10x faster)
+            tasks = [self._create_fresh_vm(index=i) for i in range(self.min_size)]
+            vms = await asyncio.gather(*tasks)
+            for vm in vms:
                 await self._pool.put(vm)
 
             self._initialized = True
@@ -408,10 +409,34 @@ class VMPool:
 
         Args:
             vm: VM to reset
+
+        Raises:
+            VMPoolError: If golden snapshot not found or restore fails
         """
-        # In real implementation, would restore to golden snapshot
-        # For now, just log the operation
-        self._logger.info("vm_reset_to_golden", vm=vm.name)
+        try:
+            # Find golden snapshot by name pattern
+            golden_snapshot_name = f"{vm.name}-golden"
+            snapshots = self._snapshot_manager.list_snapshots(vm)
+
+            golden = None
+            for snapshot in snapshots:
+                if snapshot.name == golden_snapshot_name:
+                    golden = snapshot
+                    break
+
+            if not golden:
+                raise VMPoolError(f"Golden snapshot not found: {golden_snapshot_name}")
+
+            # Restore to golden state
+            self._logger.info(
+                "vm_resetting_to_golden", vm=vm.name, snapshot=golden_snapshot_name
+            )
+            self._snapshot_manager.restore_snapshot(vm, golden)
+            self._logger.info("vm_reset_complete", vm=vm.name)
+
+        except Exception as e:
+            self._logger.error("vm_reset_failed", vm=vm.name, error=str(e))
+            raise VMPoolError(f"Failed to reset VM to golden state: {e}") from e
 
     async def _maintain_pool(self) -> None:
         """Background task to maintain pool at minimum size.

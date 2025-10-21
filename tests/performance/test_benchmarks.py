@@ -663,12 +663,13 @@ class TestResourceUtilizationPerformance:
         Method: Mock memory tracking during pool operations
         """
         from agent_vm.execution.pool import VMPool, PooledVM
+        from agent_vm.core.snapshot import Snapshot
         from datetime import datetime
         from zoneinfo import ZoneInfo
 
         with (
             patch("agent_vm.execution.pool.VMPool._create_fresh_vm") as mock_create_vm,
-            patch("agent_vm.execution.pool.SnapshotManager"),
+            patch("agent_vm.execution.pool.SnapshotManager") as mock_snapshot_mgr_class,
         ):
             # Create mock VMs wrapped in PooledVM
             mock_vms = []
@@ -684,6 +685,22 @@ class TestResourceUtilizationPerformance:
                 )
                 mock_vms.append(pooled)
             mock_create_vm.side_effect = mock_vms
+
+            # Configure SnapshotManager mock to handle reset operations
+            mock_snapshot_mgr = Mock()
+
+            def mock_list_snapshots(vm):
+                # Return mock snapshot matching the golden snapshot name
+                mock_snap_obj = Mock()
+                golden_snapshot = Snapshot(
+                    name=f"{vm.name}-golden",
+                    _snap_obj=mock_snap_obj
+                )
+                return [golden_snapshot]
+
+            mock_snapshot_mgr.list_snapshots = Mock(side_effect=mock_list_snapshots)
+            mock_snapshot_mgr.restore_snapshot = Mock()
+            mock_snapshot_mgr_class.return_value = mock_snapshot_mgr
 
             pool = VMPool(min_size=3, max_size=5)
             await pool.initialize()

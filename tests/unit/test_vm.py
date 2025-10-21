@@ -285,7 +285,7 @@ class TestVMAsyncOperations:
 
     @pytest.mark.asyncio
     async def test_vm_wait_for_state_custom_poll_interval(self, mock_domain: Mock) -> None:
-        """wait_for_state() respects custom poll interval."""
+        """wait_for_state() uses exponential backoff with custom max interval."""
         from agent_vm.core.vm import VM, VMState
 
         call_count = 0
@@ -304,8 +304,10 @@ class TestVMAsyncOperations:
         await vm.wait_for_state(VMState.RUNNING, timeout=5, poll_interval=0.1)
         elapsed = asyncio.get_event_loop().time() - start_time
 
-        # Should have taken at least 2 poll intervals (3 checks - 1)
-        assert elapsed >= 0.2
+        # With exponential backoff: 50ms, 100ms (capped at 100ms max)
+        # Total: ~0.15s (faster than old fixed 0.1s intervals)
+        assert elapsed >= 0.1  # At least one sleep occurred
+        assert elapsed < 0.3  # But faster than old fixed polling
         assert mock_domain.state.call_count == 3
 
     @pytest.mark.asyncio

@@ -233,12 +233,15 @@ class VM:
         """Wait for VM to reach desired state.
 
         Polls VM state until it reaches the desired state or timeout expires.
-        Uses asyncio for non-blocking polling.
+        Uses dynamic exponential backoff for faster state detection while
+        reducing CPU usage over time.
 
         Args:
             desired_state: Target VM state to wait for
             timeout: Maximum time to wait in seconds (default: 30.0)
-            poll_interval: Time between state checks in seconds (default: 0.5)
+            poll_interval: Maximum poll interval in seconds (default: 0.5).
+                          Note: Actual polling uses exponential backoff starting
+                          at 50ms, doubling each iteration up to this maximum.
 
         Raises:
             VMError: If timeout expires before reaching desired state
@@ -249,6 +252,7 @@ class VM:
             >>> # VM is now running
         """
         start_time = asyncio.get_event_loop().time()
+        attempt = 0
 
         while True:
             current_state = self.get_state()
@@ -273,5 +277,10 @@ class VM:
                     f"(current: {current_state.value}, timeout: {timeout}s)"
                 )
 
-            # Sleep before next check
-            await asyncio.sleep(poll_interval)
+            # Dynamic exponential backoff: start at 50ms, double each iteration,
+            # cap at poll_interval (default 500ms)
+            # This provides fast detection for quick state changes while
+            # reducing CPU usage for slower transitions
+            sleep_time = min(0.05 * (2**attempt), poll_interval)
+            await asyncio.sleep(sleep_time)
+            attempt += 1
