@@ -1,7 +1,7 @@
 # Developer Guide: KVM Agent Isolation System
 
 **Version:** 1.0.0
-**Status:** Phase 5 Complete (424/436 tests passing, 92.04% coverage)
+**Status:** Phase 6 Complete (424/436 tests passing, 92.11% coverage)
 
 ## Table of Contents
 
@@ -32,7 +32,7 @@ This guide provides comprehensive information for developers working on the KVM 
 ### Key Metrics (Phase 5 Complete)
 
 - **Tests**: 424/436 passing (97.25%)
-- **Coverage**: 92.04%
+- **Coverage**: 92.11%
 - **Type Safety**: mypy strict mode
 - **Code Quality**: ruff linting, black formatting
 
@@ -130,7 +130,7 @@ virsh -c qemu:///system list --all
 # 1. Clone repository
 git clone <repository-url>
 cd dev-box
-git checkout kvm_switch
+git checkout main
 
 # 2. Create virtual environment
 python3.12 -m venv venv
@@ -468,8 +468,8 @@ class MyClass:
 
 ```bash
 # 1. Start of day
-git checkout kvm_switch
-git pull origin kvm_switch
+git checkout main
+git pull origin main
 
 # 2. Create feature branch
 git checkout -b feature/my-feature
@@ -513,9 +513,9 @@ gh pr create --title "feat: add my feature"
 
 #### Branch Strategy
 
-- `main`: Stable releases
-- `kvm_switch`: Active development
+- `main`: Production stable (current)
 - `feature/*`: Feature branches
+- `hotfix/*`: Urgent fixes
 
 #### Commit Message Format (Conventional Commits)
 
@@ -709,8 +709,8 @@ def create_snapshot(self, vm: VM, name: str, description: str = "") -> Snapshot:
 
 3. **Create Feature Branch**
    ```bash
-   git checkout kvm_switch
-   git pull origin kvm_switch
+   git checkout main
+   git pull origin main
    git checkout -b feature/my-feature
    ```
 

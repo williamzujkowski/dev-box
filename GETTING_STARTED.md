@@ -91,7 +91,7 @@ python3 --version  # Should be >= 3.12
 # 1. Clone repository
 git clone <repo-url>
 cd dev-box
-git checkout kvm_switch
+git checkout main
 
 # 2. Create virtual environment
 python3.12 -m venv venv
@@ -365,7 +365,7 @@ Test: test_project_structure.py"
 ```bash
 # Let's begin!
 cd dev-box
-git checkout kvm_switch
+git checkout main
 
 # Read the architecture
 less ARCHITECTURE.md
@@ -379,10 +379,11 @@ less IMPLEMENTATION_GUIDE.md
 
 ---
 
-**Remember:** This is a greenfield project on the `kvm_switch` branch. We're building from scratch with best practices:
+**Remember:** This is a production-ready project on the `main` branch, built from scratch with best practices:
 - **TDD first** (write tests before code)
 - **Type safe** (mypy strict)
 - **Well documented** (docstrings, guides)
 - **Production ready** (monitoring, security, performance)
+- **Optimized** (parallel VM creation, exponential backoff, snapshot-based reset)
 
 You've got comprehensive plans, detailed tasks, and clear acceptance criteria. Follow the guides and you'll build a robust, production-quality system! 💪

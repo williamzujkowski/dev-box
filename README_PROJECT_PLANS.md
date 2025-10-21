@@ -1,9 +1,9 @@
 # KVM Agent Isolation System - Project Plans
 
 **Status:** ✅ ALL PHASES COMPLETE - PRODUCTION READY (2025-10-20)
-**Branch:** `kvm_switch` (greenfield)
+**Branch:** `main` (production)
 **Timeline:** 8 weeks (Completed on schedule)
-**Metrics:** 424/436 tests (97.25%), 92.04% coverage
+**Metrics:** 424/436 tests (97.25%), 92.11% coverage
 
 ---
 
@@ -26,7 +26,7 @@ This directory contains comprehensive planning documentation for building a **pr
 | Document | Purpose |
 |----------|---------|
 | **[NETWORK_CONFIG_GUIDE.md](NETWORK_CONFIG_GUIDE.md)** | Complete network setup and security guide |
-| **[NETWORK_UPDATE_SUMMARY.md](NETWORK_UPDATE_SUMMARY.md)** | Quick summary of network access defaults |
+| **[PERFORMANCE_OPTIMIZATIONS.md](PERFORMANCE_OPTIMIZATIONS.md)** | Performance optimization details (2025-10-20) |
 | **[CHANGES_FROM_ORIGINAL_PLAN.md](CHANGES_FROM_ORIGINAL_PLAN.md)** | Detailed change log and rationale |
 
 ---
@@ -241,7 +241,7 @@ Every commit must pass:
 - No unsolicited incoming connections
 - Hardware isolation still prevents VM escape
 
-**Read More:** [NETWORK_UPDATE_SUMMARY.md](NETWORK_UPDATE_SUMMARY.md)
+**Read More:** [NETWORK_CONFIG_GUIDE.md](NETWORK_CONFIG_GUIDE.md)
 
 ### TDD from Day 1
 
@@ -381,13 +381,14 @@ print(f"Output: {result.stdout}")
 
 ## 🤝 Contributing
 
-This is a greenfield project on the `kvm_switch` branch. Implementation follows the guides:
+This is a production-ready project on the `main` branch. Contributions should follow:
 
 1. Follow TDD approach (write tests first)
-2. Meet quality gates (tests, types, lint, coverage)
+2. Meet quality gates (tests, types, lint, coverage >80%)
 3. Use clear commit messages (Conventional Commits)
 4. Update documentation as you go
 5. Add tests for any new features
+6. Maintain 92%+ test coverage
 
 ---
 
@@ -433,13 +434,13 @@ This is a greenfield project on the `kvm_switch` branch. Implementation follows 
 
 | Document | Status | Last Updated |
 |----------|--------|--------------|
-| GETTING_STARTED.md | ✅ Complete | 2025-01-15 |
-| ARCHITECTURE.md | ✅ Complete | 2025-01-15 |
-| TDD_IMPLEMENTATION_PLAN.md | ✅ Complete | 2025-01-15 |
-| IMPLEMENTATION_GUIDE.md | ✅ Complete | 2025-01-15 |
-| NETWORK_CONFIG_GUIDE.md | ✅ Complete | 2025-01-15 |
-| NETWORK_UPDATE_SUMMARY.md | ✅ Complete | 2025-01-15 |
-| CHANGES_FROM_ORIGINAL_PLAN.md | ✅ Complete | 2025-01-15 |
+| GETTING_STARTED.md | ✅ Complete | 2025-10-20 |
+| ARCHITECTURE.md | ✅ Complete | 2025-10-20 |
+| TDD_IMPLEMENTATION_PLAN.md | ✅ Complete | 2025-10-20 |
+| IMPLEMENTATION_GUIDE.md | ✅ Complete | 2025-10-20 |
+| NETWORK_CONFIG_GUIDE.md | ✅ Complete | 2025-10-20 |
+| PERFORMANCE_OPTIMIZATIONS.md | ✅ Complete | 2025-10-20 |
+| CHANGES_FROM_ORIGINAL_PLAN.md | ✅ Complete | 2025-10-20 |
 
 ---
 

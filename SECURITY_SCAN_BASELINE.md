@@ -2,8 +2,8 @@
 
 **Date:** 2025-10-20
 **Project:** dev-box (agent-vm)
-**Branch:** kvm_switch
-**Phase:** Phase 2 (Communication) - Pre-production
+**Branch:** main
+**Phase:** Historical Baseline (Project now Phase 6 Complete - Production Ready)
 
 ## Executive Summary
 
@@ -294,7 +294,7 @@ name: Security Scan
 
 on:
   push:
-    branches: [main, kvm_switch]
+    branches: [main]
   pull_request:
   schedule:
     - cron: '0 0 * * 1'  # Weekly Monday midnight
